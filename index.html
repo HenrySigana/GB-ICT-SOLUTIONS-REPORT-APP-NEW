@@ -307,7 +307,6 @@ async function loadServices(){
     if(error)throw error;
     if(data&&data.length){services=data;}
     else{
-      // Insert defaults
       let inserts=DEFAULT_SERVICES.map(s=>({id:s.id,icon:s.icon,name:s.name,price:s.price}));
       let{data:inserted}=await sb.from('gb_services').insert(inserts).select();
       services=inserted||DEFAULT_SERVICES;
