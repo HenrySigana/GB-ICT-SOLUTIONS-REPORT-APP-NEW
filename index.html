@@ -43,6 +43,7 @@ main{padding:22px 24px;max-width:1100px;margin:0 auto;}
 .stat.warn::before{background:var(--warn);}
 .stat.danger::before{background:var(--danger);}
 .stat.purple::before{background:#a855f7;}
+.stat.green::before{background:#25D366;}
 .stat-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;}
 .stat-val{font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;color:var(--text);}
 .stat-val.g{color:var(--accent);}
@@ -50,7 +51,6 @@ main{padding:22px 24px;max-width:1100px;margin:0 auto;}
 .stat-val.p{color:#a855f7;}
 .stat-sub{font-size:0.7rem;color:var(--muted);margin-top:3px;}
 
-/* SERVICES GRID */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:22px;}
 .svc-btn{background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:16px 12px;cursor:pointer;text-align:center;transition:all 0.2s;position:relative;}
 .svc-btn:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 18px rgba(0,200,150,0.15);}
@@ -61,7 +61,6 @@ main{padding:22px 24px;max-width:1100px;margin:0 auto;}
 .svc-badge{position:absolute;top:7px;right:7px;background:var(--accent);color:#000;border-radius:50%;width:20px;height:20px;display:none;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;}
 .svc-btn.in-cart .svc-badge{display:flex;}
 
-/* CART */
 .cart-panel{background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);padding:20px;margin-bottom:22px;}
 .cart-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
 .qty-ctrl{display:flex;align-items:center;gap:8px;}
@@ -70,7 +69,6 @@ main{padding:22px 24px;max-width:1100px;margin:0 auto;}
 .cart-total{display:flex;justify-content:space-between;padding:12px 0 0;font-family:'Rajdhani',sans-serif;font-size:1.4rem;}
 .cart-total span:last-child{color:var(--accent);}
 
-/* FORMS */
 .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
 .form-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
 .fg{flex:1;min-width:140px;display:flex;flex-direction:column;gap:5px;}
@@ -79,17 +77,17 @@ input,select{width:100%;background:var(--bg);border:1px solid var(--border);bord
 input:focus,select:focus{border-color:var(--accent);}
 select option{background:var(--surface);}
 
-/* BUTTONS */
 .btn{padding:9px 22px;border-radius:8px;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;transition:all 0.2s;}
 .btn-primary{background:var(--accent);color:#000;}
 .btn-primary:hover{background:#00e6ab;}
 .btn-secondary{background:var(--card);color:var(--text);border:1px solid var(--border);}
 .btn-secondary:hover{border-color:var(--accent2);color:var(--accent2);}
 .btn-danger{background:var(--danger);color:#fff;}
+.btn-whatsapp{background:#25D366;color:#fff;}
+.btn-whatsapp:hover{background:#1ebe5d;}
 .btn-sm{padding:5px 11px;font-size:0.82rem;}
 .btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
 
-/* TABLE */
 .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;}
 table{width:100%;border-collapse:collapse;}
 thead{background:#151e2d;}
@@ -101,14 +99,29 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .badge-red{background:rgba(239,68,68,0.15);color:var(--danger);}
 .badge-purple{background:rgba(168,85,247,0.15);color:#a855f7;}
 
-/* REPORT */
 .report-bar{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
 .bar-label{min-width:160px;font-size:0.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .bar-track{flex:1;background:var(--border);border-radius:4px;height:11px;overflow:hidden;}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.6s ease;}
 .bar-fill.expense{background:linear-gradient(90deg,var(--danger),#f59e0b);}
+.bar-fill.profit{background:linear-gradient(90deg,#a855f7,#ec4899);}
 .bar-amount{min-width:95px;text-align:right;font-family:'Rajdhani',sans-serif;font-size:0.92rem;color:var(--accent);}
 .bar-amount.expense{color:var(--danger);}
+.bar-amount.profit{color:#a855f7;}
+
+/* MONTHLY CHART */
+.month-chart{display:flex;align-items:flex-end;gap:8px;height:180px;margin-bottom:24px;padding:0 4px;}
+.month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;}
+.month-bars{display:flex;gap:2px;align-items:flex-end;height:150px;width:100%;}
+.month-bar{flex:1;border-radius:4px 4px 0 0;transition:height 0.6s ease;min-height:2px;cursor:pointer;position:relative;}
+.month-bar:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a2235;border:1px solid var(--border);padding:4px 8px;border-radius:6px;font-size:0.7rem;white-space:nowrap;color:var(--text);z-index:10;}
+.month-bar.rev{background:linear-gradient(180deg,var(--accent),#009970);}
+.month-bar.exp{background:linear-gradient(180deg,var(--danger),#c53030);}
+.month-bar.net{background:linear-gradient(180deg,#a855f7,#7c3aed);}
+.month-label{font-size:0.65rem;color:var(--muted);font-family:'Rajdhani',sans-serif;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;}
+.chart-legend{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:0.75rem;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:3px;}
 
 /* SETTINGS */
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;}
@@ -122,6 +135,14 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .empty{text-align:center;padding:36px;color:var(--muted);}
 .empty-icon{font-size:2.8rem;opacity:0.35;margin-bottom:9px;}
 
+/* WHATSAPP SETTINGS PANEL */
+.wa-panel{background:var(--card);border:1px solid #25D366;border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+.wa-panel .stitle{color:#25D366;}
+.wa-status{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-family:'Rajdhani',sans-serif;font-weight:700;}
+.wa-status.on{background:rgba(37,211,102,0.15);color:#25D366;border:1px solid #25D366;}
+.wa-status.off{background:rgba(100,116,139,0.15);color:var(--muted);border:1px solid var(--border);}
+.wa-preview{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:0.82rem;line-height:1.7;color:var(--text);white-space:pre-wrap;font-family:monospace;margin-top:12px;max-height:260px;overflow-y:auto;}
+
 #toast{position:fixed;bottom:20px;right:16px;background:var(--accent);color:#000;padding:11px 20px;border-radius:11px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.95rem;opacity:0;transform:translateY(14px);transition:all 0.3s;pointer-events:none;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
 #toast.show{opacity:1;transform:translateY(0);}
 
@@ -129,20 +150,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .spinner{width:18px;height:18px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* EXPENSE CATEGORY CHIPS */
-.cat-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.cat-chip{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:0.78rem;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;}
-.cat-chip:hover,.cat-chip.active{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,0.08);}
-
-/* NET PROFIT PANEL */
-.profit-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
-.profit-panel .label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;}
-.profit-panel .val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;}
-.profit-positive{color:var(--accent);}
-.profit-negative{color:var(--danger);}
-.profit-divider{width:1px;height:50px;background:var(--border);}
-
-@media(max-width:600px){main{padding:14px;}nav{padding:8px 14px;}header{padding:12px 16px;}.logo h1{font-size:1rem;}.profit-divider{display:none;}}
+@media(max-width:600px){main{padding:14px;}nav{padding:8px 14px;}header{padding:12px 16px;}.logo h1{font-size:1rem;}.month-chart{height:140px;}.month-bars{height:110px;}}
 </style>
 </head>
 <body>
@@ -168,6 +176,8 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   <button onclick="switchTab('expenses',this)">💸 Expenses</button>
   <button onclick="switchTab('history',this)">📋 History</button>
   <button onclick="switchTab('report',this)">📈 Report</button>
+  <button onclick="switchTab('monthly',this)">🗓 Monthly</button>
+  <button onclick="switchTab('whatsapp',this)">📲 WhatsApp</button>
   <button onclick="switchTab('settings',this)">⚙️ Services</button>
 </nav>
 
@@ -178,7 +188,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   <div class="stats-row">
     <div class="stat"><div class="stat-label">Today's Revenue</div><div class="stat-val g">KSh <span id="v-today">0</span></div><div class="stat-sub" id="v-today-count">0 transactions</div></div>
     <div class="stat danger"><div class="stat-label">Today's Expenses</div><div class="stat-val r">KSh <span id="v-today-exp">0</span></div><div class="stat-sub" id="v-today-exp-count">0 entries</div></div>
-    <div class="stat purple"><div class="stat-label">Today's Net Profit</div><div class="stat-val p">KSh <span id="v-today-net">0</span></div></div>
+    <div class="stat purple"><div class="stat-label">Today's Net Profit</div><div class="stat-val p" id="v-today-net">KSh 0</div></div>
     <div class="stat blue"><div class="stat-label">This Week</div><div class="stat-val">KSh <span id="v-week">0</span></div></div>
     <div class="stat warn"><div class="stat-label">This Month</div><div class="stat-val">KSh <span id="v-month">0</span></div></div>
     <div class="stat"><div class="stat-label">All Time</div><div class="stat-val">KSh <span id="v-alltime">0</span></div></div>
@@ -203,21 +213,16 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <div class="tab" id="tab-sale">
   <div class="stitle">Tap Service to Add</div>
   <div class="services-grid" id="services-grid"></div>
-
   <div class="cart-panel" id="cart-panel" style="display:none">
     <div class="stitle">🛒 Cart</div>
     <div id="cart-items"></div>
     <div class="cart-total"><span>Total</span><span id="cart-total-val">KSh 0</span></div>
-    <div class="fg" style="margin:12px 0">
-      <label>Note (optional)</label>
-      <input type="text" id="sale-note" placeholder="e.g. client name, details...">
-    </div>
+    <div class="fg" style="margin:12px 0"><label>Note (optional)</label><input type="text" id="sale-note" placeholder="e.g. client name, details..."></div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="recordSale()">✅ Record Sale</button>
       <button class="btn btn-secondary" onclick="clearCart()">🗑 Clear</button>
     </div>
   </div>
-
   <div class="stitle" style="margin-top:8px">Or Manual Entry</div>
   <div class="form-card">
     <div class="form-row">
@@ -230,13 +235,12 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
-<!-- EXPENSES TAB -->
+<!-- EXPENSES -->
 <div class="tab" id="tab-expenses">
   <div class="stitle">💸 Record Expense</div>
   <div class="form-card">
     <div class="form-row">
-      <div class="fg">
-        <label>Category</label>
+      <div class="fg"><label>Category</label>
         <select id="exp-category">
           <option value="Rent">🏠 Rent</option>
           <option value="Electricity">⚡ Electricity</option>
@@ -250,31 +254,19 @@ tr:hover td{background:rgba(255,255,255,0.02);}
           <option value="Other">📦 Other</option>
         </select>
       </div>
-      <div class="fg">
-        <label>Amount (KSh)</label>
-        <input type="number" id="exp-amount" placeholder="0" min="0">
-      </div>
+      <div class="fg"><label>Amount (KSh)</label><input type="number" id="exp-amount" placeholder="0" min="0"></div>
     </div>
     <div class="form-row">
-      <div class="fg" style="min-width:280px">
-        <label>Description</label>
-        <input type="text" id="exp-desc" placeholder="e.g. Monthly internet bundle, printer cartridge...">
-      </div>
-      <div class="fg">
-        <label>Date</label>
-        <input type="date" id="exp-date">
-      </div>
+      <div class="fg" style="min-width:280px"><label>Description</label><input type="text" id="exp-desc" placeholder="e.g. Monthly internet bundle..."></div>
+      <div class="fg"><label>Date</label><input type="date" id="exp-date"></div>
     </div>
-    <button class="btn btn-primary" onclick="recordExpense()" style="background:var(--danger);color:#fff;">💸 Record Expense</button>
+    <button class="btn btn-danger" onclick="recordExpense()">💸 Record Expense</button>
   </div>
-
-  <div class="stitle">Today's Expense Summary</div>
-  <div class="stats-row" id="exp-stats-row">
+  <div class="stats-row">
     <div class="stat danger"><div class="stat-label">Today's Total</div><div class="stat-val r">KSh <span id="exp-today-total">0</span></div><div class="stat-sub" id="exp-today-count">0 entries</div></div>
     <div class="stat warn"><div class="stat-label">This Month</div><div class="stat-val">KSh <span id="exp-month-total">0</span></div></div>
     <div class="stat"><div class="stat-label">All Time</div><div class="stat-val">KSh <span id="exp-alltime-total">0</span></div></div>
   </div>
-
   <div class="stitle">Filter Expenses</div>
   <div class="filter-row">
     <input type="date" id="exp-filter-date">
@@ -283,25 +275,23 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       <option value="Rent">🏠 Rent</option>
       <option value="Electricity">⚡ Electricity</option>
       <option value="Internet">🌐 Internet Bill</option>
-      <option value="Supplies">🖨️ Supplies & Consumables</option>
-      <option value="Repairs">🔧 Repairs & Maintenance</option>
-      <option value="Salary">👤 Salary / Wages</option>
-      <option value="Airtime">📱 Airtime / Data</option>
+      <option value="Supplies">🖨️ Supplies</option>
+      <option value="Repairs">🔧 Repairs</option>
+      <option value="Salary">👤 Salary</option>
+      <option value="Airtime">📱 Airtime</option>
       <option value="Transport">🚗 Transport</option>
-      <option value="Food">🍽️ Food & Refreshments</option>
+      <option value="Food">🍽️ Food</option>
       <option value="Other">📦 Other</option>
     </select>
     <button class="btn btn-secondary" onclick="renderExpenses()">🔍 Filter</button>
     <button class="btn btn-secondary" onclick="clearExpFilter()">✕ Clear</button>
   </div>
-
   <div class="table-wrap">
     <table>
       <thead><tr><th>Date</th><th>Time</th><th>Category</th><th>Description</th><th>Amount (KSh)</th><th></th></tr></thead>
       <tbody id="expenses-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody>
     </table>
   </div>
-
   <div class="stitle">Expenses by Category</div>
   <div id="expense-bars"></div>
 </div>
@@ -327,7 +317,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   <div class="stats-row">
     <div class="stat"><div class="stat-label">All-Time Revenue</div><div class="stat-val g">KSh <span id="r-total">0</span></div></div>
     <div class="stat danger"><div class="stat-label">All-Time Expenses</div><div class="stat-val r">KSh <span id="r-exp-total">0</span></div></div>
-    <div class="stat purple"><div class="stat-label">Net Profit</div><div class="stat-val p">KSh <span id="r-net">0</span></div></div>
+    <div class="stat purple"><div class="stat-label">Net Profit</div><div class="stat-val p" id="r-net">KSh 0</div></div>
     <div class="stat blue"><div class="stat-label">Total Transactions</div><div class="stat-val" id="r-txns">0</div></div>
     <div class="stat warn"><div class="stat-label">Top Service</div><div class="stat-val" id="r-top" style="font-size:1rem">—</div></div>
   </div>
@@ -335,6 +325,75 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   <div id="report-bars"></div>
   <div class="stitle" style="margin-top:18px">Expenses by Category</div>
   <div id="report-exp-bars"></div>
+</div>
+
+<!-- MONTHLY REPORT -->
+<div class="tab" id="tab-monthly">
+  <div class="stitle">🗓 Monthly Performance</div>
+  <div class="stats-row" id="monthly-stats">
+    <div class="stat"><div class="stat-label">Best Month Revenue</div><div class="stat-val g">KSh <span id="m-best-rev">0</span></div><div class="stat-sub" id="m-best-rev-label">—</div></div>
+    <div class="stat danger"><div class="stat-label">Highest Expenses</div><div class="stat-val r">KSh <span id="m-best-exp">0</span></div><div class="stat-sub" id="m-best-exp-label">—</div></div>
+    <div class="stat purple"><div class="stat-label">Best Net Profit</div><div class="stat-val p">KSh <span id="m-best-net">0</span></div><div class="stat-sub" id="m-best-net-label">—</div></div>
+  </div>
+
+  <div class="chart-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Revenue</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Expenses</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Net Profit</div>
+  </div>
+  <div class="month-chart" id="month-chart"></div>
+
+  <div class="stitle">Monthly Breakdown Table</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Month</th><th>Revenue (KSh)</th><th>Expenses (KSh)</th><th>Net Profit (KSh)</th><th>Transactions</th><th>Top Service</th></tr></thead>
+      <tbody id="monthly-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="stitle" style="margin-top:18px">Top Services This Month</div>
+  <div id="monthly-svc-bars"></div>
+</div>
+
+<!-- WHATSAPP REPORTS -->
+<div class="tab" id="tab-whatsapp">
+  <div class="wa-panel">
+    <div class="stitle">📲 WhatsApp Daily Report Settings</div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Your WhatsApp Number (with country code)</label>
+        <input type="tel" id="wa-number" placeholder="e.g. 254712345678">
+      </div>
+      <div class="fg">
+        <label>Auto-Send Time (Daily)</label>
+        <input type="time" id="wa-time" value="21:00">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg" style="max-width:340px">
+        <label>Business Name in Report</label>
+        <input type="text" id="wa-biz" value="GB ICT Solutions">
+      </div>
+    </div>
+    <div class="btn-row" style="margin-bottom:14px">
+      <button class="btn btn-whatsapp" onclick="saveWASettings()">💾 Save Settings</button>
+      <button class="btn btn-whatsapp" onclick="sendWAReport()">📲 Send Report Now</button>
+      <span id="wa-schedule-status" class="wa-status off">⏰ Auto-send: OFF</span>
+    </div>
+    <div style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;">
+      ⚠️ Auto-send works while this browser tab is open. For guaranteed delivery, keep the app open or use a phone/tablet that stays on.
+    </div>
+    <label style="margin-bottom:6px;display:block">Report Preview (Today)</label>
+    <div class="wa-preview" id="wa-preview">Loading preview...</div>
+  </div>
+
+  <div class="stitle">📋 Sent Reports Log</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Time Sent</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Status</th></tr></thead>
+      <tbody id="wa-log-tbody"></tbody>
+    </table>
+  </div>
 </div>
 
 <!-- SETTINGS -->
@@ -356,59 +415,47 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <div id="toast"></div>
 
 <script>
-// ===================== SUPABASE =====================
 const SUPABASE_URL='https://rgpuequojgsxpfxvsizu.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJncHVlcXVvamdzeHBmeHZzaXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMzcxODksImV4cCI6MjA4NzcxMzE4OX0.UXBPaUu6Yz_SwsVIprqvEh3zL2hBy3BHxl9L_8xGzbE';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const CATEGORY_ICONS={
-  'Rent':'🏠','Electricity':'⚡','Internet':'🌐','Supplies':'🖨️',
-  'Repairs':'🔧','Salary':'👤','Airtime':'📱','Transport':'🚗',
-  'Food':'🍽️','Other':'📦'
-};
+const CATEGORY_ICONS={Rent:'🏠',Electricity:'⚡',Internet:'🌐',Supplies:'🖨️',Repairs:'🔧',Salary:'👤',Airtime:'📱',Transport:'🚗',Food:'🍽️',Other:'📦'};
+const MONTH_NAMES=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 const DEFAULT_SERVICES=[
-  {id:'s0',icon:'🎮',name:'Games',price:30},
-  {id:'s1',icon:'📎',name:'Binding',price:50},
-  {id:'s2',icon:'📋',name:'KRA iTax Services',price:200},
-  {id:'s3',icon:'🎓',name:'KUCCPS',price:200},
-  {id:'s4',icon:'🏛️',name:'E-Citizen Services',price:100},
-  {id:'s5',icon:'✨',name:'Lamination',price:50},
-  {id:'s6',icon:'🖨️',name:'Scanning',price:30},
-  {id:'s7',icon:'📷',name:'Passport Photos',price:150},
-  {id:'s8',icon:'💰',name:'Mobile Money (M-Pesa)',price:0},
-  {id:'s9',icon:'🏥',name:'SHA',price:100},
-  {id:'s10',icon:'🖨️',name:'Printing (B&W)',price:10},
-  {id:'s11',icon:'🖨️',name:'Printing (Color)',price:30},
-  {id:'s12',icon:'📠',name:'Photocopy',price:10},
-  {id:'s13',icon:'🌐',name:'Internet/Browsing',price:50},
+  {id:'s0',icon:'🎮',name:'Games',price:30},{id:'s1',icon:'📎',name:'Binding',price:50},
+  {id:'s2',icon:'📋',name:'KRA iTax Services',price:200},{id:'s3',icon:'🎓',name:'KUCCPS',price:200},
+  {id:'s4',icon:'🏛️',name:'E-Citizen Services',price:100},{id:'s5',icon:'✨',name:'Lamination',price:50},
+  {id:'s6',icon:'🖨️',name:'Scanning',price:30},{id:'s7',icon:'📷',name:'Passport Photos',price:150},
+  {id:'s8',icon:'💰',name:'Mobile Money (M-Pesa)',price:0},{id:'s9',icon:'🏥',name:'SHA',price:100},
+  {id:'s10',icon:'🖨️',name:'Printing (B&W)',price:10},{id:'s11',icon:'🖨️',name:'Printing (Color)',price:30},
+  {id:'s12',icon:'📠',name:'Photocopy',price:10},{id:'s13',icon:'🌐',name:'Internet/Browsing',price:50},
   {id:'s14',icon:'⌨️',name:'Typing & Editing',price:50},
 ];
 
-let services=[];
-let sales=[];
-let expenses=[];
-let cart={};
+let services=[], sales=[], expenses=[], cart={};
+let waSettings={number:'',time:'21:00',biz:'GB ICT Solutions'};
+let waScheduleInterval=null;
+let waLog=[];
 
 // ===================== CLOCK =====================
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){let d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
 function nowTime(){let n=new Date();return `${pad(n.getHours())}:${pad(n.getMinutes())}`;}
-function tick(){let n=new Date();document.getElementById('hDate').textContent=n.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'long',year:'numeric'});document.getElementById('hTime').textContent=n.toLocaleTimeString('en-KE');}
+function tick(){
+  let n=new Date();
+  document.getElementById('hDate').textContent=n.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('hTime').textContent=n.toLocaleTimeString('en-KE');
+  checkAutoSend(n);
+}
 setInterval(tick,1000);tick();
 
-// Set default expense date to today
-function setExpDateDefault(){
-  let d=document.getElementById('exp-date');
-  if(d&&!d.value)d.value=todayStr();
-}
+function setExpDateDefault(){let d=document.getElementById('exp-date');if(d&&!d.value)d.value=todayStr();}
 
-// ===================== SYNC STATUS =====================
 function setOnline(){document.getElementById('syncDot').className='sync-dot';document.getElementById('syncStatus').textContent='Live • Synced';}
 function setOffline(){document.getElementById('syncDot').className='sync-dot off';document.getElementById('syncStatus').textContent='Offline';}
-
-// ===================== TOAST =====================
-function toast(msg,type='green'){let t=document.getElementById('toast');t.textContent=msg;t.style.background=type==='red'?'#ef4444':type==='amber'?'#f59e0b':'#00c896';t.style.color=type==='green'?'#000':'#fff';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function toast(msg,type='green'){let t=document.getElementById('toast');t.textContent=msg;t.style.background=type==='red'?'#ef4444':type==='amber'?'#f59e0b':type==='whatsapp'?'#25D366':'#00c896';t.style.color=type==='green'||type==='whatsapp'?'#000':'#fff';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
 // ===================== TABS =====================
 function switchTab(t,btn){
@@ -421,6 +468,8 @@ function switchTab(t,btn){
   if(t==='expenses'){setExpDateDefault();renderExpenses();renderExpenseStats();}
   if(t==='history')renderHistory();
   if(t==='report')renderReport();
+  if(t==='monthly')renderMonthly();
+  if(t==='whatsapp'){renderWATab();}
   if(t==='settings')renderSettings();
 }
 
@@ -436,28 +485,224 @@ async function loadServices(){
       services=inserted||DEFAULT_SERVICES;
     }
     setOnline();
-  }catch(e){setOffline();services=DEFAULT_SERVICES;console.error(e);}
+  }catch(e){setOffline();services=DEFAULT_SERVICES;}
 }
-
 async function loadSales(){
-  try{
-    let{data,error}=await sb.from('gb_sales').select('*').order('id',{ascending:false});
-    if(error)throw error;
-    sales=data||[];
-    setOnline();
-  }catch(e){setOffline();console.error(e);}
+  try{let{data,error}=await sb.from('gb_sales').select('*').order('id',{ascending:false});if(error)throw error;sales=data||[];setOnline();}catch(e){setOffline();}
+}
+async function loadExpenses(){
+  try{let{data,error}=await sb.from('gb_expenses').select('*').order('id',{ascending:false});if(error)throw error;expenses=data||[];}catch(e){expenses=[];}
 }
 
-async function loadExpenses(){
+// ===================== WA SETTINGS =====================
+function loadWASettings(){
   try{
-    let{data,error}=await sb.from('gb_expenses').select('*').order('id',{ascending:false});
-    if(error)throw error;
-    expenses=data||[];
-    setOnline();
-  }catch(e){
-    // Table may not exist yet — try to create it via upsert or just start empty
-    expenses=[];
-    console.warn('Expenses table not found or error:',e.message);
+    let s=localStorage.getItem('gb_wa_settings');
+    if(s){waSettings=JSON.parse(s);}
+    let l=localStorage.getItem('gb_wa_log');
+    if(l){waLog=JSON.parse(l);}
+  }catch(e){}
+  applyWASettingsToForm();
+}
+function applyWASettingsToForm(){
+  document.getElementById('wa-number').value=waSettings.number||'';
+  document.getElementById('wa-time').value=waSettings.time||'21:00';
+  document.getElementById('wa-biz').value=waSettings.biz||'GB ICT Solutions';
+  updateWAScheduleStatus();
+}
+function saveWASettings(){
+  waSettings.number=document.getElementById('wa-number').value.trim();
+  waSettings.time=document.getElementById('wa-time').value;
+  waSettings.biz=document.getElementById('wa-biz').value.trim()||'GB ICT Solutions';
+  localStorage.setItem('gb_wa_settings',JSON.stringify(waSettings));
+  updateWAScheduleStatus();
+  renderWAPreview();
+  toast('✅ WhatsApp settings saved!');
+}
+function updateWAScheduleStatus(){
+  let el=document.getElementById('wa-schedule-status');
+  if(!el)return;
+  if(waSettings.number&&waSettings.time){
+    el.textContent=`⏰ Auto-send: ${waSettings.time} daily`;
+    el.className='wa-status on';
+  } else {
+    el.textContent='⏰ Auto-send: OFF';
+    el.className='wa-status off';
+  }
+}
+
+// ===================== BUILD WA MESSAGE =====================
+function buildWAMessage(dateStr){
+  let d=dateStr||todayStr();
+  let daySales=sales.filter(s=>s.date===d);
+  let dayExp=expenses.filter(e=>e.date===d);
+  let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
+  let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
+  let rev=sumS(daySales);
+  let exp=sumE(dayExp);
+  let net=rev-exp;
+  let dateObj=new Date(d);
+  let dateLabel=dateObj.toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  // Sales by service
+  let bySvc={};
+  daySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;});
+  let svcLines=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()} (${d.qty}x)`).join('\n');
+  // Expenses by category
+  let byCat={};
+  dayExp.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
+  let expLines=Object.entries(byCat).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()}`).join('\n');
+  let msg=`🏪 *${waSettings.biz||'GB ICT Solutions'}*\n📅 Daily Report — ${dateLabel}\n${'─'.repeat(32)}\n\n💰 *REVENUE: KSh ${rev.toLocaleString()}*\n${svcLines||'  No sales recorded'}\n\n💸 *EXPENSES: KSh ${exp.toLocaleString()}*\n${expLines||'  No expenses recorded'}\n\n${net>=0?'✅':'⚠️'} *NET PROFIT: KSh ${net.toLocaleString()}*\n\n📊 Transactions: ${daySales.length} | Expense entries: ${dayExp.length}\n${'─'.repeat(32)}\n_Sent by GB ICT Sales Tracker_`;
+  return {msg,rev,exp,net};
+}
+
+function renderWAPreview(){
+  let{msg}=buildWAMessage(todayStr());
+  let el=document.getElementById('wa-preview');
+  if(el)el.textContent=msg;
+}
+
+function sendWAReport(dateStr){
+  let num=waSettings.number;
+  if(!num){toast('Enter your WhatsApp number in settings!','amber');return;}
+  let{msg,rev,exp,net}=buildWAMessage(dateStr||todayStr());
+  let encoded=encodeURIComponent(msg);
+  let url=`https://wa.me/${num}?text=${encoded}`;
+  window.open(url,'_blank');
+  // Log it
+  let entry={date:dateStr||todayStr(),time:nowTime(),rev,exp,net,status:'Sent'};
+  waLog.unshift(entry);
+  if(waLog.length>30)waLog=waLog.slice(0,30);
+  localStorage.setItem('gb_wa_log',JSON.stringify(waLog));
+  renderWALog();
+  toast('📲 Opening WhatsApp...','whatsapp');
+}
+
+let lastAutoSendDate='';
+function checkAutoSend(now){
+  if(!waSettings.number||!waSettings.time)return;
+  let hh=pad(now.getHours()),mm=pad(now.getMinutes());
+  let current=`${hh}:${mm}`;
+  let today=todayStr();
+  if(current===waSettings.time&&lastAutoSendDate!==today){
+    lastAutoSendDate=today;
+    sendWAReport(today);
+    toast('📲 Auto WhatsApp report sent!','whatsapp');
+  }
+}
+
+function renderWATab(){
+  applyWASettingsToForm();
+  renderWAPreview();
+  renderWALog();
+}
+
+function renderWALog(){
+  let tbody=document.getElementById('wa-log-tbody');
+  if(!tbody)return;
+  if(!waLog.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📲</div>No reports sent yet</div></td></tr>';return;}
+  tbody.innerHTML=waLog.map(e=>`<tr>
+    <td>${e.date}</td>
+    <td>${e.time}</td>
+    <td><span class="badge badge-green">KSh ${(e.rev||0).toLocaleString()}</span></td>
+    <td><span class="badge badge-red">KSh ${(e.exp||0).toLocaleString()}</span></td>
+    <td><span class="badge badge-purple">KSh ${(e.net||0).toLocaleString()}</span></td>
+    <td><span class="badge badge-green">${e.status}</span></td>
+  </tr>`).join('');
+}
+
+// ===================== MONTHLY REPORT =====================
+function getMonthlyData(){
+  let months={};
+  // Last 12 months
+  let now=new Date();
+  for(let i=11;i>=0;i--){
+    let d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    let key=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+    months[key]={label:MONTH_NAMES[d.getMonth()]+' '+d.getFullYear(),fullLabel:MONTH_FULL[d.getMonth()]+' '+d.getFullYear(),rev:0,exp:0,txns:0,svcs:{}};
+  }
+  sales.forEach(s=>{
+    let key=s.date?s.date.substring(0,7):'';
+    if(months[key]){
+      months[key].rev+=s.total||0;
+      months[key].txns++;
+      if(!months[key].svcs[s.service_name])months[key].svcs[s.service_name]=0;
+      months[key].svcs[s.service_name]+=s.total||0;
+    }
+  });
+  expenses.forEach(e=>{
+    let key=e.date?e.date.substring(0,7):'';
+    if(months[key])months[key].exp+=e.amount||0;
+  });
+  return months;
+}
+
+function renderMonthly(){
+  let months=getMonthlyData();
+  let entries=Object.entries(months);
+  let revVals=entries.map(([,d])=>d.rev);
+  let expVals=entries.map(([,d])=>d.exp);
+  let netVals=entries.map(([,d])=>d.rev-d.exp);
+  let maxVal=Math.max(...revVals,...expVals.map(Math.abs),1);
+
+  // Summary stats
+  let bestRev=Math.max(...revVals);
+  let bestRevMonth=entries[revVals.indexOf(bestRev)];
+  let bestExp=Math.max(...expVals);
+  let bestExpMonth=entries[expVals.indexOf(bestExp)];
+  let bestNet=Math.max(...netVals);
+  let bestNetMonth=entries[netVals.indexOf(bestNet)];
+  document.getElementById('m-best-rev').textContent=bestRev.toLocaleString();
+  document.getElementById('m-best-rev-label').textContent=bestRevMonth?bestRevMonth[1].label:'—';
+  document.getElementById('m-best-exp').textContent=bestExp.toLocaleString();
+  document.getElementById('m-best-exp-label').textContent=bestExpMonth?bestExpMonth[1].label:'—';
+  document.getElementById('m-best-net').textContent=bestNet.toLocaleString();
+  document.getElementById('m-best-net-label').textContent=bestNetMonth?bestNetMonth[1].label:'—';
+
+  // Bar chart
+  let chart=document.getElementById('month-chart');
+  chart.innerHTML=entries.map(([key,d])=>{
+    let net=d.rev-d.exp;
+    let rh=Math.max((d.rev/maxVal)*140,2).toFixed(1);
+    let eh=Math.max((d.exp/maxVal)*140,2).toFixed(1);
+    let nh=Math.max((Math.abs(net)/maxVal)*140,2).toFixed(1);
+    return `<div class="month-col">
+      <div class="month-bars">
+        <div class="month-bar rev" style="height:${rh}px" data-tip="Rev: KSh ${d.rev.toLocaleString()}"></div>
+        <div class="month-bar exp" style="height:${eh}px" data-tip="Exp: KSh ${d.exp.toLocaleString()}"></div>
+        <div class="month-bar net" style="height:${nh}px" data-tip="Net: KSh ${net.toLocaleString()}"></div>
+      </div>
+      <div class="month-label">${d.label}</div>
+    </div>`;
+  }).join('');
+
+  // Table
+  let tbody=document.getElementById('monthly-tbody');
+  tbody.innerHTML=entries.reverse().map(([key,d])=>{
+    let net=d.rev-d.exp;
+    let topSvc=Object.entries(d.svcs).sort((a,b)=>b[1]-a[1])[0];
+    return `<tr>
+      <td style="font-family:'Rajdhani',sans-serif;font-weight:600">${d.fullLabel}</td>
+      <td><span class="badge badge-green">KSh ${d.rev.toLocaleString()}</span></td>
+      <td><span class="badge badge-red">KSh ${d.exp.toLocaleString()}</span></td>
+      <td><span class="badge ${net>=0?'badge-purple':'badge-red'}">KSh ${net.toLocaleString()}</span></td>
+      <td>${d.txns}</td>
+      <td style="color:var(--muted);font-size:0.82rem">${topSvc?topSvc[0]:'—'}</td>
+    </tr>`;
+  }).join('');
+  if(!entries.length)tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">🗓</div>No data yet</div></td></tr>';
+
+  // Current month top services
+  let curKey=`${now.getFullYear()}-${pad(now.getMonth()+1)}`;
+  let now2=new Date();
+  let curKey2=`${now2.getFullYear()}-${pad(now2.getMonth()+1)}`;
+  let curMonth=months[curKey2];
+  let svcBars=document.getElementById('monthly-svc-bars');
+  if(curMonth&&Object.keys(curMonth.svcs).length){
+    let sorted=Object.entries(curMonth.svcs).sort((a,b)=>b[1]-a[1]);
+    let max=sorted[0][1]||1;
+    svcBars.innerHTML=sorted.map(([n,v])=>`<div class="report-bar"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${v.toLocaleString()}</div></div>`).join('');
+  } else {
+    svcBars.innerHTML='<div class="empty"><div class="empty-icon">📊</div>No sales this month yet</div>';
   }
 }
 
@@ -470,15 +715,7 @@ async function recordExpense(){
   if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}
   if(!desc){toast('Enter a description!','amber');return;}
   let icon=CATEGORY_ICONS[cat]||'📦';
-  let rec={
-    id:Date.now(),
-    date,
-    time:nowTime(),
-    category:cat,
-    icon,
-    description:desc,
-    amount
-  };
+  let rec={id:Date.now(),date,time:nowTime(),category:cat,icon,description:desc,amount};
   try{
     let{data,error}=await sb.from('gb_expenses').insert(rec).select().single();
     if(error)throw error;
@@ -486,13 +723,8 @@ async function recordExpense(){
     document.getElementById('exp-amount').value='';
     document.getElementById('exp-desc').value='';
     toast('💸 Expense recorded!','amber');
-    renderExpenses();
-    renderExpenseStats();
-    renderDashboard();
-  }catch(e){
-    toast('Error: '+e.message+' — Create gb_expenses table in Supabase!','red');
-    console.error(e);
-  }
+    renderExpenses();renderExpenseStats();renderDashboard();
+  }catch(e){toast('Error: '+e.message,'red');}
 }
 
 async function deleteExpense(id){
@@ -500,16 +732,13 @@ async function deleteExpense(id){
   try{
     await sb.from('gb_expenses').delete().eq('id',id);
     expenses=expenses.filter(e=>e.id!=id);
-    renderExpenses();
-    renderExpenseStats();
-    renderDashboard();
+    renderExpenses();renderExpenseStats();renderDashboard();
     toast('🗑 Deleted','amber');
   }catch(e){toast('Error','red');}
 }
 
 function renderExpenseStats(){
-  let today=todayStr();
-  let now=new Date();
+  let today=todayStr(),now=new Date();
   let mStart=new Date(now.getFullYear(),now.getMonth(),1);
   let todayExp=expenses.filter(e=>e.date===today);
   let monthExp=expenses.filter(e=>new Date(e.date)>=mStart);
@@ -518,21 +747,12 @@ function renderExpenseStats(){
   document.getElementById('exp-today-count').textContent=todayExp.length+' entries';
   document.getElementById('exp-month-total').textContent=sumE(monthExp).toLocaleString();
   document.getElementById('exp-alltime-total').textContent=sumE(expenses).toLocaleString();
-
-  // Expense by category bars
   let byCat={};
-  expenses.forEach(e=>{
-    if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};
-    byCat[e.category].total+=e.amount||0;
-  });
+  expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
   let sorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);
   let max=sorted.length?sorted[0][1].total:1;
   let barsEl=document.getElementById('expense-bars');
-  if(barsEl){
-    barsEl.innerHTML=sorted.length
-      ?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join('')
-      :'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
-  }
+  if(barsEl)barsEl.innerHTML=sorted.length?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
 }
 
 async function renderExpenses(){
@@ -545,34 +765,22 @@ async function renderExpenses(){
     let{data,error}=await query;
     if(error)throw error;
     let tbody=document.getElementById('expenses-tbody');
-    if(!data||!data.length){
-      tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div>No expenses found</div></td></tr>';
-      return;
-    }
+    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div>No expenses found</div></td></tr>';return;}
     tbody.innerHTML=data.map(e=>`<tr>
-      <td>${e.date}</td>
-      <td>${e.time||'—'}</td>
+      <td>${e.date}</td><td>${e.time||'—'}</td>
       <td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td>
       <td style="color:var(--muted)">${e.description||'—'}</td>
       <td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td>
       <td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td>
     </tr>`).join('');
-  }catch(e){
-    document.getElementById('expenses-tbody').innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">⚠️</div>Could not load expenses.<br><small>Make sure the <b>gb_expenses</b> table exists in your Supabase project.</small></div></td></tr>';
-  }
+  }catch(e){document.getElementById('expenses-tbody').innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">⚠️</div>Could not load expenses.</div></td></tr>';}
 }
-
-function clearExpFilter(){
-  document.getElementById('exp-filter-date').value='';
-  document.getElementById('exp-filter-cat').value='';
-  renderExpenses();
-}
+function clearExpFilter(){document.getElementById('exp-filter-date').value='';document.getElementById('exp-filter-cat').value='';renderExpenses();}
 
 // ===================== CART =====================
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
 function removeFromCart(id){if(cart[id]){cart[id]--;if(!cart[id])delete cart[id];}renderCart();}
 function clearCart(){cart={};renderCart();}
-
 function renderCart(){
   document.querySelectorAll('.svc-btn').forEach(btn=>{
     let id=btn.dataset.id,badge=btn.querySelector('.svc-badge');
@@ -587,32 +795,18 @@ function renderCart(){
   keys.forEach(id=>{
     let s=services.find(x=>x.id===id);if(!s)return;
     let sub=s.price*cart[id];total+=sub;
-    html+=`<div class="cart-item">
-      <span>${s.icon} ${s.name}</span>
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="qty-ctrl">
-          <button onclick="removeFromCart('${id}')">−</button>
-          <span>${cart[id]}</span>
-          <button onclick="addToCart('${id}')">+</button>
-        </div>
-        <span style="min-width:85px;text-align:right;font-family:'Rajdhani',sans-serif;color:var(--accent)">KSh ${sub.toLocaleString()}</span>
-      </div>
-    </div>`;
+    html+=`<div class="cart-item"><span>${s.icon} ${s.name}</span><div style="display:flex;align-items:center;gap:14px"><div class="qty-ctrl"><button onclick="removeFromCart('${id}')">−</button><span>${cart[id]}</span><button onclick="addToCart('${id}')">+</button></div><span style="min-width:85px;text-align:right;font-family:'Rajdhani',sans-serif;color:var(--accent)">KSh ${sub.toLocaleString()}</span></div></div>`;
   });
   document.getElementById('cart-items').innerHTML=html;
   document.getElementById('cart-total-val').textContent='KSh '+total.toLocaleString();
 }
-
 async function recordSale(){
   let keys=Object.keys(cart);
   if(!keys.length){toast('Cart is empty!','amber');return;}
   let note=document.getElementById('sale-note').value;
   let today=todayStr(),time=nowTime();
   let inserts=[];
-  keys.forEach(id=>{
-    let s=services.find(x=>x.id===id);if(!s)return;
-    inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});
-  });
+  keys.forEach(id=>{let s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});});
   try{
     let{data,error}=await sb.from('gb_sales').insert(inserts).select();
     if(error)throw error;
@@ -621,9 +815,7 @@ async function recordSale(){
     toast('✅ Sale recorded!');renderDashboard();
   }catch(e){toast('Error: '+e.message,'red');}
 }
-
 function autoFillPrice(){let id=document.getElementById('m-service').value;let s=services.find(x=>x.id===id);if(s)document.getElementById('m-price').value=s.price;}
-
 async function manualSale(){
   let id=document.getElementById('m-service').value;
   let qty=parseInt(document.getElementById('m-qty').value)||1;
@@ -640,7 +832,6 @@ async function manualSale(){
     toast('✅ Sale added!');renderDashboard();
   }catch(e){toast('Error: '+e.message,'red');}
 }
-
 async function deleteSale(id){
   if(!confirm('Delete this sale?'))return;
   try{
@@ -658,57 +849,29 @@ function renderDashboard(){
   let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
   let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
   let todaySales=sales.filter(s=>s.date===today);
-  let weekSales=sales.filter(s=>new Date(s.date)>=wStart);
-  let monthSales=sales.filter(s=>new Date(s.date)>=mStart);
   let todayExp=expenses.filter(e=>e.date===today);
-  let todayRev=sumS(todaySales);
-  let todayExpTotal=sumE(todayExp);
-  let todayNet=todayRev-todayExpTotal;
+  let todayRev=sumS(todaySales),todayExpTotal=sumE(todayExp),todayNet=todayRev-todayExpTotal;
   document.getElementById('v-today').textContent=todayRev.toLocaleString();
   document.getElementById('v-today-count').textContent=todaySales.length+' transactions';
   document.getElementById('v-today-exp').textContent=todayExpTotal.toLocaleString();
   document.getElementById('v-today-exp-count').textContent=todayExp.length+' entries';
-  document.getElementById('v-today-net').textContent=(todayNet>=0?'':'-')+Math.abs(todayNet).toLocaleString();
   let netEl=document.getElementById('v-today-net');
+  netEl.textContent='KSh '+(todayNet>=0?'':'-')+Math.abs(todayNet).toLocaleString();
   netEl.className='stat-val '+(todayNet>=0?'p':'r');
-  document.getElementById('v-week').textContent=sumS(weekSales).toLocaleString();
-  document.getElementById('v-month').textContent=sumS(monthSales).toLocaleString();
+  document.getElementById('v-week').textContent=sumS(sales.filter(s=>new Date(s.date)>=wStart)).toLocaleString();
+  document.getElementById('v-month').textContent=sumS(sales.filter(s=>new Date(s.date)>=mStart)).toLocaleString();
   document.getElementById('v-alltime').textContent=sumS(sales).toLocaleString();
-
-  // Today's sales table
   let tbody=document.getElementById('today-tbody');
-  if(!todaySales.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div>No sales today yet</div></td></tr>';}
-  else{tbody.innerHTML=todaySales.map(s=>`<tr>
-    <td>${s.time}</td>
-    <td>${s.icon||''} ${s.service_name}</td>
-    <td>${s.qty}</td>
-    <td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td>
-    <td style="color:var(--muted)">${s.note||'—'}</td>
-    <td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td>
-  </tr>`).join('');}
-
-  // Today's expenses table
+  if(!todaySales.length)tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div>No sales today yet</div></td></tr>';
+  else tbody.innerHTML=todaySales.map(s=>`<tr><td>${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td>${s.qty}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--muted)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');
   let etbody=document.getElementById('today-exp-tbody');
-  if(!todayExp.length){etbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div>No expenses today</div></td></tr>';}
-  else{etbody.innerHTML=todayExp.map(e=>`<tr>
-    <td>${e.time||'—'}</td>
-    <td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td>
-    <td style="color:var(--muted)">${e.description||'—'}</td>
-    <td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td>
-    <td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td>
-  </tr>`).join('');}
+  if(!todayExp.length)etbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div>No expenses today</div></td></tr>';
+  else etbody.innerHTML=todayExp.map(e=>`<tr><td>${e.time||'—'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--muted)">${e.description||'—'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td></tr>`).join('');
 }
 
 // ===================== RENDER SALE TAB =====================
 function renderSaleTab(){
-  let grid=document.getElementById('services-grid');
-  grid.innerHTML=services.map(s=>`
-    <div class="svc-btn" data-id="${s.id}" onclick="addToCart('${s.id}')">
-      <div class="svc-badge"></div>
-      <div class="svc-icon">${s.icon}</div>
-      <div class="svc-name">${s.name}</div>
-      <div class="svc-price">KSh ${(s.price||0).toLocaleString()}</div>
-    </div>`).join('');
+  document.getElementById('services-grid').innerHTML=services.map(s=>`<div class="svc-btn" data-id="${s.id}" onclick="addToCart('${s.id}')"><div class="svc-badge"></div><div class="svc-icon">${s.icon}</div><div class="svc-name">${s.name}</div><div class="svc-price">KSh ${(s.price||0).toLocaleString()}</div></div>`).join('');
   let sel=document.getElementById('m-service');
   sel.innerHTML=services.map(s=>`<option value="${s.id}">${s.icon} ${s.name} — KSh ${s.price}</option>`).join('');
   autoFillPrice();renderCart();
@@ -716,43 +879,28 @@ function renderSaleTab(){
 
 // ===================== RENDER HISTORY =====================
 async function renderHistory(){
-  let df=document.getElementById('filter-date').value;
-  let sf=document.getElementById('filter-svc').value;
+  let df=document.getElementById('filter-date').value,sf=document.getElementById('filter-svc').value;
   let fsel=document.getElementById('filter-svc');
   if(fsel.options.length<=1){services.forEach(s=>{if(!Array.from(fsel.options).find(o=>o.value===s.id)){let o=document.createElement('option');o.value=s.id;o.textContent=s.name;fsel.appendChild(o);}});}
   try{
     let query=sb.from('gb_sales').select('*').order('id',{ascending:false});
-    if(df)query=query.eq('date',df);
-    if(sf)query=query.eq('service_id',sf);
-    let{data,error}=await query;
-    if(error)throw error;
+    if(df)query=query.eq('date',df);if(sf)query=query.eq('service_id',sf);
+    let{data,error}=await query;if(error)throw error;
     let tbody=document.getElementById('history-tbody');
     if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-icon">📭</div>No records found</div></td></tr>';return;}
-    tbody.innerHTML=data.map(s=>`<tr>
-      <td>${s.date}</td><td>${s.time}</td>
-      <td>${s.icon||''} ${s.service_name}</td>
-      <td>${s.qty}</td>
-      <td>KSh ${(s.unit_price||0).toLocaleString()}</td>
-      <td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td>
-      <td style="color:var(--muted)">${s.note||'—'}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td>
-    </tr>`).join('');
+    tbody.innerHTML=data.map(s=>`<tr><td>${s.date}</td><td>${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td>${s.qty}</td><td>KSh ${(s.unit_price||0).toLocaleString()}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--muted)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');
   }catch(e){toast('Error loading history','red');}
 }
-
 function clearFilter(){document.getElementById('filter-date').value='';document.getElementById('filter-svc').value='';renderHistory();}
 
 // ===================== RENDER REPORT =====================
 function renderReport(){
-  let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
-  let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
-  let totalRev=sumS(sales);
-  let totalExp=sumE(expenses);
-  let net=totalRev-totalExp;
+  let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0),sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
+  let totalRev=sumS(sales),totalExp=sumE(expenses),net=totalRev-totalExp;
   document.getElementById('r-total').textContent=totalRev.toLocaleString();
   document.getElementById('r-exp-total').textContent=totalExp.toLocaleString();
   let netEl=document.getElementById('r-net');
-  netEl.textContent=(net>=0?'':'-')+Math.abs(net).toLocaleString();
+  netEl.textContent='KSh '+(net>=0?'':'-')+Math.abs(net).toLocaleString();
   netEl.className='stat-val '+(net>=0?'p':'r');
   document.getElementById('r-txns').textContent=sales.length;
   let bySvc={};
@@ -760,104 +908,46 @@ function renderReport(){
   let sorted=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total);
   document.getElementById('r-top').textContent=sorted.length?`${sorted[0][1].icon} ${sorted[0][0]}`:'—';
   let max=sorted.length?sorted[0][1].total:1;
-  document.getElementById('report-bars').innerHTML=sorted.length
-    ?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${d.total.toLocaleString()}</div></div>`).join('')
-    :'<div class="empty"><div class="empty-icon">📊</div>No data yet</div>';
-
-  // Expense bars in report
+  document.getElementById('report-bars').innerHTML=sorted.length?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">📊</div>No data yet</div>';
   let byCat={};
   expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
-  let expSorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);
-  let expMax=expSorted.length?expSorted[0][1].total:1;
-  document.getElementById('report-exp-bars').innerHTML=expSorted.length
-    ?expSorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/expMax*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join('')
-    :'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
+  let expSorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total),expMax=expSorted.length?expSorted[0][1].total:1;
+  document.getElementById('report-exp-bars').innerHTML=expSorted.length?expSorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/expMax*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
 }
 
-// ===================== RENDER SETTINGS =====================
+// ===================== SETTINGS =====================
 function renderSettings(){
-  document.getElementById('settings-grid').innerHTML=services.map(s=>`
-    <div class="settings-card">
-      <div class="sicon">${s.icon}</div>
-      <h3>${s.name}</h3>
-      <div class="fg" style="margin-bottom:10px">
-        <label>Price (KSh)</label>
-        <input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)">
-      </div>
-      <button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button>
-    </div>`).join('');
+  document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');
 }
-
-async function updatePrice(id,val){
-  let s=services.find(x=>x.id===id);if(!s)return;
-  s.price=parseFloat(val)||0;
-  await sb.from('gb_services').update({price:s.price}).eq('id',id);
-  toast('Price updated!');
-}
-
-async function deleteService(id){
-  if(!confirm('Remove this service?'))return;
-  await sb.from('gb_services').delete().eq('id',id);
-  services=services.filter(s=>s.id!==id);
-  renderSettings();toast('Service removed','amber');
-}
-
+async function updatePrice(id,val){let s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Price updated!');}
+async function deleteService(id){if(!confirm('Remove this service?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Service removed','amber');}
 async function addService(){
-  let icon=document.getElementById('new-icon').value.trim()||'🔧';
-  let name=document.getElementById('new-name').value.trim();
-  let price=parseFloat(document.getElementById('new-price').value)||0;
+  let icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;
   if(!name){toast('Enter service name!','amber');return;}
   let newSvc={id:'s'+Date.now(),icon,name,price};
-  try{
-    let{data,error}=await sb.from('gb_services').insert(newSvc).select().single();
-    if(error)throw error;
-    services.push(data);renderSettings();
-    document.getElementById('new-icon').value='';
-    document.getElementById('new-name').value='';
-    document.getElementById('new-price').value='';
-    toast('✅ Service added!');
-  }catch(e){toast('Error: '+e.message,'red');}
+  try{let{data,error}=await sb.from('gb_services').insert(newSvc).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('✅ Service added!');}catch(e){toast('Error: '+e.message,'red');}
 }
 
-// ===================== REAL-TIME SUBSCRIPTION =====================
+// ===================== REAL-TIME =====================
 function subscribeRealtime(){
   sb.channel('gb-changes')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_sales'},payload=>{
-      if(!sales.find(s=>s.id==payload.new.id)){
-        sales=[payload.new,...sales];
-        renderDashboard();
-        toast('🔔 New sale synced!');
-      }
+      if(!sales.find(s=>s.id==payload.new.id)){sales=[payload.new,...sales];renderDashboard();toast('🔔 New sale synced!');}
     })
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},payload=>{
-      sales=sales.filter(s=>s.id!=payload.old.id);
-      renderDashboard();
-    })
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},payload=>{sales=sales.filter(s=>s.id!=payload.old.id);renderDashboard();})
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_expenses'},payload=>{
-      if(!expenses.find(e=>e.id==payload.new.id)){
-        expenses=[payload.new,...expenses];
-        renderDashboard();
-        toast('💸 Expense synced!','amber');
-      }
+      if(!expenses.find(e=>e.id==payload.new.id)){expenses=[payload.new,...expenses];renderDashboard();toast('💸 Expense synced!','amber');}
     })
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},payload=>{
-      expenses=expenses.filter(e=>e.id!=payload.old.id);
-      renderDashboard();
-    })
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_services'},payload=>{
-      if(!services.find(s=>s.id==payload.new.id)){services.push(payload.new);}
-    })
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_services'},payload=>{
-      services=services.filter(s=>s.id!=payload.old.id);
-    })
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},payload=>{expenses=expenses.filter(e=>e.id!=payload.old.id);renderDashboard();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_services'},payload=>{if(!services.find(s=>s.id==payload.new.id))services.push(payload.new);})
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_services'},payload=>{services=services.filter(s=>s.id!=payload.old.id);})
     .subscribe(status=>{if(status==='SUBSCRIBED')setOnline();else setOffline();});
 }
 
 // ===================== INIT =====================
 async function init(){
-  await loadServices();
-  await loadSales();
-  await loadExpenses();
+  await loadServices();await loadSales();await loadExpenses();
+  loadWASettings();
   renderDashboard();
   subscribeRealtime();
 }
