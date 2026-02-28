@@ -42,9 +42,12 @@ main{padding:22px 24px;max-width:1100px;margin:0 auto;}
 .stat.blue::before{background:var(--accent2);}
 .stat.warn::before{background:var(--warn);}
 .stat.danger::before{background:var(--danger);}
+.stat.purple::before{background:#a855f7;}
 .stat-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;}
 .stat-val{font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;color:var(--text);}
 .stat-val.g{color:var(--accent);}
+.stat-val.r{color:var(--danger);}
+.stat-val.p{color:#a855f7;}
 .stat-sub{font-size:0.7rem;color:var(--muted);margin-top:3px;}
 
 /* SERVICES GRID */
@@ -95,13 +98,17 @@ td{padding:11px 14px;border-top:1px solid var(--border);font-size:0.86rem;}
 tr:hover td{background:rgba(255,255,255,0.02);}
 .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.73rem;font-weight:500;}
 .badge-green{background:rgba(0,200,150,0.15);color:var(--accent);}
+.badge-red{background:rgba(239,68,68,0.15);color:var(--danger);}
+.badge-purple{background:rgba(168,85,247,0.15);color:#a855f7;}
 
 /* REPORT */
 .report-bar{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
 .bar-label{min-width:160px;font-size:0.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .bar-track{flex:1;background:var(--border);border-radius:4px;height:11px;overflow:hidden;}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.6s ease;}
+.bar-fill.expense{background:linear-gradient(90deg,var(--danger),#f59e0b);}
 .bar-amount{min-width:95px;text-align:right;font-family:'Rajdhani',sans-serif;font-size:0.92rem;color:var(--accent);}
+.bar-amount.expense{color:var(--danger);}
 
 /* SETTINGS */
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;}
@@ -122,7 +129,20 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .spinner{width:18px;height:18px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-@media(max-width:600px){main{padding:14px;}nav{padding:8px 14px;}header{padding:12px 16px;}.logo h1{font-size:1rem;}}
+/* EXPENSE CATEGORY CHIPS */
+.cat-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.cat-chip{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:0.78rem;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;transition:all 0.2s;}
+.cat-chip:hover,.cat-chip.active{border-color:var(--danger);color:var(--danger);background:rgba(239,68,68,0.08);}
+
+/* NET PROFIT PANEL */
+.profit-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.profit-panel .label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;}
+.profit-panel .val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;}
+.profit-positive{color:var(--accent);}
+.profit-negative{color:var(--danger);}
+.profit-divider{width:1px;height:50px;background:var(--border);}
+
+@media(max-width:600px){main{padding:14px;}nav{padding:8px 14px;}header{padding:12px 16px;}.logo h1{font-size:1rem;}.profit-divider{display:none;}}
 </style>
 </head>
 <body>
@@ -145,6 +165,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <nav>
   <button class="active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
   <button onclick="switchTab('sale',this)">➕ New Sale</button>
+  <button onclick="switchTab('expenses',this)">💸 Expenses</button>
   <button onclick="switchTab('history',this)">📋 History</button>
   <button onclick="switchTab('report',this)">📈 Report</button>
   <button onclick="switchTab('settings',this)">⚙️ Services</button>
@@ -156,6 +177,8 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <div class="tab active" id="tab-dashboard">
   <div class="stats-row">
     <div class="stat"><div class="stat-label">Today's Revenue</div><div class="stat-val g">KSh <span id="v-today">0</span></div><div class="stat-sub" id="v-today-count">0 transactions</div></div>
+    <div class="stat danger"><div class="stat-label">Today's Expenses</div><div class="stat-val r">KSh <span id="v-today-exp">0</span></div><div class="stat-sub" id="v-today-exp-count">0 entries</div></div>
+    <div class="stat purple"><div class="stat-label">Today's Net Profit</div><div class="stat-val p">KSh <span id="v-today-net">0</span></div></div>
     <div class="stat blue"><div class="stat-label">This Week</div><div class="stat-val">KSh <span id="v-week">0</span></div></div>
     <div class="stat warn"><div class="stat-label">This Month</div><div class="stat-val">KSh <span id="v-month">0</span></div></div>
     <div class="stat"><div class="stat-label">All Time</div><div class="stat-val">KSh <span id="v-alltime">0</span></div></div>
@@ -165,6 +188,13 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     <table>
       <thead><tr><th>Time</th><th>Service</th><th>Qty</th><th>Amount (KSh)</th><th>Note</th><th></th></tr></thead>
       <tbody id="today-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody>
+    </table>
+  </div>
+  <div class="stitle">Today's Expenses</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Time</th><th>Category</th><th>Description</th><th>Amount (KSh)</th><th></th></tr></thead>
+      <tbody id="today-exp-tbody"><tr><td colspan="5"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody>
     </table>
   </div>
 </div>
@@ -200,6 +230,82 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
+<!-- EXPENSES TAB -->
+<div class="tab" id="tab-expenses">
+  <div class="stitle">💸 Record Expense</div>
+  <div class="form-card">
+    <div class="form-row">
+      <div class="fg">
+        <label>Category</label>
+        <select id="exp-category">
+          <option value="Rent">🏠 Rent</option>
+          <option value="Electricity">⚡ Electricity</option>
+          <option value="Internet">🌐 Internet Bill</option>
+          <option value="Supplies">🖨️ Supplies & Consumables</option>
+          <option value="Repairs">🔧 Repairs & Maintenance</option>
+          <option value="Salary">👤 Salary / Wages</option>
+          <option value="Airtime">📱 Airtime / Data</option>
+          <option value="Transport">🚗 Transport</option>
+          <option value="Food">🍽️ Food & Refreshments</option>
+          <option value="Other">📦 Other</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Amount (KSh)</label>
+        <input type="number" id="exp-amount" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg" style="min-width:280px">
+        <label>Description</label>
+        <input type="text" id="exp-desc" placeholder="e.g. Monthly internet bundle, printer cartridge...">
+      </div>
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" id="exp-date">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="recordExpense()" style="background:var(--danger);color:#fff;">💸 Record Expense</button>
+  </div>
+
+  <div class="stitle">Today's Expense Summary</div>
+  <div class="stats-row" id="exp-stats-row">
+    <div class="stat danger"><div class="stat-label">Today's Total</div><div class="stat-val r">KSh <span id="exp-today-total">0</span></div><div class="stat-sub" id="exp-today-count">0 entries</div></div>
+    <div class="stat warn"><div class="stat-label">This Month</div><div class="stat-val">KSh <span id="exp-month-total">0</span></div></div>
+    <div class="stat"><div class="stat-label">All Time</div><div class="stat-val">KSh <span id="exp-alltime-total">0</span></div></div>
+  </div>
+
+  <div class="stitle">Filter Expenses</div>
+  <div class="filter-row">
+    <input type="date" id="exp-filter-date">
+    <select id="exp-filter-cat">
+      <option value="">All Categories</option>
+      <option value="Rent">🏠 Rent</option>
+      <option value="Electricity">⚡ Electricity</option>
+      <option value="Internet">🌐 Internet Bill</option>
+      <option value="Supplies">🖨️ Supplies & Consumables</option>
+      <option value="Repairs">🔧 Repairs & Maintenance</option>
+      <option value="Salary">👤 Salary / Wages</option>
+      <option value="Airtime">📱 Airtime / Data</option>
+      <option value="Transport">🚗 Transport</option>
+      <option value="Food">🍽️ Food & Refreshments</option>
+      <option value="Other">📦 Other</option>
+    </select>
+    <button class="btn btn-secondary" onclick="renderExpenses()">🔍 Filter</button>
+    <button class="btn btn-secondary" onclick="clearExpFilter()">✕ Clear</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Time</th><th>Category</th><th>Description</th><th>Amount (KSh)</th><th></th></tr></thead>
+      <tbody id="expenses-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="stitle">Expenses by Category</div>
+  <div id="expense-bars"></div>
+</div>
+
 <!-- HISTORY -->
 <div class="tab" id="tab-history">
   <div class="filter-row">
@@ -220,11 +326,15 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <div class="tab" id="tab-report">
   <div class="stats-row">
     <div class="stat"><div class="stat-label">All-Time Revenue</div><div class="stat-val g">KSh <span id="r-total">0</span></div></div>
+    <div class="stat danger"><div class="stat-label">All-Time Expenses</div><div class="stat-val r">KSh <span id="r-exp-total">0</span></div></div>
+    <div class="stat purple"><div class="stat-label">Net Profit</div><div class="stat-val p">KSh <span id="r-net">0</span></div></div>
     <div class="stat blue"><div class="stat-label">Total Transactions</div><div class="stat-val" id="r-txns">0</div></div>
     <div class="stat warn"><div class="stat-label">Top Service</div><div class="stat-val" id="r-top" style="font-size:1rem">—</div></div>
   </div>
   <div class="stitle">Revenue by Service</div>
   <div id="report-bars"></div>
+  <div class="stitle" style="margin-top:18px">Expenses by Category</div>
+  <div id="report-exp-bars"></div>
 </div>
 
 <!-- SETTINGS -->
@@ -251,6 +361,12 @@ const SUPABASE_URL='https://rgpuequojgsxpfxvsizu.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJncHVlcXVvamdzeHBmeHZzaXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMzcxODksImV4cCI6MjA4NzcxMzE4OX0.UXBPaUu6Yz_SwsVIprqvEh3zL2hBy3BHxl9L_8xGzbE';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
+const CATEGORY_ICONS={
+  'Rent':'🏠','Electricity':'⚡','Internet':'🌐','Supplies':'🖨️',
+  'Repairs':'🔧','Salary':'👤','Airtime':'📱','Transport':'🚗',
+  'Food':'🍽️','Other':'📦'
+};
+
 const DEFAULT_SERVICES=[
   {id:'s0',icon:'🎮',name:'Games',price:30},
   {id:'s1',icon:'📎',name:'Binding',price:50},
@@ -271,6 +387,7 @@ const DEFAULT_SERVICES=[
 
 let services=[];
 let sales=[];
+let expenses=[];
 let cart={};
 
 // ===================== CLOCK =====================
@@ -279,6 +396,12 @@ function todayStr(){let d=new Date();return `${d.getFullYear()}-${pad(d.getMonth
 function nowTime(){let n=new Date();return `${pad(n.getHours())}:${pad(n.getMinutes())}`;}
 function tick(){let n=new Date();document.getElementById('hDate').textContent=n.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'long',year:'numeric'});document.getElementById('hTime').textContent=n.toLocaleTimeString('en-KE');}
 setInterval(tick,1000);tick();
+
+// Set default expense date to today
+function setExpDateDefault(){
+  let d=document.getElementById('exp-date');
+  if(d&&!d.value)d.value=todayStr();
+}
 
 // ===================== SYNC STATUS =====================
 function setOnline(){document.getElementById('syncDot').className='sync-dot';document.getElementById('syncStatus').textContent='Live • Synced';}
@@ -295,6 +418,7 @@ function switchTab(t,btn){
   if(btn)btn.classList.add('active');
   if(t==='dashboard')renderDashboard();
   if(t==='sale')renderSaleTab();
+  if(t==='expenses'){setExpDateDefault();renderExpenses();renderExpenseStats();}
   if(t==='history')renderHistory();
   if(t==='report')renderReport();
   if(t==='settings')renderSettings();
@@ -322,6 +446,126 @@ async function loadSales(){
     sales=data||[];
     setOnline();
   }catch(e){setOffline();console.error(e);}
+}
+
+async function loadExpenses(){
+  try{
+    let{data,error}=await sb.from('gb_expenses').select('*').order('id',{ascending:false});
+    if(error)throw error;
+    expenses=data||[];
+    setOnline();
+  }catch(e){
+    // Table may not exist yet — try to create it via upsert or just start empty
+    expenses=[];
+    console.warn('Expenses table not found or error:',e.message);
+  }
+}
+
+// ===================== EXPENSES =====================
+async function recordExpense(){
+  let cat=document.getElementById('exp-category').value;
+  let amount=parseFloat(document.getElementById('exp-amount').value)||0;
+  let desc=document.getElementById('exp-desc').value.trim();
+  let date=document.getElementById('exp-date').value||todayStr();
+  if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}
+  if(!desc){toast('Enter a description!','amber');return;}
+  let icon=CATEGORY_ICONS[cat]||'📦';
+  let rec={
+    id:Date.now(),
+    date,
+    time:nowTime(),
+    category:cat,
+    icon,
+    description:desc,
+    amount
+  };
+  try{
+    let{data,error}=await sb.from('gb_expenses').insert(rec).select().single();
+    if(error)throw error;
+    expenses=[data,...expenses];
+    document.getElementById('exp-amount').value='';
+    document.getElementById('exp-desc').value='';
+    toast('💸 Expense recorded!','amber');
+    renderExpenses();
+    renderExpenseStats();
+    renderDashboard();
+  }catch(e){
+    toast('Error: '+e.message+' — Create gb_expenses table in Supabase!','red');
+    console.error(e);
+  }
+}
+
+async function deleteExpense(id){
+  if(!confirm('Delete this expense?'))return;
+  try{
+    await sb.from('gb_expenses').delete().eq('id',id);
+    expenses=expenses.filter(e=>e.id!=id);
+    renderExpenses();
+    renderExpenseStats();
+    renderDashboard();
+    toast('🗑 Deleted','amber');
+  }catch(e){toast('Error','red');}
+}
+
+function renderExpenseStats(){
+  let today=todayStr();
+  let now=new Date();
+  let mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  let todayExp=expenses.filter(e=>e.date===today);
+  let monthExp=expenses.filter(e=>new Date(e.date)>=mStart);
+  let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
+  document.getElementById('exp-today-total').textContent=sumE(todayExp).toLocaleString();
+  document.getElementById('exp-today-count').textContent=todayExp.length+' entries';
+  document.getElementById('exp-month-total').textContent=sumE(monthExp).toLocaleString();
+  document.getElementById('exp-alltime-total').textContent=sumE(expenses).toLocaleString();
+
+  // Expense by category bars
+  let byCat={};
+  expenses.forEach(e=>{
+    if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};
+    byCat[e.category].total+=e.amount||0;
+  });
+  let sorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);
+  let max=sorted.length?sorted[0][1].total:1;
+  let barsEl=document.getElementById('expense-bars');
+  if(barsEl){
+    barsEl.innerHTML=sorted.length
+      ?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join('')
+      :'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
+  }
+}
+
+async function renderExpenses(){
+  let df=document.getElementById('exp-filter-date').value;
+  let cf=document.getElementById('exp-filter-cat').value;
+  try{
+    let query=sb.from('gb_expenses').select('*').order('id',{ascending:false});
+    if(df)query=query.eq('date',df);
+    if(cf)query=query.eq('category',cf);
+    let{data,error}=await query;
+    if(error)throw error;
+    let tbody=document.getElementById('expenses-tbody');
+    if(!data||!data.length){
+      tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div>No expenses found</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML=data.map(e=>`<tr>
+      <td>${e.date}</td>
+      <td>${e.time||'—'}</td>
+      <td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td>
+      <td style="color:var(--muted)">${e.description||'—'}</td>
+      <td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td>
+    </tr>`).join('');
+  }catch(e){
+    document.getElementById('expenses-tbody').innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">⚠️</div>Could not load expenses.<br><small>Make sure the <b>gb_expenses</b> table exists in your Supabase project.</small></div></td></tr>';
+  }
+}
+
+function clearExpFilter(){
+  document.getElementById('exp-filter-date').value='';
+  document.getElementById('exp-filter-cat').value='';
+  renderExpenses();
 }
 
 // ===================== CART =====================
@@ -411,25 +655,48 @@ function renderDashboard(){
   let today=todayStr(),now=new Date();
   let wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
   let mStart=new Date(now.getFullYear(),now.getMonth(),1);
-  let sum=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
+  let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
+  let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
   let todaySales=sales.filter(s=>s.date===today);
   let weekSales=sales.filter(s=>new Date(s.date)>=wStart);
   let monthSales=sales.filter(s=>new Date(s.date)>=mStart);
-  document.getElementById('v-today').textContent=sum(todaySales).toLocaleString();
+  let todayExp=expenses.filter(e=>e.date===today);
+  let todayRev=sumS(todaySales);
+  let todayExpTotal=sumE(todayExp);
+  let todayNet=todayRev-todayExpTotal;
+  document.getElementById('v-today').textContent=todayRev.toLocaleString();
   document.getElementById('v-today-count').textContent=todaySales.length+' transactions';
-  document.getElementById('v-week').textContent=sum(weekSales).toLocaleString();
-  document.getElementById('v-month').textContent=sum(monthSales).toLocaleString();
-  document.getElementById('v-alltime').textContent=sum(sales).toLocaleString();
+  document.getElementById('v-today-exp').textContent=todayExpTotal.toLocaleString();
+  document.getElementById('v-today-exp-count').textContent=todayExp.length+' entries';
+  document.getElementById('v-today-net').textContent=(todayNet>=0?'':'-')+Math.abs(todayNet).toLocaleString();
+  let netEl=document.getElementById('v-today-net');
+  netEl.className='stat-val '+(todayNet>=0?'p':'r');
+  document.getElementById('v-week').textContent=sumS(weekSales).toLocaleString();
+  document.getElementById('v-month').textContent=sumS(monthSales).toLocaleString();
+  document.getElementById('v-alltime').textContent=sumS(sales).toLocaleString();
+
+  // Today's sales table
   let tbody=document.getElementById('today-tbody');
-  if(!todaySales.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div>No sales today yet</div></td></tr>';return;}
-  tbody.innerHTML=todaySales.map(s=>`<tr>
+  if(!todaySales.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div>No sales today yet</div></td></tr>';}
+  else{tbody.innerHTML=todaySales.map(s=>`<tr>
     <td>${s.time}</td>
     <td>${s.icon||''} ${s.service_name}</td>
     <td>${s.qty}</td>
     <td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td>
     <td style="color:var(--muted)">${s.note||'—'}</td>
     <td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td>
-  </tr>`).join('');
+  </tr>`).join('');}
+
+  // Today's expenses table
+  let etbody=document.getElementById('today-exp-tbody');
+  if(!todayExp.length){etbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div>No expenses today</div></td></tr>';}
+  else{etbody.innerHTML=todayExp.map(e=>`<tr>
+    <td>${e.time||'—'}</td>
+    <td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td>
+    <td style="color:var(--muted)">${e.description||'—'}</td>
+    <td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td>
+  </tr>`).join('');}
 }
 
 // ===================== RENDER SALE TAB =====================
@@ -477,8 +744,16 @@ function clearFilter(){document.getElementById('filter-date').value='';document.
 
 // ===================== RENDER REPORT =====================
 function renderReport(){
-  let total=sales.reduce((a,b)=>a+(b.total||0),0);
-  document.getElementById('r-total').textContent=total.toLocaleString();
+  let sumS=arr=>arr.reduce((a,b)=>a+(b.total||0),0);
+  let sumE=arr=>arr.reduce((a,b)=>a+(b.amount||0),0);
+  let totalRev=sumS(sales);
+  let totalExp=sumE(expenses);
+  let net=totalRev-totalExp;
+  document.getElementById('r-total').textContent=totalRev.toLocaleString();
+  document.getElementById('r-exp-total').textContent=totalExp.toLocaleString();
+  let netEl=document.getElementById('r-net');
+  netEl.textContent=(net>=0?'':'-')+Math.abs(net).toLocaleString();
+  netEl.className='stat-val '+(net>=0?'p':'r');
   document.getElementById('r-txns').textContent=sales.length;
   let bySvc={};
   sales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});
@@ -488,6 +763,15 @@ function renderReport(){
   document.getElementById('report-bars').innerHTML=sorted.length
     ?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${d.total.toLocaleString()}</div></div>`).join('')
     :'<div class="empty"><div class="empty-icon">📊</div>No data yet</div>';
+
+  // Expense bars in report
+  let byCat={};
+  expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
+  let expSorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);
+  let expMax=expSorted.length?expSorted[0][1].total:1;
+  document.getElementById('report-exp-bars').innerHTML=expSorted.length
+    ?expSorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/expMax*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join('')
+    :'<div class="empty"><div class="empty-icon">💸</div>No expenses recorded</div>';
 }
 
 // ===================== RENDER SETTINGS =====================
@@ -537,7 +821,7 @@ async function addService(){
 
 // ===================== REAL-TIME SUBSCRIPTION =====================
 function subscribeRealtime(){
-  sb.channel('gb-sales-changes')
+  sb.channel('gb-changes')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_sales'},payload=>{
       if(!sales.find(s=>s.id==payload.new.id)){
         sales=[payload.new,...sales];
@@ -547,6 +831,17 @@ function subscribeRealtime(){
     })
     .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},payload=>{
       sales=sales.filter(s=>s.id!=payload.old.id);
+      renderDashboard();
+    })
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_expenses'},payload=>{
+      if(!expenses.find(e=>e.id==payload.new.id)){
+        expenses=[payload.new,...expenses];
+        renderDashboard();
+        toast('💸 Expense synced!','amber');
+      }
+    })
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},payload=>{
+      expenses=expenses.filter(e=>e.id!=payload.old.id);
       renderDashboard();
     })
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_services'},payload=>{
@@ -562,6 +857,7 @@ function subscribeRealtime(){
 async function init(){
   await loadServices();
   await loadSales();
+  await loadExpenses();
   renderDashboard();
   subscribeRealtime();
 }
