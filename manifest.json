@@ -1,0 +1,46 @@
+{
+  "name": "GB ICT Solutions",
+  "short_name": "GB ICT",
+  "description": "Cyber Cafe Sales Tracker & Business Reports",
+  "start_url": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/index.html",
+  "scope": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0e1a",
+  "theme_color": "#00c896",
+  "lang": "en",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-72x72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-96x96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-128x128.png", "sizes": "128x128", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-152x152.png", "sizes": "152x152", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-384x384.png", "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Sale",
+      "short_name": "New Sale",
+      "description": "Record a new sale quickly",
+      "url": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/index.html#sale",
+      "icons": [{ "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View today's sales summary",
+      "url": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/index.html#dashboard",
+      "icons": [{ "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "WhatsApp Report",
+      "short_name": "WA Report",
+      "description": "Send daily WhatsApp report",
+      "url": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/index.html#whatsapp",
+      "icons": [{ "src": "/GB-ICT-SOLUTIONS-REPORT-APP-NEW/icons/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}
