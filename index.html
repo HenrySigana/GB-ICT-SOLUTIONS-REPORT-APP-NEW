@@ -960,6 +960,7 @@ async function renderHistory(){
 function clearFilter(){document.getElementById('filter-date').value='';document.getElementById('filter-svc').value='';renderHistory();}
 function renderSettings(){
   document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');
+loadMpesaSettingsForm();
 }
 async function updatePrice(id,val){let s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Price updated!');}
 async function deleteService(id){if(!confirm('Remove this service?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Service removed','amber');}
