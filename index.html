@@ -394,16 +394,83 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 <div class="tab" id="tab-sale">
   <div class="stitle">Tap Service to Add</div>
   <div class="services-grid" id="services-grid"></div>
-  <div class="cart-panel" id="cart-panel" style="display:none">
-    <div class="stitle">🛒 Cart</div>
-    <div id="cart-items"></div>
-    <div class="cart-total"><span>Total</span><span id="cart-total-val">KSh 0</span></div>
-    <div class="fg" style="margin:12px 0"><label>Note (optional)</label><input type="text" id="sale-note" placeholder="e.g. client name, details..."></div>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="recordSale()">✅ Record Sale</button>
-      <button class="btn btn-secondary" onclick="clearCart()">🗑 Clear</button>
+ <div class="cart-panel" id="cart-panel" style="display:none">
+  <div class="stitle">🛒 Cart</div>
+  <div id="cart-items"></div>
+  <div class="cart-total"><span>Total</span><span id="cart-total-val">KSh 0</span></div>
+  <div class="fg" style="margin:12px 0"><label>Note (optional)</label><input type="text" id="sale-note" placeholder="e.g. client name, details..."></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="recordSale()">✅ Cash / Record Sale</button>
+    <button class="btn btn-secondary" style="background:rgba(0,200,150,.12);border-color:var(--accent);color:var(--accent)" onclick="toggleMpesaPanel()">📱 Lipa na M-Pesa</button>
+    <button class="btn btn-secondary" onclick="clearCart()">🗑 Clear</button>
+  </div>
+</div>
+
+<!-- M-PESA PAYMENT PANEL -->
+<div class="mpesa-panel" id="mpesa-panel" style="display:none">
+  <div class="mpesa-header">
+    <div class="mpesa-badge"><div class="mpesa-dot"></div>LIPA NA M-PESA</div>
+    <div class="mpesa-till"><span>Till Number</span><span id="mp-till-display">4009152</span></div>
+  </div>
+  <div class="mpesa-total-bar">
+    <div>
+      <div class="mpesa-total-label">Amount to Pay</div>
+      <div class="mpesa-total-amt" id="mp-amount-display">KSh 0</div>
+    </div>
+    <div style="text-align:right;font-size:.7rem;color:var(--muted)">
+      <div>Powered by</div>
+      <div style="color:var(--accent);font-weight:700">Safaricom M-Pesa</div>
     </div>
   </div>
+  <div class="mpesa-mode-tabs">
+    <button class="mpesa-mode-tab active" id="mp-tab-stk" onclick="mpSetMode('stk')">📲 STK Push</button>
+    <button class="mpesa-mode-tab" id="mp-tab-manual" onclick="mpSetMode('manual')">🔢 Manual Code</button>
+  </div>
+
+  <!-- STK PUSH -->
+  <div id="mp-stk-section">
+    <div class="form-row" style="margin-bottom:12px">
+      <div class="fg">
+        <label>Customer Phone Number</label>
+        <input type="tel" id="mp-phone" placeholder="e.g. 0712345678" style="font-size:1rem;letter-spacing:1px">
+      </div>
+    </div>
+    <div class="mpesa-status idle" id="mp-stk-status">
+      <div class="mpesa-status-icon">📱</div>
+      <div><strong>Ready</strong>Enter phone number and tap Send Prompt</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="mp-stk-btn" onclick="sendSTKPush()">📲 Send M-Pesa Prompt</button>
+      <button class="btn btn-secondary btn-sm" onclick="mpesaVerifyManually()" id="mp-manual-verify-btn" style="display:none">✅ Confirm Paid</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeMpesaPanel()">✕ Cancel</button>
+    </div>
+    <div style="margin-top:10px;padding:10px 12px;background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.15);border-radius:8px;font-size:.72rem;color:var(--muted)">
+      ⚠️ <strong style="color:var(--accent2)">STK Push note:</strong> Requires Daraja API credentials in Settings. Until configured, use <em>Manual Code</em> tab.
+    </div>
+  </div>
+
+  <!-- MANUAL CODE -->
+  <div id="mp-manual-section" style="display:none">
+    <div style="background:rgba(0,200,150,.06);border:1px solid rgba(0,200,150,.15);border-radius:9px;padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:var(--muted);line-height:1.7">
+      <div style="color:var(--accent);font-weight:700;margin-bottom:4px">📋 Payment Steps:</div>
+      <div>1. Customer sends <strong style="color:var(--accent)" id="mp-instr-amount">KSh —</strong> to Till <strong style="color:var(--text)" id="mp-instr-till">4009152</strong></div>
+      <div>2. Customer receives M-Pesa confirmation SMS</div>
+      <div>3. Enter the transaction code below</div>
+    </div>
+    <div class="fg" style="margin-bottom:14px">
+      <label>M-Pesa Transaction Code</label>
+      <input type="text" id="mp-txn-code" placeholder="e.g. RHK1234XYZ" style="font-family:monospace;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <div class="mpesa-status idle" id="mp-manual-status">
+      <div class="mpesa-status-icon">🔢</div>
+      <div><strong>Awaiting Code</strong>Ask customer for their M-Pesa confirmation code</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="confirmManualPayment()">✅ Confirm & Record Sale</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeMpesaPanel()">✕ Cancel</button>
+    </div>
+  </div>
+</div>
   <div class="stitle" style="margin-top:8px">Or Manual Entry</div>
   <div class="form-card">
     <div class="form-row">
