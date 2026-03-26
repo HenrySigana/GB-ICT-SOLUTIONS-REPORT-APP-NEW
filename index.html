@@ -643,6 +643,34 @@ tr:hover td{background:rgba(255,255,255,0.02);}
     <span id="target-saved-msg" style="margin-left:12px;font-size:.78rem;color:var(--accent);display:none">✅ Saved!</span>
   </div>
   <div class="form-card" style="margin-top:8px">
+  <div class="stitle">📱 M-Pesa Settings</div>
+  <div class="form-row">
+    <div class="fg"><label>Till Number</label><input type="text" id="mp-cfg-till" placeholder="e.g. 4009152"></div>
+    <div class="fg"><label>Paybill / Shortcode</label><input type="text" id="mp-cfg-shortcode" placeholder="e.g. 174379"></div>
+  </div>
+  <div style="background:rgba(14,165,233,.06);border:1px solid rgba(14,165,233,.15);border-radius:9px;padding:12px 14px;margin-bottom:14px;font-size:.75rem;color:var(--muted);line-height:1.8">
+    <div style="color:var(--accent2);font-weight:700;margin-bottom:4px">🔑 Daraja API — For STK Push (add when ready)</div>
+    <div>Get from <strong style="color:var(--text)">developer.safaricom.co.ke</strong> after Lipa na M-Pesa verification</div>
+  </div>
+  <div class="form-row">
+    <div class="fg"><label>Consumer Key</label><input type="text" id="mp-cfg-ck" placeholder="Paste from Daraja portal"></div>
+    <div class="fg"><label>Consumer Secret</label><input type="password" id="mp-cfg-cs" placeholder="Paste from Daraja portal"></div>
+  </div>
+  <div class="form-row">
+    <div class="fg"><label>Passkey</label><input type="password" id="mp-cfg-pk" placeholder="From Daraja STK Push setup"></div>
+    <div class="fg"><label>Environment</label>
+      <select id="mp-cfg-env">
+        <option value="sandbox">Sandbox (Testing)</option>
+        <option value="live">Live (Production)</option>
+      </select>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="saveMpesaSettings()">💾 Save M-Pesa Settings</button>
+    <span id="mp-saved-msg" style="font-size:.78rem;color:var(--accent);display:none">✅ Saved!</span>
+  </div>
+</div>
+  <div class="form-card" style="margin-top:8px">
     <div class="stitle">🔐 Security</div>
     <div style="background:rgba(0,200,150,.06);border:1px solid rgba(0,200,150,.2);border-radius:10px;padding:12px 14px;font-size:.82rem;color:var(--muted);line-height:1.7">
       <div style="color:var(--accent);font-weight:600;margin-bottom:4px">🔒 Login Features</div>
