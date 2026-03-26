@@ -262,7 +262,28 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .sparkline-wrap{display:flex;align-items:flex-end;gap:2px;height:40px;}
 .spark-bar{flex:1;border-radius:2px 2px 0 0;min-height:2px;background:var(--accent);opacity:.6;}
 .spark-bar.today{background:var(--accent);opacity:1;}
-
+/* ===== MPESA PAYMENT ===== */
+.mpesa-panel{background:var(--card);border:2px solid #00c896;border-radius:var(--radius);padding:20px;margin-top:18px;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mpesa-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.mpesa-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,150,.12);border:1px solid rgba(0,200,150,.35);color:var(--accent);font-family:'Rajdhani',sans-serif;font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;}
+.mpesa-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite;}
+.mpesa-till{font-family:monospace;font-size:1.1rem;color:var(--text);font-weight:700;letter-spacing:2px;}
+.mpesa-till span{font-size:.65rem;color:var(--muted);letter-spacing:1px;display:block;text-transform:uppercase;}
+.mpesa-mode-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px;}
+.mpesa-mode-tab{flex:1;text-align:center;padding:8px 0;font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.5px;color:var(--muted);cursor:pointer;border:none;background:none;transition:all .2s;}
+.mpesa-mode-tab.active{background:var(--accent);color:#000;}
+.mpesa-total-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px 16px;margin-bottom:14px;}
+.mpesa-total-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+.mpesa-total-amt{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;color:var(--accent);}
+.mpesa-status{border-radius:10px;padding:13px 15px;display:flex;align-items:center;gap:11px;margin-bottom:14px;font-size:.82rem;line-height:1.5;}
+.mpesa-status.idle{background:rgba(100,116,139,.08);border:1px solid rgba(100,116,139,.2);color:var(--muted);}
+.mpesa-status.sending{background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.3);color:var(--accent2);}
+.mpesa-status.waiting{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);color:var(--warn);}
+.mpesa-status.success{background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.35);color:var(--accent);}
+.mpesa-status.failed{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:var(--danger);}
+.mpesa-status strong{display:block;font-weight:700;margin-bottom:2px;}
+.mpesa-status-icon{font-size:1.4rem;flex-shrink:0;}
 @media(max-width:600px){main{padding:14px;}nav{padding:8px 14px;}header{padding:12px 16px;}.logo h1{font-size:1rem;}.month-chart{height:140px;}.month-bars{height:110px;}.wday-wrap{gap:4px;}.bd-bar-wrap{display:none;}}
 </style>
 </head>
