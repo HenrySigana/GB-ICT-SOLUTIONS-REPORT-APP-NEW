@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,44 +16,25 @@
 <title>GB ICT Solutions — Sales Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- PDF & Excel export libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
-  --bg:#05080f;
-  --surface:#0c1118;
-  --card:#111826;
-  --card2:#161f2e;
-  --border:#1e2d42;
-  --border2:#253347;
-  --accent:#00e5a0;
-  --accent-dim:rgba(0,229,160,.12);
-  --accent-glow:0 0 20px rgba(0,229,160,.25);
-  --blue:#38bdf8;
-  --blue-dim:rgba(56,189,248,.12);
-  --warn:#f59e0b;
-  --warn-dim:rgba(245,158,11,.12);
-  --danger:#f43f5e;
-  --danger-dim:rgba(244,63,94,.12);
-  --purple:#a78bfa;
-  --purple-dim:rgba(167,139,250,.12);
-  --green:#22c55e;
-  --green-dim:rgba(34,197,94,.12);
-  --text:#e8f0f8;
-  --text2:#8fa3be;
-  --text3:#4d6480;
-  --radius:14px;
-  --radius-sm:8px;
-  --radius-lg:20px;
+  --bg:#05080f;--surface:#0c1118;--card:#111826;--card2:#161f2e;
+  --border:#1e2d42;--border2:#253347;--accent:#00e5a0;
+  --accent-dim:rgba(0,229,160,.12);--accent-glow:0 0 20px rgba(0,229,160,.25);
+  --blue:#38bdf8;--blue-dim:rgba(56,189,248,.12);--warn:#f59e0b;
+  --warn-dim:rgba(245,158,11,.12);--danger:#f43f5e;
+  --danger-dim:rgba(244,63,94,.12);--purple:#a78bfa;
+  --purple-dim:rgba(167,139,250,.12);--green:#22c55e;
+  --green-dim:rgba(34,197,94,.12);--text:#e8f0f8;--text2:#8fa3be;
+  --text3:#4d6480;--radius:14px;--radius-sm:8px;--radius-lg:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,160,.04) 0%,transparent 70%);pointer-events:none;z-index:0;}
 body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(56,189,248,.03) 0%,transparent 70%);pointer-events:none;z-index:0;}
-
-/* ===== LOGIN ===== */
 #loginOverlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;}
 #loginOverlay::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 20%,rgba(0,229,160,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 70% at 80% 80%,rgba(56,189,248,.05) 0%,transparent 55%);}
 #loginOverlay::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,160,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,160,.025) 1px,transparent 1px);background-size:40px 40px;animation:gridScroll 30s linear infinite;}
@@ -89,8 +71,6 @@ body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;heig
 #lockoutMsg strong{font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--danger);}
 #logoutBtn{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);color:var(--danger);padding:5px 14px;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;letter-spacing:.5px;transition:all .2s;display:none;}
 #logoutBtn:hover{background:var(--danger-dim);}
-
-/* ===== APP SHELL ===== */
 #appRoot{display:none;}
 header{background:linear-gradient(to right,#08101a,#0a1520,#080f1a);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.4;}
@@ -105,25 +85,17 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 .htime{text-align:right;}
 .htime .hdate{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--blue);font-weight:600;}
 .htime .htimeval{font-size:.65rem;color:var(--text3);margin-top:2px;}
-
-/* NAV */
 nav{display:flex;gap:2px;background:var(--surface);padding:8px 20px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
 nav::-webkit-scrollbar{display:none;}
 nav button{background:none;border:none;color:var(--text3);padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;white-space:nowrap;transition:all .2s;position:relative;}
 nav button:hover{color:var(--text);background:var(--card);}
 nav button.active{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,160,.2);}
 .nav-alert{position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--surface);}
-
-/* MAIN */
 main{padding:24px 28px;max-width:1200px;margin:0 auto;position:relative;z-index:1;}
 .tab{display:none;}.tab.active{display:block;animation:fadeUp .3s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-/* SECTION TITLE */
 .stitle{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:16px;letter-spacing:.5px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
 .stitle::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border2),transparent);}
-
-/* STAT CARDS */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px;}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s;cursor:default;}
 .stat:hover{border-color:var(--border2);box-shadow:0 4px 24px rgba(0,0,0,.3);}
@@ -135,10 +107,7 @@ main{padding:24px 28px;max-width:1200px;margin:0 auto;position:relative;z-index:
 .stat.green::before{background:var(--green);}
 .stat-label{font-size:.63rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:600;}
 .stat-val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--text);line-height:1;}
-.stat-val.g{color:var(--accent);}
-.stat-val.r{color:var(--danger);}
-.stat-val.p{color:var(--purple);}
-.stat-val.b{color:var(--blue);}
+.stat-val.g{color:var(--accent);}.stat-val.r{color:var(--danger);}.stat-val.p{color:var(--purple);}.stat-val.b{color:var(--blue);}
 .stat-sub{font-size:.68rem;color:var(--text3);margin-top:6px;}
 .stat-trend{display:inline-flex;align-items:center;gap:3px;font-size:.68rem;font-weight:600;padding:2px 7px;border-radius:20px;margin-top:5px;}
 .trend-up{background:var(--green-dim);color:var(--green);}
@@ -148,8 +117,6 @@ main{padding:24px 28px;max-width:1200px;margin:0 auto;position:relative;z-index:
 .stat.glow-blue{border-color:rgba(56,189,248,.2);box-shadow:0 0 20px rgba(56,189,248,.06);}
 .stat.glow-purple{border-color:rgba(167,139,250,.2);box-shadow:0 0 20px rgba(167,139,250,.06);}
 .stat.glow-red{border-color:rgba(244,63,94,.2);box-shadow:0 0 20px rgba(244,63,94,.06);}
-
-/* CARDS & FORMS */
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
 .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;}
 .form-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
@@ -158,8 +125,6 @@ label{font-size:.65rem;color:var(--text3);letter-spacing:1.5px;text-transform:up
 input,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:10px 13px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;outline:none;transition:all .2s;}
 input:focus,select:focus{border-color:rgba(0,229,160,.4);background:rgba(0,229,160,.03);box-shadow:0 0 0 3px rgba(0,229,160,.06);}
 select option{background:var(--surface);}
-
-/* BUTTONS */
 .btn{padding:10px 22px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;transition:all .2s;letter-spacing:.3px;}
 .btn-primary{background:var(--accent);color:#000;}
 .btn-primary:hover{background:#00fdb3;box-shadow:0 0 20px rgba(0,229,160,.3);}
@@ -173,16 +138,12 @@ select option{background:var(--surface);}
 .btn-sm{padding:5px 12px;font-size:.78rem;}
 .btn-xs{padding:3px 9px;font-size:.72rem;}
 .btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;}
-
-/* TABLES */
 .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;}
 table{width:100%;border-collapse:collapse;}
 thead{background:var(--surface);}
 th{padding:12px 15px;text-align:left;font-family:'Space Grotesk',sans-serif;font-size:.65rem;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--border);}
 td{padding:12px 15px;border-top:1px solid var(--border);font-size:.86rem;vertical-align:middle;}
 tr:hover td{background:rgba(255,255,255,.015);}
-
-/* BADGES */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:600;}
 .badge-green{background:var(--green-dim);color:var(--green);}
 .badge-red{background:var(--danger-dim);color:var(--danger);}
@@ -190,8 +151,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .badge-amber{background:var(--warn-dim);color:var(--warn);}
 .badge-blue{background:var(--blue-dim);color:var(--blue);}
 .badge-muted{background:rgba(100,116,139,.1);color:var(--text3);}
-
-/* BAR CHARTS */
 .report-bar{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .bar-label{min-width:160px;font-size:.82rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .bar-track{flex:1;background:var(--border);border-radius:4px;height:10px;overflow:hidden;}
@@ -202,8 +161,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .bar-amount{min-width:100px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--accent);}
 .bar-amount.expense{color:var(--danger);}
 .bar-amount.profit{color:var(--purple);}
-
-/* SERVICES GRID */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-bottom:24px;}
 .svc-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 12px;cursor:pointer;text-align:center;transition:all .2s;position:relative;-webkit-tap-highlight-color:transparent;}
 .svc-btn:hover{border-color:rgba(0,229,160,.35);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 0 1px rgba(0,229,160,.1);}
@@ -213,8 +170,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .svc-price{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent);}
 .svc-badge{position:absolute;top:8px;right:8px;background:var(--accent);color:#000;border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;}
 .svc-btn.in-cart .svc-badge{display:flex;}
-
-/* CART */
 .cart-panel{background:var(--card);border:1px solid rgba(0,229,160,.2);border-radius:var(--radius);padding:22px;margin-bottom:22px;box-shadow:0 0 30px rgba(0,229,160,.06);}
 .cart-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
 .qty-ctrl{display:flex;align-items:center;gap:8px;}
@@ -223,26 +178,16 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .qty-ctrl span{font-family:'JetBrains Mono',monospace;font-size:1.1rem;min-width:24px;text-align:center;}
 .cart-total{display:flex;justify-content:space-between;padding:14px 0 0;font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;}
 .cart-total span:last-child{color:var(--accent);}
-
-/* FILTERS */
 .filter-row{display:flex;gap:9px;margin-bottom:16px;flex-wrap:wrap;}
 .filter-row input,.filter-row select{flex:1;min-width:130px;max-width:220px;}
-
-/* EMPTY STATE */
 .empty{text-align:center;padding:44px 20px;color:var(--text3);}
 .empty-icon{font-size:3rem;opacity:.3;margin-bottom:12px;}
 .empty p{font-size:.85rem;}
-
-/* TOAST */
 #toast{position:fixed;bottom:24px;right:20px;background:var(--accent);color:#000;padding:12px 22px;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;opacity:0;transform:translateY(12px);transition:all .3s;pointer-events:none;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.4);}
 #toast.show{opacity:1;transform:translateY(0);}
-
-/* LOADING */
 .loading{display:flex;align-items:center;justify-content:center;padding:32px;gap:10px;color:var(--text3);}
 .spinner{width:18px;height:18px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== MONTHLY CHART ===== */
 .month-chart-wrap{display:flex;align-items:flex-end;gap:8px;height:190px;margin-bottom:24px;padding:0 4px;}
 .month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;}
 .month-bars{display:flex;gap:2px;align-items:flex-end;height:155px;width:100%;}
@@ -255,8 +200,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .chart-legend{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:.73rem;color:var(--text3);}
 .legend-dot{width:10px;height:10px;border-radius:3px;}
-
-/* ===== TARGET BAR ===== */
 .target-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:24px;}
 .target-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .target-main{font-family:'JetBrains Mono',monospace;font-size:1.9rem;font-weight:700;}
@@ -272,8 +215,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .mom-up{background:var(--green-dim);color:var(--green);}
 .mom-down{background:var(--danger-dim);color:var(--danger);}
 .mom-flat{background:rgba(100,116,139,.1);color:var(--text3);}
-
-/* ===== INSIGHTS ===== */
 .insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;margin-bottom:24px;}
 .insight-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:all .2s;position:relative;overflow:hidden;}
 .insight-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.01),transparent);pointer-events:none;}
@@ -282,14 +223,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .ic-label{font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:5px;font-weight:700;}
 .ic-val{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:3px;}
 .ic-sub{font-size:.7rem;color:var(--text3);}
-.ic-accent{color:var(--accent);}
-.ic-warn{color:var(--warn);}
-.ic-danger{color:var(--danger);}
-.ic-purple{color:var(--purple);}
-.ic-blue{color:var(--blue);}
-.ic-green{color:var(--green);}
-
-/* ===== WEEKDAY CHART ===== */
+.ic-accent{color:var(--accent);}.ic-warn{color:var(--warn);}.ic-danger{color:var(--danger);}.ic-purple{color:var(--purple);}.ic-blue{color:var(--blue);}.ic-green{color:var(--green);}
 .wday-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:10px;}
 .wday-col{text-align:center;}
 .wday-bar-wrap{height:90px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:7px;}
@@ -299,31 +233,19 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .wday-name{font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;}
 .wday-amt{font-size:.62rem;color:var(--accent);margin-top:3px;}
 .wday-count{font-size:.58rem;color:var(--text3);}
-
-/* ===== HEATMAP ===== */
 .hm-grid{display:grid;grid-template-columns:32px repeat(7,1fr);gap:3px;}
 .hm-cell{height:22px;border-radius:4px;cursor:default;transition:opacity .15s;position:relative;}
 .hm-cell:hover .hm-tip{display:block;}
 .hm-tip{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border2);padding:5px 9px;border-radius:6px;font-size:.65rem;white-space:nowrap;color:var(--text);z-index:20;pointer-events:none;}
 .hm-label{font-size:.58rem;color:var(--text3);display:flex;align-items:center;justify-content:flex-end;padding-right:5px;}
 .hm-day-hdr{font-size:.6rem;color:var(--text3);text-align:center;padding-bottom:4px;font-family:'JetBrains Mono',monospace;}
-.hm-lv0{background:rgba(255,255,255,.03);}
-.hm-lv1{background:rgba(0,229,160,.15);}
-.hm-lv2{background:rgba(0,229,160,.32);}
-.hm-lv3{background:rgba(0,229,160,.52);}
-.hm-lv4{background:rgba(0,229,160,.72);}
-.hm-lv5{background:rgba(0,229,160,.95);}
+.hm-lv0{background:rgba(255,255,255,.03);}.hm-lv1{background:rgba(0,229,160,.15);}.hm-lv2{background:rgba(0,229,160,.32);}.hm-lv3{background:rgba(0,229,160,.52);}.hm-lv4{background:rgba(0,229,160,.72);}.hm-lv5{background:rgba(0,229,160,.95);}
 .hm-legend{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.65rem;color:var(--text3);}
 .hm-swatch{width:13px;height:13px;border-radius:3px;}
-
-/* ===== BEST DAYS LEADERBOARD ===== */
 .bd-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
 .bd-row:last-child{border-bottom:none;}
 .bd-rank{font-family:'JetBrains Mono',monospace;font-size:1rem;min-width:28px;text-align:center;font-weight:700;}
-.bd-rank.gold{color:var(--warn);}
-.bd-rank.silver{color:#94a3b8;}
-.bd-rank.bronze{color:#b45309;}
-.bd-rank.other{color:var(--text3);}
+.bd-rank.gold{color:var(--warn);}.bd-rank.silver{color:#94a3b8;}.bd-rank.bronze{color:#b45309;}.bd-rank.other{color:var(--text3);}
 .bd-info{flex:1;}
 .bd-date{font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--text);font-weight:600;}
 .bd-sub{font-size:.65rem;color:var(--text3);}
@@ -331,8 +253,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .bd-bar-track{flex:1;height:7px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden;}
 .bd-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#009970,var(--accent));}
 .bd-amt{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--accent);min-width:105px;text-align:right;}
-
-/* ===== INVENTORY ===== */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-bottom:24px;}
 .inv-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:all .2s;position:relative;}
 .inv-card:hover{border-color:var(--border2);}
@@ -345,8 +265,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .inv-cat{font-size:.68rem;color:var(--text3);margin-bottom:12px;}
 .inv-qty-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .inv-qty{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--text);}
-.inv-qty.low{color:var(--danger);}
-.inv-qty.ok{color:var(--accent);}
+.inv-qty.low{color:var(--danger);}.inv-qty.ok{color:var(--accent);}
 .inv-reorder{font-size:.68rem;color:var(--text3);}
 .inv-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:12px;}
 .inv-progress-fill{height:100%;border-radius:3px;transition:width .6s ease;}
@@ -356,8 +275,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .inv-adj-row{display:flex;align-items:center;gap:6px;}
 .inv-adj-input{width:70px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;}
 .inv-cost{font-size:.72rem;color:var(--text3);margin-top:6px;}
-
-/* ===== ALERTS PANEL ===== */
 .alert-panel{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.25);border-radius:var(--radius);padding:18px;margin-bottom:22px;}
 .alert-panel .stitle{color:var(--danger);}
 .alert-item{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(244,63,94,.1);}
@@ -366,27 +283,19 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .alert-text{flex:1;font-size:.84rem;color:var(--text2);}
 .alert-text strong{color:var(--danger);}
 .alert-badge{font-family:'JetBrains Mono',monospace;font-size:.8rem;background:var(--danger-dim);color:var(--danger);padding:3px 10px;border-radius:20px;font-weight:700;}
-
-/* SETTINGS */
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:13px;}
 .settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
 .settings-card .sicon{font-size:1.8rem;margin-bottom:8px;}
 .settings-card h3{font-family:'Space Grotesk',sans-serif;margin-bottom:12px;font-size:.95rem;font-weight:700;}
-
-/* WHATSAPP */
 .wa-panel{background:var(--card);border:1px solid rgba(37,211,102,.2);border-radius:var(--radius);padding:22px;margin-bottom:22px;}
 .wa-panel .stitle{color:#25D366;}
 .wa-status{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700;}
 .wa-status.on{background:rgba(37,211,102,.12);color:#25D366;border:1px solid rgba(37,211,102,.3);}
 .wa-status.off{background:rgba(100,116,139,.1);color:var(--text3);border:1px solid var(--border);}
 .wa-preview{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:15px;font-size:.8rem;line-height:1.7;color:var(--text2);white-space:pre-wrap;font-family:'JetBrains Mono',monospace;margin-top:12px;max-height:260px;overflow-y:auto;}
-
-/* PERIOD TABS */
 .period-tabs{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px;margin-bottom:20px;width:fit-content;}
 .period-tab{padding:6px 18px;border-radius:6px;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:700;background:none;color:var(--text3);transition:all .2s;}
 .period-tab.active{background:var(--card2);color:var(--accent);border:1px solid rgba(0,229,160,.2);}
-
-/* MPESA */
 .mpesa-panel{background:var(--card);border:2px solid rgba(0,229,160,.2);border-radius:var(--radius);padding:22px;margin-top:18px;animation:fadeUp .3s ease;box-shadow:0 0 30px rgba(0,229,160,.06);}
 .mpesa-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid rgba(0,229,160,.3);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;}
 .mpesa-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite;}
@@ -406,8 +315,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .mpesa-status.failed{background:var(--danger-dim);border:1px solid rgba(244,63,94,.25);color:var(--danger);}
 .mpesa-status strong{display:block;font-weight:700;margin-bottom:2px;}
 .mpesa-status-icon{font-size:1.4rem;flex-shrink:0;}
-
-/* ===== EXPORT MODAL ===== */
 #exportModal{position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);}
 #exportModal.open{display:flex;}
 .export-box{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:32px;width:100%;max-width:540px;box-shadow:0 40px 100px rgba(0,0,0,.7);animation:fadeUp .3s ease;}
@@ -435,30 +342,66 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .export-date-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
 .export-generating{display:none;align-items:center;gap:10px;padding:14px;background:var(--accent-dim);border:1px solid rgba(0,229,160,.2);border-radius:var(--radius-sm);margin-bottom:14px;font-size:.85rem;color:var(--accent);font-weight:600;}
 .export-generating.show{display:flex;}
-/* Export trigger bar */
 .export-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:22px;}
 .export-bar-left{display:flex;align-items:center;gap:10px;}
 .export-bar-icon{font-size:1.4rem;}
 .export-bar-info .eb-title{font-size:.9rem;font-weight:700;color:var(--text);}
 .export-bar-info .eb-sub{font-size:.68rem;color:var(--text3);margin-top:2px;}
 
-/* RESPONSIVE */
+/* ===== AI TAB STYLES ===== */
+.ai-wrap{display:grid;grid-template-columns:1fr 360px;gap:18px;min-height:520px;}
+.ai-chat-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;min-height:520px;}
+.ai-chat-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.ai-avatar{width:36px;height:36px;background:linear-gradient(135deg,#0066ff,#00d4ff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ai-chat-hdr-info h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;}
+.ai-chat-hdr-info p{font-size:11px;color:var(--text3);}
+.ai-online{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);margin-left:auto;animation:pulse 2s infinite;}
+.ai-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:360px;}
+.ai-msgs::-webkit-scrollbar{width:3px;}
+.ai-msgs::-webkit-scrollbar-thumb{background:var(--border);}
+.ai-msg{display:flex;gap:8px;max-width:92%;}
+.ai-msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.ai-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;}
+.ai-msg.bot .ai-bubble{background:var(--card2);border:1px solid var(--border);border-radius:4px 12px 12px 12px;color:var(--text);}
+.ai-msg.user .ai-bubble{background:linear-gradient(135deg,#0066ff,#00d4ff);color:#000;border-radius:12px 4px 12px 12px;font-weight:500;}
+.ai-msg-avatar{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;}
+.ai-msg.bot .ai-msg-avatar{background:linear-gradient(135deg,#0066ff,#00d4ff);}
+.ai-msg.user .ai-msg-avatar{background:var(--card2);border:1px solid var(--border);}
+.ai-typing{display:flex;gap:4px;padding:10px 14px;background:var(--card2);border:1px solid var(--border);border-radius:4px 12px 12px 12px;width:fit-content;}
+.ai-typing span{width:5px;height:5px;border-radius:50%;background:var(--text3);animation:aiDot 1.2s infinite;}
+.ai-typing span:nth-child(2){animation-delay:.2s;}
+.ai-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes aiDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.ai-quick-btns{padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px;}
+.ai-qbtn{background:var(--accent-dim);border:1px solid rgba(0,229,160,.2);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--accent);cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif;}
+.ai-qbtn:hover{background:rgba(0,229,160,.2);}
+.ai-input-row{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px;}
+.ai-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.ai-input:focus{border-color:rgba(0,229,160,.4);}
+.ai-send{width:38px;height:38px;background:var(--accent);border:none;border-radius:8px;cursor:pointer;font-size:15px;transition:box-shadow .2s;flex-shrink:0;color:#000;}
+.ai-send:hover{box-shadow:0 0 14px rgba(0,229,160,.4);}
+.ai-report-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;min-height:520px;}
+.ai-report-hdr{padding:14px 18px;border-bottom:1px solid var(--border);}
+.ai-report-hdr h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px;}
+.ai-report-hdr p{font-size:11px;color:var(--text3);}
+.ai-report-controls{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+.ai-sel{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;}
+.ai-report-body{flex:1;overflow-y:auto;padding:14px;}
+.ai-report-body::-webkit-scrollbar{width:3px;}
+.ai-report-body::-webkit-scrollbar-thumb{background:var(--border);}
+.ai-report-content{font-size:12.5px;line-height:1.8;color:var(--text2);}
+.ai-report-content h2{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent);margin:14px 0 6px;}
+.ai-report-actions{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px;}
 @media(max-width:640px){
-  main{padding:16px;}
-  nav{padding:8px 14px;}
-  header{padding:12px 16px;}
-  .logo h1{font-size:1.1rem;}
-  .stats-row{grid-template-columns:repeat(2,1fr);}
-  .profit-compare{grid-template-columns:1fr;}
-  .bd-bar-wrap{display:none;}
-  .wday-wrap{gap:4px;}
-  .export-format-row{flex-direction:column;}
+  main{padding:16px;}nav{padding:8px 14px;}header{padding:12px 16px;}
+  .logo h1{font-size:1.1rem;}.stats-row{grid-template-columns:repeat(2,1fr);}
+  .bd-bar-wrap{display:none;}.wday-wrap{gap:4px;}.export-format-row{flex-direction:column;}
+  .ai-wrap{grid-template-columns:1fr;}.ai-report-panel{display:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginOverlay">
   <div class="login-box" id="loginBox">
     <div class="login-logo">
@@ -496,25 +439,14 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
-<!-- EXPORT MODAL -->
 <div id="exportModal">
   <div class="export-box">
     <h2>📤 Export Report</h2>
     <p class="sub">Choose format, date range, and what to include</p>
-
     <div class="export-format-row">
-      <div class="format-btn" id="fmt-pdf" onclick="selectFormat('pdf')">
-        <div class="fmt-icon">📄</div>
-        <div class="fmt-name">PDF</div>
-        <div class="fmt-desc">Formatted report</div>
-      </div>
-      <div class="format-btn" id="fmt-excel" onclick="selectFormat('excel')">
-        <div class="fmt-icon">📊</div>
-        <div class="fmt-name">Excel</div>
-        <div class="fmt-desc">Spreadsheet (.xlsx)</div>
-      </div>
+      <div class="format-btn" id="fmt-pdf" onclick="selectFormat('pdf')"><div class="fmt-icon">📄</div><div class="fmt-name">PDF</div><div class="fmt-desc">Formatted report</div></div>
+      <div class="format-btn" id="fmt-excel" onclick="selectFormat('excel')"><div class="fmt-icon">📊</div><div class="fmt-name">Excel</div><div class="fmt-desc">Spreadsheet (.xlsx)</div></div>
     </div>
-
     <div class="export-section-label">Date Range</div>
     <div class="export-date-row">
       <div class="fg"><label>From</label><input type="date" id="exp-from"></div>
@@ -526,7 +458,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
         <button class="btn btn-secondary btn-sm" onclick="setExportRange('all')">All Time</button>
       </div>
     </div>
-
     <div class="export-section-label">Include Sections</div>
     <div class="export-sections">
       <div class="export-option"><input type="checkbox" id="inc-summary" checked><div class="eo-icon">📊</div><div class="eo-info"><div class="eo-name">Summary Statistics</div><div class="eo-desc">Revenue, expenses, net profit, margins</div></div></div>
@@ -535,11 +466,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
       <div class="export-option"><input type="checkbox" id="inc-services"><div class="eo-icon">🏆</div><div class="eo-info"><div class="eo-name">Service Breakdown</div><div class="eo-desc">Revenue by service type</div></div></div>
       <div class="export-option"><input type="checkbox" id="inc-daily"><div class="eo-icon">📅</div><div class="eo-info"><div class="eo-name">Daily Totals</div><div class="eo-desc">Day-by-day revenue and expense summary</div></div></div>
     </div>
-
-    <div class="export-generating" id="exp-generating">
-      <div class="spinner"></div> Generating your report, please wait…
-    </div>
-
+    <div class="export-generating" id="exp-generating"><div class="spinner"></div> Generating your report, please wait…</div>
     <div class="btn-row">
       <button class="btn btn-primary" id="exp-download-btn" onclick="runExport()">⬇️ Download</button>
       <button class="btn btn-secondary" onclick="closeExportModal()">✕ Cancel</button>
@@ -547,7 +474,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
-<!-- APP ROOT -->
 <div id="appRoot">
 <header>
   <div class="logo">
@@ -559,10 +485,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:16px">
-    <div class="htime">
-      <div class="hdate" id="hDate"></div>
-      <div class="htimeval" id="hTime"></div>
-    </div>
+    <div class="htime"><div class="hdate" id="hDate"></div><div class="htimeval" id="hTime"></div></div>
     <button id="logoutBtn" onclick="doLogout()">🔒 Lock</button>
   </div>
 </header>
@@ -577,62 +500,27 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <button onclick="switchTab('inventory',this)" id="nav-inventory">📦 Inventory</button>
   <button onclick="switchTab('whatsapp',this)">📲 WhatsApp</button>
   <button onclick="switchTab('settings',this)">⚙️ Services</button>
+  <button onclick="switchTab('ai',this)" style="background:linear-gradient(135deg,rgba(0,229,160,0.15),rgba(56,189,248,0.1));color:var(--accent);border:1px solid rgba(0,229,160,0.25);">🤖 AI</button>
 </nav>
 
 <main>
 
-<!-- DASHBOARD -->
 <div class="tab active" id="tab-dashboard">
   <div class="stats-row">
-    <div class="stat glow-green">
-      <div class="stat-label">Today's Revenue</div>
-      <div class="stat-val g">KSh <span id="v-today">0</span></div>
-      <div class="stat-sub" id="v-today-count">0 transactions</div>
-    </div>
-    <div class="stat danger glow-red">
-      <div class="stat-label">Today's Expenses</div>
-      <div class="stat-val r">KSh <span id="v-today-exp">0</span></div>
-      <div class="stat-sub" id="v-today-exp-count">0 entries</div>
-    </div>
-    <div class="stat purple glow-purple">
-      <div class="stat-label">Today's Net Profit</div>
-      <div class="stat-val p" id="v-today-net">KSh 0</div>
-      <div class="stat-sub" id="v-margin-sub">Margin: 0%</div>
-    </div>
-    <div class="stat blue glow-blue">
-      <div class="stat-label">This Week</div>
-      <div class="stat-val b">KSh <span id="v-week">0</span></div>
-      <div class="stat-sub" id="v-week-count">0 transactions</div>
-    </div>
-    <div class="stat warn">
-      <div class="stat-label">This Month</div>
-      <div class="stat-val" style="color:var(--warn)">KSh <span id="v-month">0</span></div>
-      <div class="stat-sub" id="v-month-net">Net: KSh 0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">All Time Revenue</div>
-      <div class="stat-val">KSh <span id="v-alltime">0</span></div>
-      <div class="stat-sub" id="v-alltime-net">Net Profit: KSh 0</div>
-    </div>
+    <div class="stat glow-green"><div class="stat-label">Today's Revenue</div><div class="stat-val g">KSh <span id="v-today">0</span></div><div class="stat-sub" id="v-today-count">0 transactions</div></div>
+    <div class="stat danger glow-red"><div class="stat-label">Today's Expenses</div><div class="stat-val r">KSh <span id="v-today-exp">0</span></div><div class="stat-sub" id="v-today-exp-count">0 entries</div></div>
+    <div class="stat purple glow-purple"><div class="stat-label">Today's Net Profit</div><div class="stat-val p" id="v-today-net">KSh 0</div><div class="stat-sub" id="v-margin-sub">Margin: 0%</div></div>
+    <div class="stat blue glow-blue"><div class="stat-label">This Week</div><div class="stat-val b">KSh <span id="v-week">0</span></div><div class="stat-sub" id="v-week-count">0 transactions</div></div>
+    <div class="stat warn"><div class="stat-label">This Month</div><div class="stat-val" style="color:var(--warn)">KSh <span id="v-month">0</span></div><div class="stat-sub" id="v-month-net">Net: KSh 0</div></div>
+    <div class="stat"><div class="stat-label">All Time Revenue</div><div class="stat-val">KSh <span id="v-alltime">0</span></div><div class="stat-sub" id="v-alltime-net">Net Profit: KSh 0</div></div>
   </div>
   <div id="dash-top-svc-wrap"></div>
   <div class="stitle">Today's Sales</div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Time</th><th>Service</th><th>Qty</th><th>Amount</th><th>Note</th><th></th></tr></thead>
-      <tbody id="today-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Time</th><th>Service</th><th>Qty</th><th>Amount</th><th>Note</th><th></th></tr></thead><tbody id="today-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr></tbody></table></div>
   <div class="stitle">Today's Expenses</div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Time</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead>
-      <tbody id="today-exp-tbody"></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Time</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead><tbody id="today-exp-tbody"></tbody></table></div>
 </div>
 
-<!-- NEW SALE -->
 <div class="tab" id="tab-sale">
   <div class="stitle">Tap Service to Add</div>
   <div class="services-grid" id="services-grid"></div>
@@ -640,10 +528,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div class="stitle">🛒 Cart</div>
     <div id="cart-items"></div>
     <div class="cart-total"><span>Total</span><span id="cart-total-val">KSh 0</span></div>
-    <div class="fg" style="margin:14px 0">
-      <label>Note (optional)</label>
-      <input type="text" id="sale-note" placeholder="e.g. client name, details...">
-    </div>
+    <div class="fg" style="margin:14px 0"><label>Note (optional)</label><input type="text" id="sale-note" placeholder="e.g. client name, details..."></div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="recordSale()">✅ Cash / Record Sale</button>
       <button class="btn btn-secondary" style="background:var(--accent-dim);border-color:rgba(0,229,160,.3);color:var(--accent)" onclick="toggleMpesaPanel()">📱 M-Pesa</button>
@@ -700,26 +585,11 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
-<!-- EXPENSES -->
 <div class="tab" id="tab-expenses">
   <div class="stitle">💸 Record Expense</div>
   <div class="form-card">
     <div class="form-row">
-      <div class="fg">
-        <label>Category</label>
-        <select id="exp-category">
-          <option value="Rent">🏠 Rent</option>
-          <option value="Electricity">⚡ Electricity</option>
-          <option value="Internet">🌐 Internet Bill</option>
-          <option value="Supplies">🖨️ Supplies</option>
-          <option value="Repairs">🔧 Repairs</option>
-          <option value="Salary">👤 Salary</option>
-          <option value="Airtime">📱 Airtime</option>
-          <option value="Transport">🚗 Transport</option>
-          <option value="Food">🍽️ Food</option>
-          <option value="Other">📦 Other</option>
-        </select>
-      </div>
+      <div class="fg"><label>Category</label><select id="exp-category"><option value="Rent">🏠 Rent</option><option value="Electricity">⚡ Electricity</option><option value="Internet">🌐 Internet Bill</option><option value="Supplies">🖨️ Supplies</option><option value="Repairs">🔧 Repairs</option><option value="Salary">👤 Salary</option><option value="Airtime">📱 Airtime</option><option value="Transport">🚗 Transport</option><option value="Food">🍽️ Food</option><option value="Other">📦 Other</option></select></div>
       <div class="fg"><label>Amount (KSh)</label><input type="number" id="exp-amount" placeholder="0" min="0"></div>
     </div>
     <div class="form-row">
@@ -736,28 +606,15 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <div class="stitle">Filter</div>
   <div class="filter-row">
     <input type="date" id="exp-filter-date">
-    <select id="exp-filter-cat">
-      <option value="">All Categories</option>
-      <option value="Rent">🏠 Rent</option><option value="Electricity">⚡ Electricity</option>
-      <option value="Internet">🌐 Internet</option><option value="Supplies">🖨️ Supplies</option>
-      <option value="Repairs">🔧 Repairs</option><option value="Salary">👤 Salary</option>
-      <option value="Airtime">📱 Airtime</option><option value="Transport">🚗 Transport</option>
-      <option value="Food">🍽️ Food</option><option value="Other">📦 Other</option>
-    </select>
+    <select id="exp-filter-cat"><option value="">All Categories</option><option value="Rent">🏠 Rent</option><option value="Electricity">⚡ Electricity</option><option value="Internet">🌐 Internet</option><option value="Supplies">🖨️ Supplies</option><option value="Repairs">🔧 Repairs</option><option value="Salary">👤 Salary</option><option value="Airtime">📱 Airtime</option><option value="Transport">🚗 Transport</option><option value="Food">🍽️ Food</option><option value="Other">📦 Other</option></select>
     <button class="btn btn-secondary" onclick="renderExpenses()">🔍 Filter</button>
     <button class="btn btn-secondary" onclick="clearExpFilter()">✕ Clear</button>
   </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Date</th><th>Time</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead>
-      <tbody id="expenses-tbody"></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead><tbody id="expenses-tbody"></tbody></table></div>
   <div class="stitle">By Category</div>
   <div id="expense-bars"></div>
 </div>
 
-<!-- HISTORY -->
 <div class="tab" id="tab-history">
   <div class="filter-row">
     <input type="date" id="filter-date">
@@ -765,20 +622,11 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <button class="btn btn-secondary" onclick="renderHistory()">🔍 Filter</button>
     <button class="btn btn-secondary" onclick="clearFilter()">✕ Clear</button>
   </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Date</th><th>Time</th><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th><th>Note</th><th></th></tr></thead>
-      <tbody id="history-tbody"></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Service</th><th>Qty</th><th>Unit Price</th><th>Total</th><th>Note</th><th></th></tr></thead><tbody id="history-tbody"></tbody></table></div>
 </div>
 
-<!-- REPORT -->
-<div class="tab" id="tab-report">
-  <!-- Export bar injected by renderReport() -->
-</div>
+<div class="tab" id="tab-report"></div>
 
-<!-- MONTHLY -->
 <div class="tab" id="tab-monthly">
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
     <div class="stitle" style="margin-bottom:0">🗓 Monthly Performance</div>
@@ -789,24 +637,14 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div class="stat danger"><div class="stat-label">Highest Expenses</div><div class="stat-val r">KSh <span id="m-best-exp">0</span></div><div class="stat-sub" id="m-best-exp-label">—</div></div>
     <div class="stat purple glow-purple"><div class="stat-label">Best Net Profit</div><div class="stat-val p">KSh <span id="m-best-net">0</span></div><div class="stat-sub" id="m-best-net-label">—</div></div>
   </div>
-  <div class="chart-legend">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Revenue</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Expenses</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Net Profit</div>
-  </div>
+  <div class="chart-legend"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Revenue</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Expenses</div><div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Net Profit</div></div>
   <div class="month-chart-wrap" id="month-chart"></div>
   <div class="stitle">Monthly Breakdown</div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Month</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Margin</th><th>Transactions</th><th>Top Service</th></tr></thead>
-      <tbody id="monthly-tbody"></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Month</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Margin</th><th>Transactions</th><th>Top Service</th></tr></thead><tbody id="monthly-tbody"></tbody></table></div>
   <div class="stitle" style="margin-top:20px">Top Services This Month</div>
   <div id="monthly-svc-bars"></div>
 </div>
 
-<!-- INVENTORY -->
 <div class="tab" id="tab-inventory">
   <div id="inv-alerts-wrap"></div>
   <div class="stitle">📦 Stock Overview</div>
@@ -821,23 +659,13 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div class="form-row">
       <div class="fg" style="max-width:80px"><label>Icon</label><input type="text" id="inv-icon" placeholder="📦" maxlength="4"></div>
       <div class="fg"><label>Item Name</label><input type="text" id="inv-name" placeholder="e.g. A4 Paper Ream"></div>
-      <div class="fg">
-        <label>Category</label>
-        <select id="inv-cat">
-          <option value="Stationery">📄 Stationery</option>
-          <option value="Toner/Ink">🖨️ Toner & Ink</option>
-          <option value="Electronics">🔌 Electronics</option>
-          <option value="Consumables">🧴 Consumables</option>
-          <option value="Furniture">🪑 Furniture</option>
-          <option value="Other">📦 Other</option>
-        </select>
-      </div>
+      <div class="fg"><label>Category</label><select id="inv-cat"><option value="Stationery">📄 Stationery</option><option value="Toner/Ink">🖨️ Toner & Ink</option><option value="Electronics">🔌 Electronics</option><option value="Consumables">🧴 Consumables</option><option value="Furniture">🪑 Furniture</option><option value="Other">📦 Other</option></select></div>
     </div>
     <div class="form-row">
       <div class="fg"><label>Current Qty</label><input type="number" id="inv-qty" placeholder="0" min="0"></div>
-      <div class="fg"><label>Reorder Level (alert when ≤)</label><input type="number" id="inv-reorder" placeholder="5" min="0"></div>
+      <div class="fg"><label>Reorder Level</label><input type="number" id="inv-reorder" placeholder="5" min="0"></div>
       <div class="fg"><label>Unit Cost (KSh)</label><input type="number" id="inv-cost" placeholder="0" min="0"></div>
-      <div class="fg"><label>Unit</label><input type="text" id="inv-unit" placeholder="e.g. reams, pcs, bottles"></div>
+      <div class="fg"><label>Unit</label><input type="text" id="inv-unit" placeholder="e.g. reams, pcs"></div>
     </div>
     <button class="btn btn-primary" onclick="addInventoryItem()">➕ Add Item</button>
   </div>
@@ -845,7 +673,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <div class="inv-grid" id="inv-grid"><div class="loading"><div class="spinner"></div>Loading inventory...</div></div>
 </div>
 
-<!-- WHATSAPP -->
 <div class="tab" id="tab-whatsapp">
   <div class="wa-panel">
     <div class="stitle">📲 WhatsApp Daily Report</div>
@@ -853,9 +680,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
       <div class="fg"><label>WhatsApp Number (with country code)</label><input type="tel" id="wa-number" placeholder="e.g. 254712345678"></div>
       <div class="fg"><label>Auto-Send Time</label><input type="time" id="wa-time" value="21:00"></div>
     </div>
-    <div class="form-row">
-      <div class="fg" style="max-width:340px"><label>Business Name</label><input type="text" id="wa-biz" value="GB ICT Solutions"></div>
-    </div>
+    <div class="form-row"><div class="fg" style="max-width:340px"><label>Business Name</label><input type="text" id="wa-biz" value="GB ICT Solutions"></div></div>
     <div class="btn-row" style="margin-bottom:14px">
       <button class="btn btn-whatsapp" onclick="saveWASettings()">💾 Save</button>
       <button class="btn btn-whatsapp" onclick="sendWAReport()">📲 Send Now</button>
@@ -866,15 +691,9 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div class="wa-preview" id="wa-preview">Loading preview...</div>
   </div>
   <div class="stitle">Sent Reports Log</div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Date</th><th>Time</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Status</th></tr></thead>
-      <tbody id="wa-log-tbody"></tbody>
-    </table>
-  </div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Revenue</th><th>Expenses</th><th>Net Profit</th><th>Status</th></tr></thead><tbody id="wa-log-tbody"></tbody></table></div>
 </div>
 
-<!-- SETTINGS -->
 <div class="tab" id="tab-settings">
   <div class="stitle">Manage Services</div>
   <div class="settings-grid" id="settings-grid"></div>
@@ -931,6 +750,68 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
+<!-- ===== AI TAB ===== -->
+<div class="tab" id="tab-ai">
+  <div class="stitle">🤖 AI Sales Intelligence</div>
+  <div class="ai-wrap">
+    <!-- CHAT PANEL -->
+    <div class="ai-chat-panel">
+      <div class="ai-chat-hdr">
+        <div class="ai-avatar">🤖</div>
+        <div class="ai-chat-hdr-info">
+          <h4>GB Sales AI</h4>
+          <p>Powered by Claude · Live Supabase data</p>
+        </div>
+        <div class="ai-online"></div>
+      </div>
+      <div class="ai-msgs" id="aiMsgs">
+        <div class="ai-msg bot">
+          <div class="ai-msg-avatar">🤖</div>
+          <div class="ai-bubble">👋 Hi Henry! I'm your AI Sales Analyst for GB ICT Solutions.<br><br>I have live access to your sales, expenses, inventory and M-Pesa data from Supabase.<br><br>Ask me anything about your business! 💡</div>
+        </div>
+      </div>
+      <div class="ai-quick-btns">
+        <div class="ai-qbtn" onclick="aiQuick(this)">📈 Today's performance</div>
+        <div class="ai-qbtn" onclick="aiQuick(this)">🏆 Top services this week</div>
+        <div class="ai-qbtn" onclick="aiQuick(this)">⚠️ Low stock alerts</div>
+        <div class="ai-qbtn" onclick="aiQuick(this)">💰 Revenue vs expenses</div>
+        <div class="ai-qbtn" onclick="aiQuick(this)">📉 What's selling slowly?</div>
+        <div class="ai-qbtn" onclick="aiQuick(this)">🔍 Full business summary</div>
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiInput" placeholder="Ask anything about your sales..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend();}">
+        <button class="ai-send" onclick="aiSend()">➤</button>
+      </div>
+    </div>
+    <!-- REPORT PANEL -->
+    <div class="ai-report-panel">
+      <div class="ai-report-hdr">
+        <h4>📄 AI Written Report</h4>
+        <p>Auto-generated business analysis</p>
+      </div>
+      <div class="ai-report-controls">
+        <select class="ai-sel" id="aiReportType">
+          <option value="daily">Daily Report</option>
+          <option value="weekly">Weekly Report</option>
+          <option value="monthly">Monthly Report</option>
+          <option value="full">Full Analysis</option>
+          <option value="mpesa">M-Pesa Summary</option>
+        </select>
+        <button class="btn btn-primary" style="width:100%;font-size:13px;" onclick="aiGenerateReport()">✨ Generate AI Report</button>
+      </div>
+      <div class="ai-report-body">
+        <div class="empty" id="aiReportEmpty"><div class="empty-icon">📋</div><p>Click "Generate AI Report" for a full written analysis of your business data.</p></div>
+        <div id="aiReportContent" style="display:none"></div>
+      </div>
+      <div class="ai-report-actions" id="aiReportActions" style="display:none">
+        <button class="btn btn-amber btn-sm" style="flex:1" onclick="aiExportPDF()">📄 PDF</button>
+        <button class="btn btn-secondary btn-sm" style="flex:1;border-color:rgba(34,197,94,.3);color:var(--green)" onclick="aiExportExcel()">📊 Excel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== END AI TAB ===== -->
+
 </main>
 <div id="toast"></div>
 </div>
@@ -954,12 +835,7 @@ function checkPin(){
     setTimeout(()=>{for(let i=0;i<4;i++)document.getElementById('dot'+i).classList.remove('error');pinBuffer='';if(failedAttempts>=MAX_ATTEMPTS)startLockout();},600);
   }
 }
-function startLockout(){
-  isLockedOut=true;document.getElementById('pinKeypad').style.opacity='.3';document.getElementById('pinKeypad').style.pointerEvents='none';
-  document.getElementById('lockoutMsg').style.display='block';document.getElementById('loginError').classList.remove('show');
-  let sec=LOCKOUT_SECONDS;document.getElementById('lockCountdown').textContent=sec;
-  lockoutTimer=setInterval(()=>{sec--;document.getElementById('lockCountdown').textContent=sec;if(sec<=0){clearInterval(lockoutTimer);isLockedOut=false;failedAttempts=0;pinBuffer='';document.getElementById('pinKeypad').style.opacity='1';document.getElementById('pinKeypad').style.pointerEvents='';document.getElementById('lockoutMsg').style.display='none';updateDots();for(let i=0;i<3;i++)document.getElementById('pip'+i).className='attempt-pip';}},1000);
-}
+function startLockout(){isLockedOut=true;document.getElementById('pinKeypad').style.opacity='.3';document.getElementById('pinKeypad').style.pointerEvents='none';document.getElementById('lockoutMsg').style.display='block';document.getElementById('loginError').classList.remove('show');let sec=LOCKOUT_SECONDS;document.getElementById('lockCountdown').textContent=sec;lockoutTimer=setInterval(()=>{sec--;document.getElementById('lockCountdown').textContent=sec;if(sec<=0){clearInterval(lockoutTimer);isLockedOut=false;failedAttempts=0;pinBuffer='';document.getElementById('pinKeypad').style.opacity='1';document.getElementById('pinKeypad').style.pointerEvents='';document.getElementById('lockoutMsg').style.display='none';updateDots();for(let i=0;i<3;i++)document.getElementById('pip'+i).className='attempt-pip';}},1000);}
 function unlockApp(){sessionStorage.setItem('gb_ict_unlocked','1');const ov=document.getElementById('loginOverlay');ov.style.transition='opacity .4s ease';ov.style.opacity='0';setTimeout(()=>{ov.style.display='none';document.getElementById('appRoot').style.display='block';document.getElementById('logoutBtn').style.display='inline-flex';init();},400);}
 function doLogout(){sessionStorage.removeItem('gb_ict_unlocked');pinBuffer='';failedAttempts=0;isLockedOut=false;for(let i=0;i<4;i++){const d=document.getElementById('dot'+i);d.classList.remove('filled','error');}for(let i=0;i<3;i++)document.getElementById('pip'+i).className='attempt-pip';document.getElementById('loginError').classList.remove('show');document.getElementById('appRoot').style.display='none';document.getElementById('logoutBtn').style.display='none';const ov=document.getElementById('loginOverlay');ov.style.display='flex';ov.style.opacity='1';updateDots();}
 document.addEventListener('keydown',e=>{if(document.getElementById('loginOverlay').style.display==='none')return;if(e.key>='0'&&e.key<='9')pinPress(e.key);if(e.key==='Backspace'||e.key==='Delete')pinDelete();});
@@ -990,31 +866,19 @@ let waSettings={number:'',time:'21:00',biz:'GB ICT Solutions'};
 let waLog=[];
 let DAILY_TARGET=3000;
 
-// ===== UTILS =====
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
 function nowTime(){const n=new Date();return `${pad(n.getHours())}:${pad(n.getMinutes())}`;}
 function fmtKsh(v){return 'KSh '+(Math.round(v)||0).toLocaleString();}
 function sumArr(arr,key){return arr.reduce((a,b)=>a+(b[key]||0),0);}
-function tick(){
-  const n=new Date();
-  document.getElementById('hDate').textContent=n.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('hTime').textContent=n.toLocaleTimeString('en-KE');
-  checkAutoSend(n);
-}
+function tick(){const n=new Date();document.getElementById('hDate').textContent=n.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'long',year:'numeric'});document.getElementById('hTime').textContent=n.toLocaleTimeString('en-KE');checkAutoSend(n);}
 setInterval(tick,1000);tick();
 function setOnline(){document.getElementById('syncDot').className='sync-dot';document.getElementById('syncStatus').textContent='Live · Synced';}
 function setOffline(){document.getElementById('syncDot').className='sync-dot off';document.getElementById('syncStatus').textContent='Offline';}
-function toast(msg,type='green'){
-  const t=document.getElementById('toast');t.textContent=msg;
-  const c={green:'#00e5a0',red:'#f43f5e',amber:'#f59e0b',whatsapp:'#25D366',blue:'#38bdf8'};
-  t.style.background=c[type]||c.green;t.style.color=(type==='green'||type==='whatsapp'||type==='amber')?'#000':'#fff';
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);
-}
+function toast(msg,type='green'){const t=document.getElementById('toast');t.textContent=msg;const c={green:'#00e5a0',red:'#f43f5e',amber:'#f59e0b',whatsapp:'#25D366',blue:'#38bdf8'};t.style.background=c[type]||c.green;t.style.color=(type==='green'||type==='whatsapp'||type==='amber')?'#000':'#fff';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function loadTarget(){let v=localStorage.getItem('gb_daily_target');if(v)DAILY_TARGET=parseFloat(v)||3000;const inp=document.getElementById('target-input');if(inp)inp.value=DAILY_TARGET;}
 function saveTarget(){const v=parseFloat(document.getElementById('target-input').value)||3000;DAILY_TARGET=v;localStorage.setItem('gb_daily_target',v);const m=document.getElementById('target-saved-msg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);toast('🎯 Target saved!');}
 
-// ===== TAB SWITCH =====
 function switchTab(t,btn){
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(e=>e.classList.remove('active'));
@@ -1031,467 +895,56 @@ function switchTab(t,btn){
   if(t==='settings'){renderSettings();loadTarget();}
 }
 
-// ===== DATA LOADING =====
-async function loadServices(){
-  try{
-    let{data,error}=await sb.from('gb_services').select('*').order('created_at');
-    if(error)throw error;
-    if(data&&data.length){services=data;}
-    else{let{data:ins2}=await sb.from('gb_services').insert(DEFAULT_SERVICES.map(s=>({id:s.id,icon:s.icon,name:s.name,price:s.price}))).select();services=ins2||DEFAULT_SERVICES;}
-    setOnline();
-  }catch(e){setOffline();services=DEFAULT_SERVICES;}
-}
+async function loadServices(){try{let{data,error}=await sb.from('gb_services').select('*').order('created_at');if(error)throw error;if(data&&data.length){services=data;}else{let{data:ins2}=await sb.from('gb_services').insert(DEFAULT_SERVICES.map(s=>({id:s.id,icon:s.icon,name:s.name,price:s.price}))).select();services=ins2||DEFAULT_SERVICES;}setOnline();}catch(e){setOffline();services=DEFAULT_SERVICES;}}
 async function loadSales(){try{let{data,error}=await sb.from('gb_sales').select('*').order('id',{ascending:false});if(error)throw error;sales=data||[];setOnline();}catch(e){setOffline();}}
 async function loadExpenses(){try{let{data,error}=await sb.from('gb_expenses').select('*').order('id',{ascending:false});if(error)throw error;expenses=data||[];}catch(e){expenses=[];}}
-async function loadInventory(){
-  try{
-    let{data,error}=await sb.from('gb_inventory').select('*').order('name');
-    if(error)throw error;inventory=data||[];updateInventoryNavAlert();
-  }catch(e){inventory=[];}
-}
+async function loadInventory(){try{let{data,error}=await sb.from('gb_inventory').select('*').order('name');if(error)throw error;inventory=data||[];updateInventoryNavAlert();}catch(e){inventory=[];}}
 
-// ===== INVENTORY =====
-function updateInventoryNavAlert(){
-  const navBtn=document.getElementById('nav-inventory');
-  const lowCount=inventory.filter(i=>i.qty<=i.reorder_level&&i.qty>0).length;
-  const outCount=inventory.filter(i=>i.qty===0).length;
-  const total=lowCount+outCount;
-  let alertDot=navBtn.querySelector('.nav-alert');
-  if(total>0){if(!alertDot){alertDot=document.createElement('span');alertDot.className='nav-alert';navBtn.appendChild(alertDot);}}
-  else{if(alertDot)alertDot.remove();}
-}
-async function addInventoryItem(){
-  const icon=document.getElementById('inv-icon').value.trim()||'📦';
-  const name=document.getElementById('inv-name').value.trim();
-  const cat=document.getElementById('inv-cat').value;
-  const qty=parseInt(document.getElementById('inv-qty').value)||0;
-  const reorder=parseInt(document.getElementById('inv-reorder').value)||5;
-  const cost=parseFloat(document.getElementById('inv-cost').value)||0;
-  const unit=document.getElementById('inv-unit').value.trim()||'pcs';
-  if(!name){toast('Enter item name!','amber');return;}
-  const rec={id:'inv'+Date.now(),icon,name,category:cat,qty,reorder_level:reorder,unit_cost:cost,unit};
-  try{
-    const{data,error}=await sb.from('gb_inventory').insert(rec).select().single();
-    if(error)throw error;inventory.push(data);
-    document.getElementById('inv-icon').value='';document.getElementById('inv-name').value='';
-    document.getElementById('inv-qty').value='';document.getElementById('inv-reorder').value='';
-    document.getElementById('inv-cost').value='';document.getElementById('inv-unit').value='';
-    toast('📦 Item added!');renderInventory();
-  }catch(e){toast('Error: '+e.message,'red');}
-}
-async function adjustStock(id,delta){
-  const item=inventory.find(i=>i.id===id);if(!item)return;
-  const newQty=Math.max(0,item.qty+delta);
-  try{await sb.from('gb_inventory').update({qty:newQty}).eq('id',id);item.qty=newQty;renderInventory();toast(delta>0?'📦 Stock added!':'📦 Stock reduced!');}
-  catch(e){toast('Error: '+e.message,'red');}
-}
-async function setStockQty(id,val){
-  const item=inventory.find(i=>i.id===id);if(!item)return;
-  const newQty=Math.max(0,parseInt(val)||0);
-  try{await sb.from('gb_inventory').update({qty:newQty}).eq('id',id);item.qty=newQty;renderInventory();}catch(e){}
-}
-async function deleteInventoryItem(id){
-  if(!confirm('Remove this item from inventory?'))return;
-  try{await sb.from('gb_inventory').delete().eq('id',id);inventory=inventory.filter(i=>i.id!==id);renderInventory();toast('🗑 Removed','amber');}
-  catch(e){toast('Error','red');}
-}
-function renderInventory(){
-  updateInventoryNavAlert();
-  const lowItems=inventory.filter(i=>i.qty>0&&i.qty<=i.reorder_level);
-  const outItems=inventory.filter(i=>i.qty===0);
-  const alertWrap=document.getElementById('inv-alerts-wrap');
-  if(lowItems.length||outItems.length){
-    alertWrap.innerHTML=`<div class="alert-panel"><div class="stitle">⚠️ Stock Alerts</div>
-      ${outItems.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> — completely out of stock!</div><div class="alert-badge">0 ${i.unit||'pcs'}</div></div>`).join('')}
-      ${lowItems.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> — low stock, reorder soon</div><div class="alert-badge">${i.qty} ${i.unit||'pcs'} left</div></div>`).join('')}
-    </div>`;
-  }else{alertWrap.innerHTML='';}
-  const totalValue=inventory.reduce((a,i)=>a+(i.qty*(i.unit_cost||0)),0);
-  document.getElementById('inv-stat-total').textContent=inventory.length;
-  document.getElementById('inv-stat-low').textContent=lowItems.length;
-  document.getElementById('inv-stat-out').textContent=outItems.length;
-  document.getElementById('inv-stat-value').textContent=totalValue.toLocaleString();
-  const grid=document.getElementById('inv-grid');
-  if(!inventory.length){grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>No inventory items yet.<br>Add your first item above.</p></div>';return;}
-  grid.innerHTML=inventory.map(item=>{
-    const pct=item.reorder_level>0?Math.min((item.qty/Math.max(item.reorder_level*2,item.qty||1))*100,100):100;
-    const statusClass=item.qty===0?'out-of-stock':item.qty<=item.reorder_level?'low-stock':'';
-    const qtyClass=item.qty===0?'low':item.qty<=item.reorder_level?'low':'ok';
-    const barClass=item.qty===0?'low':item.qty<=item.reorder_level?'warn':'ok';
-    return `<div class="inv-card ${statusClass}">
-      <div class="inv-icon">${item.icon||'📦'}</div>
-      <div class="inv-name">${item.name}</div>
-      <div class="inv-cat">${item.category||'—'}</div>
-      <div class="inv-qty-row"><div class="inv-qty ${qtyClass}">${item.qty}<span style="font-size:.7rem;color:var(--text3);font-family:'Space Grotesk',sans-serif;font-weight:400"> ${item.unit||'pcs'}</span></div><div class="inv-reorder">Reorder at: ${item.reorder_level}</div></div>
-      <div class="inv-progress"><div class="inv-progress-fill ${barClass}" style="width:${pct}%"></div></div>
-      <div class="inv-adj-row">
-        <button class="btn btn-secondary btn-xs" onclick="adjustStock('${item.id}',-1)">−</button>
-        <input class="inv-adj-input" type="number" value="${item.qty}" min="0" onchange="setStockQty('${item.id}',this.value)" style="padding:5px;font-size:.85rem;">
-        <button class="btn btn-primary btn-xs" onclick="adjustStock('${item.id}',1)">+</button>
-        <button class="btn btn-danger btn-xs" onclick="deleteInventoryItem('${item.id}')">🗑</button>
-      </div>
-      ${item.unit_cost?`<div class="inv-cost">Unit cost: KSh ${item.unit_cost.toLocaleString()} · Stock value: KSh ${(item.qty*item.unit_cost).toLocaleString()}</div>`:''}
-    </div>`;
-  }).join('');
-}
+function updateInventoryNavAlert(){const navBtn=document.getElementById('nav-inventory');const lowCount=inventory.filter(i=>i.qty<=i.reorder_level&&i.qty>0).length;const outCount=inventory.filter(i=>i.qty===0).length;const total=lowCount+outCount;let alertDot=navBtn.querySelector('.nav-alert');if(total>0){if(!alertDot){alertDot=document.createElement('span');alertDot.className='nav-alert';navBtn.appendChild(alertDot);}}else{if(alertDot)alertDot.remove();}}
+async function addInventoryItem(){const icon=document.getElementById('inv-icon').value.trim()||'📦';const name=document.getElementById('inv-name').value.trim();const cat=document.getElementById('inv-cat').value;const qty=parseInt(document.getElementById('inv-qty').value)||0;const reorder=parseInt(document.getElementById('inv-reorder').value)||5;const cost=parseFloat(document.getElementById('inv-cost').value)||0;const unit=document.getElementById('inv-unit').value.trim()||'pcs';if(!name){toast('Enter item name!','amber');return;}const rec={id:'inv'+Date.now(),icon,name,category:cat,qty,reorder_level:reorder,unit_cost:cost,unit};try{const{data,error}=await sb.from('gb_inventory').insert(rec).select().single();if(error)throw error;inventory.push(data);document.getElementById('inv-icon').value='';document.getElementById('inv-name').value='';document.getElementById('inv-qty').value='';document.getElementById('inv-reorder').value='';document.getElementById('inv-cost').value='';document.getElementById('inv-unit').value='';toast('📦 Item added!');renderInventory();}catch(e){toast('Error: '+e.message,'red');}}
+async function adjustStock(id,delta){const item=inventory.find(i=>i.id===id);if(!item)return;const newQty=Math.max(0,item.qty+delta);try{await sb.from('gb_inventory').update({qty:newQty}).eq('id',id);item.qty=newQty;renderInventory();toast(delta>0?'📦 Stock added!':'📦 Stock reduced!');}catch(e){toast('Error: '+e.message,'red');}}
+async function setStockQty(id,val){const item=inventory.find(i=>i.id===id);if(!item)return;const newQty=Math.max(0,parseInt(val)||0);try{await sb.from('gb_inventory').update({qty:newQty}).eq('id',id);item.qty=newQty;renderInventory();}catch(e){}}
+async function deleteInventoryItem(id){if(!confirm('Remove this item from inventory?'))return;try{await sb.from('gb_inventory').delete().eq('id',id);inventory=inventory.filter(i=>i.id!==id);renderInventory();toast('🗑 Removed','amber');}catch(e){toast('Error','red');}}
+function renderInventory(){updateInventoryNavAlert();const lowItems=inventory.filter(i=>i.qty>0&&i.qty<=i.reorder_level);const outItems=inventory.filter(i=>i.qty===0);const alertWrap=document.getElementById('inv-alerts-wrap');if(lowItems.length||outItems.length){alertWrap.innerHTML=`<div class="alert-panel"><div class="stitle">⚠️ Stock Alerts</div>${outItems.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> — completely out of stock!</div><div class="alert-badge">0 ${i.unit||'pcs'}</div></div>`).join('')}${lowItems.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> — low stock, reorder soon</div><div class="alert-badge">${i.qty} ${i.unit||'pcs'} left</div></div>`).join('')}</div>`;}else{alertWrap.innerHTML='';}const totalValue=inventory.reduce((a,i)=>a+(i.qty*(i.unit_cost||0)),0);document.getElementById('inv-stat-total').textContent=inventory.length;document.getElementById('inv-stat-low').textContent=lowItems.length;document.getElementById('inv-stat-out').textContent=outItems.length;document.getElementById('inv-stat-value').textContent=totalValue.toLocaleString();const grid=document.getElementById('inv-grid');if(!inventory.length){grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>No inventory items yet.<br>Add your first item above.</p></div>';return;}grid.innerHTML=inventory.map(item=>{const pct=item.reorder_level>0?Math.min((item.qty/Math.max(item.reorder_level*2,item.qty||1))*100,100):100;const statusClass=item.qty===0?'out-of-stock':item.qty<=item.reorder_level?'low-stock':'';const qtyClass=item.qty===0?'low':item.qty<=item.reorder_level?'low':'ok';const barClass=item.qty===0?'low':item.qty<=item.reorder_level?'warn':'ok';return `<div class="inv-card ${statusClass}"><div class="inv-icon">${item.icon||'📦'}</div><div class="inv-name">${item.name}</div><div class="inv-cat">${item.category||'—'}</div><div class="inv-qty-row"><div class="inv-qty ${qtyClass}">${item.qty}<span style="font-size:.7rem;color:var(--text3);font-family:'Space Grotesk',sans-serif;font-weight:400"> ${item.unit||'pcs'}</span></div><div class="inv-reorder">Reorder at: ${item.reorder_level}</div></div><div class="inv-progress"><div class="inv-progress-fill ${barClass}" style="width:${pct}%"></div></div><div class="inv-adj-row"><button class="btn btn-secondary btn-xs" onclick="adjustStock('${item.id}',-1)">−</button><input class="inv-adj-input" type="number" value="${item.qty}" min="0" onchange="setStockQty('${item.id}',this.value)" style="padding:5px;font-size:.85rem;"><button class="btn btn-primary btn-xs" onclick="adjustStock('${item.id}',1)">+</button><button class="btn btn-danger btn-xs" onclick="deleteInventoryItem('${item.id}')">🗑</button></div>${item.unit_cost?`<div class="inv-cost">Unit cost: KSh ${item.unit_cost.toLocaleString()} · Stock value: KSh ${(item.qty*item.unit_cost).toLocaleString()}</div>`:''}</div>`;}).join('');}
 
-// ===== EXPENSES =====
-async function recordExpense(){
-  const cat=document.getElementById('exp-category').value,amount=parseFloat(document.getElementById('exp-amount').value)||0;
-  const desc=document.getElementById('exp-desc').value.trim(),date=document.getElementById('exp-date').value||todayStr();
-  if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}
-  if(!desc){toast('Enter a description!','amber');return;}
-  const icon=CATEGORY_ICONS[cat]||'📦';
-  const rec={id:Date.now(),date,time:nowTime(),category:cat,icon,description:desc,amount};
-  try{const{data,error}=await sb.from('gb_expenses').insert(rec).select().single();if(error)throw error;expenses=[data,...expenses];document.getElementById('exp-amount').value='';document.getElementById('exp-desc').value='';toast('💸 Expense recorded!','amber');renderExpenses();renderExpenseStats();renderDashboard();}
-  catch(e){toast('Error: '+e.message,'red');}
-}
-async function deleteExpense(id){
-  if(!confirm('Delete this expense?'))return;
-  try{await sb.from('gb_expenses').delete().eq('id',id);expenses=expenses.filter(e=>e.id!=id);renderExpenses();renderExpenseStats();renderDashboard();toast('🗑 Deleted','amber');}
-  catch(e){toast('Error','red');}
-}
-function renderExpenseStats(){
-  const today=todayStr(),now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1);
-  const todayExp=expenses.filter(e=>e.date===today),monthExp=expenses.filter(e=>new Date(e.date)>=mStart);
-  document.getElementById('exp-today-total').textContent=sumArr(todayExp,'amount').toLocaleString();
-  document.getElementById('exp-today-count').textContent=todayExp.length+' entries';
-  document.getElementById('exp-month-total').textContent=sumArr(monthExp,'amount').toLocaleString();
-  document.getElementById('exp-alltime-total').textContent=sumArr(expenses,'amount').toLocaleString();
-  const byCat={};expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
-  const sorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total),max=sorted.length?sorted[0][1].total:1;
-  const barsEl=document.getElementById('expense-bars');
-  if(barsEl)barsEl.innerHTML=sorted.length?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">💸</div><p>No expenses recorded</p></div>';
-}
-async function renderExpenses(){
-  const df=document.getElementById('exp-filter-date').value,cf=document.getElementById('exp-filter-cat').value;
-  try{
-    let query=sb.from('gb_expenses').select('*').order('id',{ascending:false});
-    if(df)query=query.eq('date',df);if(cf)query=query.eq('category',cf);
-    const{data,error}=await query;if(error)throw error;
-    const tbody=document.getElementById('expenses-tbody');
-    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div><p>No expenses found</p></div></td></tr>';return;}
-    tbody.innerHTML=data.map(e=>`<tr><td>${e.date}</td><td style="color:var(--text3)">${e.time||'—'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||'—'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td></tr>`).join('');
-  }catch(e){document.getElementById('expenses-tbody').innerHTML='<tr><td colspan="6"><div class="empty">Could not load.</div></td></tr>';}
-}
+async function recordExpense(){const cat=document.getElementById('exp-category').value,amount=parseFloat(document.getElementById('exp-amount').value)||0;const desc=document.getElementById('exp-desc').value.trim(),date=document.getElementById('exp-date').value||todayStr();if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}if(!desc){toast('Enter a description!','amber');return;}const icon=CATEGORY_ICONS[cat]||'📦';const rec={id:Date.now(),date,time:nowTime(),category:cat,icon,description:desc,amount};try{const{data,error}=await sb.from('gb_expenses').insert(rec).select().single();if(error)throw error;expenses=[data,...expenses];document.getElementById('exp-amount').value='';document.getElementById('exp-desc').value='';toast('💸 Expense recorded!','amber');renderExpenses();renderExpenseStats();renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
+async function deleteExpense(id){if(!confirm('Delete this expense?'))return;try{await sb.from('gb_expenses').delete().eq('id',id);expenses=expenses.filter(e=>e.id!=id);renderExpenses();renderExpenseStats();renderDashboard();toast('🗑 Deleted','amber');}catch(e){toast('Error','red');}}
+function renderExpenseStats(){const today=todayStr(),now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1);const todayExp=expenses.filter(e=>e.date===today),monthExp=expenses.filter(e=>new Date(e.date)>=mStart);document.getElementById('exp-today-total').textContent=sumArr(todayExp,'amount').toLocaleString();document.getElementById('exp-today-count').textContent=todayExp.length+' entries';document.getElementById('exp-month-total').textContent=sumArr(monthExp,'amount').toLocaleString();document.getElementById('exp-alltime-total').textContent=sumArr(expenses,'amount').toLocaleString();const byCat={};expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});const sorted=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total),max=sorted.length?sorted[0][1].total:1;const barsEl=document.getElementById('expense-bars');if(barsEl)barsEl.innerHTML=sorted.length?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/max*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">💸</div><p>No expenses recorded</p></div>';}
+async function renderExpenses(){const df=document.getElementById('exp-filter-date').value,cf=document.getElementById('exp-filter-cat').value;try{let query=sb.from('gb_expenses').select('*').order('id',{ascending:false});if(df)query=query.eq('date',df);if(cf)query=query.eq('category',cf);const{data,error}=await query;if(error)throw error;const tbody=document.getElementById('expenses-tbody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div><p>No expenses found</p></div></td></tr>';return;}tbody.innerHTML=data.map(e=>`<tr><td>${e.date}</td><td style="color:var(--text3)">${e.time||'—'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||'—'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td></tr>`).join('');}catch(e){document.getElementById('expenses-tbody').innerHTML='<tr><td colspan="6"><div class="empty">Could not load.</div></td></tr>';}}
 function clearExpFilter(){document.getElementById('exp-filter-date').value='';document.getElementById('exp-filter-cat').value='';renderExpenses();}
 
-// ===== CART =====
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
 function removeFromCart(id){if(cart[id]){cart[id]--;if(!cart[id])delete cart[id];}renderCart();}
 function clearCart(){cart={};renderCart();}
-function renderCart(){
-  document.querySelectorAll('.svc-btn').forEach(btn=>{const id=btn.dataset.id,badge=btn.querySelector('.svc-badge');if(cart[id]){btn.classList.add('in-cart');badge.textContent=cart[id];}else{btn.classList.remove('in-cart');badge.textContent='';}});
-  const keys=Object.keys(cart),panel=document.getElementById('cart-panel');
-  if(!keys.length){panel.style.display='none';return;}
-  panel.style.display='block';let total=0,html='';
-  keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;const sub=s.price*cart[id];total+=sub;html+=`<div class="cart-item"><span>${s.icon} ${s.name}</span><div style="display:flex;align-items:center;gap:14px"><div class="qty-ctrl"><button onclick="removeFromCart('${id}')">−</button><span>${cart[id]}</span><button onclick="addToCart('${id}')">+</button></div><span style="min-width:90px;text-align:right;font-family:'JetBrains Mono',monospace;color:var(--accent)">KSh ${sub.toLocaleString()}</span></div></div>`;});
-  document.getElementById('cart-items').innerHTML=html;
-  document.getElementById('cart-total-val').textContent='KSh '+total.toLocaleString();
-}
+function renderCart(){document.querySelectorAll('.svc-btn').forEach(btn=>{const id=btn.dataset.id,badge=btn.querySelector('.svc-badge');if(cart[id]){btn.classList.add('in-cart');badge.textContent=cart[id];}else{btn.classList.remove('in-cart');badge.textContent='';}});const keys=Object.keys(cart),panel=document.getElementById('cart-panel');if(!keys.length){panel.style.display='none';return;}panel.style.display='block';let total=0,html='';keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;const sub=s.price*cart[id];total+=sub;html+=`<div class="cart-item"><span>${s.icon} ${s.name}</span><div style="display:flex;align-items:center;gap:14px"><div class="qty-ctrl"><button onclick="removeFromCart('${id}')">−</button><span>${cart[id]}</span><button onclick="addToCart('${id}')">+</button></div><span style="min-width:90px;text-align:right;font-family:'JetBrains Mono',monospace;color:var(--accent)">KSh ${sub.toLocaleString()}</span></div></div>`;});document.getElementById('cart-items').innerHTML=html;document.getElementById('cart-total-val').textContent='KSh '+total.toLocaleString();}
 
-// ===== SALES =====
-async function recordSale(){
-  const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}
-  const note=document.getElementById('sale-note').value,today=todayStr(),time=nowTime();
-  const inserts=[];keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});});
-  try{const{data,error}=await sb.from('gb_sales').insert(inserts).select();if(error)throw error;sales=[...(data||[]),...sales];clearCart();document.getElementById('sale-note').value='';toast('✅ Sale recorded!');renderDashboard();}
-  catch(e){toast('Error: '+e.message,'red');}
-}
+async function recordSale(){const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}const note=document.getElementById('sale-note').value,today=todayStr(),time=nowTime();const inserts=[];keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});});try{const{data,error}=await sb.from('gb_sales').insert(inserts).select();if(error)throw error;sales=[...(data||[]),...sales];clearCart();document.getElementById('sale-note').value='';toast('✅ Sale recorded!');renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
 function autoFillPrice(){const id=document.getElementById('m-service').value;const s=services.find(x=>x.id===id);if(s)document.getElementById('m-price').value=s.price;}
-async function manualSale(){
-  const id=document.getElementById('m-service').value,qty=parseInt(document.getElementById('m-qty').value)||1;
-  const price=parseFloat(document.getElementById('m-price').value)||0,note=document.getElementById('m-note').value;
-  const s=services.find(x=>x.id===id);if(!s){toast('Select a service','amber');return;}
-  const rec={id:Date.now(),date:todayStr(),time:nowTime(),service_id:id,service_name:s.name,icon:s.icon,qty,unit_price:price,total:price*qty,note};
-  try{const{data,error}=await sb.from('gb_sales').insert(rec).select().single();if(error)throw error;sales=[data,...sales];document.getElementById('m-qty').value=1;document.getElementById('m-note').value='';toast('✅ Sale added!');renderDashboard();}
-  catch(e){toast('Error: '+e.message,'red');}
-}
-async function deleteSale(id){
-  if(!confirm('Delete this sale?'))return;
-  try{await sb.from('gb_sales').delete().eq('id',id);sales=sales.filter(s=>s.id!=id);renderDashboard();renderHistory();toast('🗑 Deleted','amber');}
-  catch(e){toast('Error','red');}
-}
+async function manualSale(){const id=document.getElementById('m-service').value,qty=parseInt(document.getElementById('m-qty').value)||1;const price=parseFloat(document.getElementById('m-price').value)||0,note=document.getElementById('m-note').value;const s=services.find(x=>x.id===id);if(!s){toast('Select a service','amber');return;}const rec={id:Date.now(),date:todayStr(),time:nowTime(),service_id:id,service_name:s.name,icon:s.icon,qty,unit_price:price,total:price*qty,note};try{const{data,error}=await sb.from('gb_sales').insert(rec).select().single();if(error)throw error;sales=[data,...sales];document.getElementById('m-qty').value=1;document.getElementById('m-note').value='';toast('✅ Sale added!');renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
+async function deleteSale(id){if(!confirm('Delete this sale?'))return;try{await sb.from('gb_sales').delete().eq('id',id);sales=sales.filter(s=>s.id!=id);renderDashboard();renderHistory();toast('🗑 Deleted','amber');}catch(e){toast('Error','red');}}
 
-// ===== DASHBOARD =====
-function renderDashboard(){
-  const today=todayStr(),now=new Date();
-  const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
-  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
-  const prevMStart=new Date(now.getFullYear(),now.getMonth()-1,1);
-  const prevMEnd=new Date(now.getFullYear(),now.getMonth(),0);
-  const todaySales=sales.filter(s=>s.date===today),todayExp=expenses.filter(e=>e.date===today);
-  const weekSales=sales.filter(s=>new Date(s.date)>=wStart);
-  const monthSales=sales.filter(s=>new Date(s.date)>=mStart),monthExp=expenses.filter(e=>new Date(e.date)>=mStart);
-  const todayRev=sumArr(todaySales,'total'),todayExpTotal=sumArr(todayExp,'amount');
-  const todayNet=todayRev-todayExpTotal;
-  const monthRev=sumArr(monthSales,'total'),monthExpTotal=sumArr(monthExp,'amount');
-  const monthNet=monthRev-monthExpTotal;
-  const totalRev=sumArr(sales,'total'),totalExp=sumArr(expenses,'amount');
-  const totalNet=totalRev-totalExp;
-  document.getElementById('v-today').textContent=todayRev.toLocaleString();
-  document.getElementById('v-today-count').textContent=todaySales.length+' transactions';
-  document.getElementById('v-today-exp').textContent=todayExpTotal.toLocaleString();
-  document.getElementById('v-today-exp-count').textContent=todayExp.length+' entries';
-  const netEl=document.getElementById('v-today-net');
-  netEl.textContent='KSh '+(todayNet>=0?'':'-')+Math.abs(todayNet).toLocaleString();
-  netEl.className='stat-val '+(todayNet>=0?'p':'r');
-  const margin=todayRev?Math.round(todayNet/todayRev*100):0;
-  document.getElementById('v-margin-sub').textContent=`Margin: ${margin}%`;
-  document.getElementById('v-week').textContent=sumArr(weekSales,'total').toLocaleString();
-  document.getElementById('v-week-count').textContent=weekSales.length+' transactions';
-  document.getElementById('v-month').textContent=monthRev.toLocaleString();
-  document.getElementById('v-month-net').textContent='Net: KSh '+monthNet.toLocaleString();
-  document.getElementById('v-alltime').textContent=totalRev.toLocaleString();
-  document.getElementById('v-alltime-net').textContent='Net Profit: KSh '+totalNet.toLocaleString();
-  const bySvc={};todaySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});
-  const topSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
-  const maxSvc=topSvc.length?topSvc[0][1].total:1;
-  const topWrap=document.getElementById('dash-top-svc-wrap');
-  if(topSvc.length){topWrap.innerHTML=`<div class="stitle">🏆 Today's Top Services</div><div style="margin-bottom:22px">${topSvc.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/maxSvc*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${d.total.toLocaleString()}</div></div>`).join('')}</div>`;}
-  else topWrap.innerHTML='';
-  const tbody=document.getElementById('today-tbody');
-  if(!todaySales.length)tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div><p>No sales today yet</p></div></td></tr>';
-  else tbody.innerHTML=todaySales.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');
-  const etbody=document.getElementById('today-exp-tbody');
-  if(!todayExp.length)etbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div><p>No expenses today</p></div></td></tr>';
-  else etbody.innerHTML=todayExp.map(e=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${e.time||'—'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||'—'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td></tr>`).join('');
-}
-function renderSaleTab(){
-  document.getElementById('services-grid').innerHTML=services.map(s=>`<div class="svc-btn" data-id="${s.id}" onclick="addToCart('${s.id}')"><div class="svc-badge"></div><div class="svc-icon">${s.icon}</div><div class="svc-name">${s.name}</div><div class="svc-price">KSh ${(s.price||0).toLocaleString()}</div></div>`).join('');
-  const sel=document.getElementById('m-service');sel.innerHTML=services.map(s=>`<option value="${s.id}">${s.icon} ${s.name} — KSh ${s.price}</option>`).join('');
-  autoFillPrice();renderCart();
-}
-async function renderHistory(){
-  const df=document.getElementById('filter-date').value,sf=document.getElementById('filter-svc').value;
-  const fsel=document.getElementById('filter-svc');
-  if(fsel.options.length<=1){services.forEach(s=>{if(!Array.from(fsel.options).find(o=>o.value===s.id)){const o=document.createElement('option');o.value=s.id;o.textContent=s.name;fsel.appendChild(o);}});}
-  try{
-    let query=sb.from('gb_sales').select('*').order('id',{ascending:false});
-    if(df)query=query.eq('date',df);if(sf)query=query.eq('service_id',sf);
-    const{data,error}=await query;if(error)throw error;
-    const tbody=document.getElementById('history-tbody');
-    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-icon">📭</div><p>No records found</p></div></td></tr>';return;}
-    tbody.innerHTML=data.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.date}</td><td style="color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td style="color:var(--text3)">KSh ${(s.unit_price||0).toLocaleString()}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');
-  }catch(e){toast('Error loading history','red');}
-}
+function renderDashboard(){const today=todayStr(),now=new Date();const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());const mStart=new Date(now.getFullYear(),now.getMonth(),1);const todaySales=sales.filter(s=>s.date===today),todayExp=expenses.filter(e=>e.date===today);const weekSales=sales.filter(s=>new Date(s.date)>=wStart);const monthSales=sales.filter(s=>new Date(s.date)>=mStart),monthExp=expenses.filter(e=>new Date(e.date)>=mStart);const todayRev=sumArr(todaySales,'total'),todayExpTotal=sumArr(todayExp,'amount');const todayNet=todayRev-todayExpTotal;const monthRev=sumArr(monthSales,'total'),monthExpTotal=sumArr(monthExp,'amount');const monthNet=monthRev-monthExpTotal;const totalRev=sumArr(sales,'total'),totalExp=sumArr(expenses,'amount');const totalNet=totalRev-totalExp;document.getElementById('v-today').textContent=todayRev.toLocaleString();document.getElementById('v-today-count').textContent=todaySales.length+' transactions';document.getElementById('v-today-exp').textContent=todayExpTotal.toLocaleString();document.getElementById('v-today-exp-count').textContent=todayExp.length+' entries';const netEl=document.getElementById('v-today-net');netEl.textContent='KSh '+(todayNet>=0?'':'-')+Math.abs(todayNet).toLocaleString();netEl.className='stat-val '+(todayNet>=0?'p':'r');const margin=todayRev?Math.round(todayNet/todayRev*100):0;document.getElementById('v-margin-sub').textContent=`Margin: ${margin}%`;document.getElementById('v-week').textContent=sumArr(weekSales,'total').toLocaleString();document.getElementById('v-week-count').textContent=weekSales.length+' transactions';document.getElementById('v-month').textContent=monthRev.toLocaleString();document.getElementById('v-month-net').textContent='Net: KSh '+monthNet.toLocaleString();document.getElementById('v-alltime').textContent=totalRev.toLocaleString();document.getElementById('v-alltime-net').textContent='Net Profit: KSh '+totalNet.toLocaleString();const bySvc={};todaySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});const topSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).slice(0,5);const maxSvc=topSvc.length?topSvc[0][1].total:1;const topWrap=document.getElementById('dash-top-svc-wrap');if(topSvc.length){topWrap.innerHTML=`<div class="stitle">🏆 Today's Top Services</div><div style="margin-bottom:22px">${topSvc.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/maxSvc*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${d.total.toLocaleString()}</div></div>`).join('')}</div>`;}else topWrap.innerHTML='';const tbody=document.getElementById('today-tbody');if(!todaySales.length)tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📭</div><p>No sales today yet</p></div></td></tr>';else tbody.innerHTML=todaySales.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');const etbody=document.getElementById('today-exp-tbody');if(!todayExp.length)etbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div><p>No expenses today</p></div></td></tr>';else etbody.innerHTML=todayExp.map(e=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${e.time||'—'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||'—'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">🗑</button></td></tr>`).join('');}
+function renderSaleTab(){document.getElementById('services-grid').innerHTML=services.map(s=>`<div class="svc-btn" data-id="${s.id}" onclick="addToCart('${s.id}')"><div class="svc-badge"></div><div class="svc-icon">${s.icon}</div><div class="svc-name">${s.name}</div><div class="svc-price">KSh ${(s.price||0).toLocaleString()}</div></div>`).join('');const sel=document.getElementById('m-service');sel.innerHTML=services.map(s=>`<option value="${s.id}">${s.icon} ${s.name} — KSh ${s.price}</option>`).join('');autoFillPrice();renderCart();}
+async function renderHistory(){const df=document.getElementById('filter-date').value,sf=document.getElementById('filter-svc').value;const fsel=document.getElementById('filter-svc');if(fsel.options.length<=1){services.forEach(s=>{if(!Array.from(fsel.options).find(o=>o.value===s.id)){const o=document.createElement('option');o.value=s.id;o.textContent=s.name;fsel.appendChild(o);}});}try{let query=sb.from('gb_sales').select('*').order('id',{ascending:false});if(df)query=query.eq('date',df);if(sf)query=query.eq('service_id',sf);const{data,error}=await query;if(error)throw error;const tbody=document.getElementById('history-tbody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-icon">📭</div><p>No records found</p></div></td></tr>';return;}tbody.innerHTML=data.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.date}</td><td style="color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td style="color:var(--text3)">KSh ${(s.unit_price||0).toLocaleString()}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');}catch(e){toast('Error loading history','red');}}
 function clearFilter(){document.getElementById('filter-date').value='';document.getElementById('filter-svc').value='';renderHistory();}
 
-// ===== SETTINGS =====
-function renderSettings(){
-  document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');
-  loadMpesaSettingsForm();
-}
+function renderSettings(){document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');loadMpesaSettingsForm();}
 async function updatePrice(id,val){const s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Price updated!');}
 async function deleteService(id){if(!confirm('Remove this service?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Removed','amber');}
-async function addService(){
-  const icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;
-  if(!name){toast('Enter service name!','amber');return;}
-  const newSvc={id:'s'+Date.now(),icon,name,price};
-  try{const{data,error}=await sb.from('gb_services').insert(newSvc).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('✅ Service added!');}
-  catch(e){toast('Error: '+e.message,'red');}
-}
+async function addService(){const icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;if(!name){toast('Enter service name!','amber');return;}const newSvc={id:'s'+Date.now(),icon,name,price};try{const{data,error}=await sb.from('gb_services').insert(newSvc).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('✅ Service added!');}catch(e){toast('Error: '+e.message,'red');}}
 
-// ===== MONTHLY =====
-function getMonthlyData(){
-  const months={},now=new Date();
-  for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);const key=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;months[key]={label:MONTH_NAMES[d.getMonth()]+' '+(d.getFullYear()%100),fullLabel:MONTH_FULL[d.getMonth()]+' '+d.getFullYear(),rev:0,exp:0,txns:0,svcs:{}};}
-  sales.forEach(s=>{const key=s.date?s.date.substring(0,7):'';if(months[key]){months[key].rev+=s.total||0;months[key].txns++;if(!months[key].svcs[s.service_name])months[key].svcs[s.service_name]=0;months[key].svcs[s.service_name]+=s.total||0;}});
-  expenses.forEach(e=>{const key=e.date?e.date.substring(0,7):'';if(months[key])months[key].exp+=e.amount||0;});
-  return months;
-}
-function renderMonthly(){
-  const months=getMonthlyData(),entries=Object.entries(months);
-  const revVals=entries.map(([,d])=>d.rev),expVals=entries.map(([,d])=>d.exp),netVals=entries.map(([,d])=>d.rev-d.exp);
-  const maxVal=Math.max(...revVals,...expVals,1);
-  const bestRev=Math.max(...revVals),bestRevMonth=entries[revVals.indexOf(bestRev)];
-  const bestExp=Math.max(...expVals),bestExpMonth=entries[expVals.indexOf(bestExp)];
-  const bestNet=Math.max(...netVals),bestNetMonth=entries[netVals.indexOf(bestNet)];
-  document.getElementById('m-best-rev').textContent=bestRev.toLocaleString();
-  document.getElementById('m-best-rev-label').textContent=bestRevMonth?bestRevMonth[1].label:'—';
-  document.getElementById('m-best-exp').textContent=bestExp.toLocaleString();
-  document.getElementById('m-best-exp-label').textContent=bestExpMonth?bestExpMonth[1].label:'—';
-  document.getElementById('m-best-net').textContent=bestNet.toLocaleString();
-  document.getElementById('m-best-net-label').textContent=bestNetMonth?bestNetMonth[1].label:'—';
-  document.getElementById('month-chart').innerHTML=entries.map(([,d])=>{const net=d.rev-d.exp;const rh=Math.max((d.rev/maxVal)*148,2).toFixed(1);const eh=Math.max((d.exp/maxVal)*148,2).toFixed(1);const nh=Math.max((Math.abs(net)/maxVal)*148,2).toFixed(1);return `<div class="month-col"><div class="month-bars"><div class="month-bar rev" style="height:${rh}px" data-tip="Rev: KSh ${d.rev.toLocaleString()}"></div><div class="month-bar exp" style="height:${eh}px" data-tip="Exp: KSh ${d.exp.toLocaleString()}"></div><div class="month-bar net" style="height:${nh}px" data-tip="Net: KSh ${net.toLocaleString()}"></div></div><div class="month-label">${d.label}</div></div>`;}).join('');
-  const tbody=document.getElementById('monthly-tbody');
-  tbody.innerHTML=entries.slice().reverse().map(([,d])=>{const net=d.rev-d.exp;const margin=d.rev?Math.round(net/d.rev*100):0;const top=Object.entries(d.svcs).sort((a,b)=>b[1]-a[1])[0];return `<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700">${d.fullLabel}</td><td><span class="badge badge-green">KSh ${d.rev.toLocaleString()}</span></td><td><span class="badge badge-red">KSh ${d.exp.toLocaleString()}</span></td><td><span class="badge ${net>=0?'badge-purple':'badge-red'}">KSh ${net.toLocaleString()}</span></td><td><span class="badge ${margin>=50?'badge-green':margin>=20?'badge-amber':'badge-red'}">${margin}%</span></td><td style="color:var(--text3)">${d.txns}</td><td style="color:var(--text3);font-size:.82rem">${top?top[0]:'—'}</td></tr>`;}).join('');
-  if(!entries.length)tbody.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-icon">🗓</div><p>No data yet</p></div></td></tr>';
-  const now2=new Date(),curKey=`${now2.getFullYear()}-${pad(now2.getMonth()+1)}`,curMonth=months[curKey];
-  const svcBars=document.getElementById('monthly-svc-bars');
-  if(curMonth&&Object.keys(curMonth.svcs).length){const sorted=Object.entries(curMonth.svcs).sort((a,b)=>b[1]-a[1]);const max=sorted[0][1]||1;svcBars.innerHTML=sorted.map(([n,v])=>`<div class="report-bar"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${v.toLocaleString()}</div></div>`).join('');}
-  else svcBars.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No sales this month yet</p></div>';
-}
+function getMonthlyData(){const months={},now=new Date();for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);const key=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;months[key]={label:MONTH_NAMES[d.getMonth()]+' '+(d.getFullYear()%100),fullLabel:MONTH_FULL[d.getMonth()]+' '+d.getFullYear(),rev:0,exp:0,txns:0,svcs:{}};}sales.forEach(s=>{const key=s.date?s.date.substring(0,7):'';if(months[key]){months[key].rev+=s.total||0;months[key].txns++;if(!months[key].svcs[s.service_name])months[key].svcs[s.service_name]=0;months[key].svcs[s.service_name]+=s.total||0;}});expenses.forEach(e=>{const key=e.date?e.date.substring(0,7):'';if(months[key])months[key].exp+=e.amount||0;});return months;}
+function renderMonthly(){const months=getMonthlyData(),entries=Object.entries(months);const revVals=entries.map(([,d])=>d.rev),expVals=entries.map(([,d])=>d.exp),netVals=entries.map(([,d])=>d.rev-d.exp);const maxVal=Math.max(...revVals,...expVals,1);const bestRev=Math.max(...revVals),bestRevMonth=entries[revVals.indexOf(bestRev)];const bestExp=Math.max(...expVals),bestExpMonth=entries[expVals.indexOf(bestExp)];const bestNet=Math.max(...netVals),bestNetMonth=entries[netVals.indexOf(bestNet)];document.getElementById('m-best-rev').textContent=bestRev.toLocaleString();document.getElementById('m-best-rev-label').textContent=bestRevMonth?bestRevMonth[1].label:'—';document.getElementById('m-best-exp').textContent=bestExp.toLocaleString();document.getElementById('m-best-exp-label').textContent=bestExpMonth?bestExpMonth[1].label:'—';document.getElementById('m-best-net').textContent=bestNet.toLocaleString();document.getElementById('m-best-net-label').textContent=bestNetMonth?bestNetMonth[1].label:'—';document.getElementById('month-chart').innerHTML=entries.map(([,d])=>{const net=d.rev-d.exp;const rh=Math.max((d.rev/maxVal)*148,2).toFixed(1);const eh=Math.max((d.exp/maxVal)*148,2).toFixed(1);const nh=Math.max((Math.abs(net)/maxVal)*148,2).toFixed(1);return `<div class="month-col"><div class="month-bars"><div class="month-bar rev" style="height:${rh}px" data-tip="Rev: KSh ${d.rev.toLocaleString()}"></div><div class="month-bar exp" style="height:${eh}px" data-tip="Exp: KSh ${d.exp.toLocaleString()}"></div><div class="month-bar net" style="height:${nh}px" data-tip="Net: KSh ${net.toLocaleString()}"></div></div><div class="month-label">${d.label}</div></div>`;}).join('');const tbody=document.getElementById('monthly-tbody');tbody.innerHTML=entries.slice().reverse().map(([,d])=>{const net=d.rev-d.exp;const margin=d.rev?Math.round(net/d.rev*100):0;const top=Object.entries(d.svcs).sort((a,b)=>b[1]-a[1])[0];return `<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:700">${d.fullLabel}</td><td><span class="badge badge-green">KSh ${d.rev.toLocaleString()}</span></td><td><span class="badge badge-red">KSh ${d.exp.toLocaleString()}</span></td><td><span class="badge ${net>=0?'badge-purple':'badge-red'}">KSh ${net.toLocaleString()}</span></td><td><span class="badge ${margin>=50?'badge-green':margin>=20?'badge-amber':'badge-red'}">${margin}%</span></td><td style="color:var(--text3)">${d.txns}</td><td style="color:var(--text3);font-size:.82rem">${top?top[0]:'—'}</td></tr>`;}).join('');if(!entries.length)tbody.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-icon">🗓</div><p>No data yet</p></div></td></tr>';const now2=new Date(),curKey=`${now2.getFullYear()}-${pad(now2.getMonth()+1)}`,curMonth=months[curKey];const svcBars=document.getElementById('monthly-svc-bars');if(curMonth&&Object.keys(curMonth.svcs).length){const sorted=Object.entries(curMonth.svcs).sort((a,b)=>b[1]-a[1]);const max=sorted[0][1]||1;svcBars.innerHTML=sorted.map(([n,v])=>`<div class="report-bar"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/max*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${v.toLocaleString()}</div></div>`).join('');}else svcBars.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No sales this month yet</p></div>';}
 
-// ===== REPORT =====
-function renderReport(){
-  const today=todayStr(),now=new Date();
-  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
-  const prevMStart=new Date(now.getFullYear(),now.getMonth()-1,1);
-  const prevMEnd=new Date(now.getFullYear(),now.getMonth(),0);
-  const totalRev=sumArr(sales,'total'),totalExp=sumArr(expenses,'amount');
-  const netProfit=totalRev-totalExp;
-  const profitMargin=totalRev?Math.round(netProfit/totalRev*100):0;
-  const todayRev=sumArr(sales.filter(s=>s.date===today),'total');
-  const monthRev=sumArr(sales.filter(s=>new Date(s.date)>=mStart),'total');
-  const monthExp=sumArr(expenses.filter(e=>new Date(e.date)>=mStart),'amount');
-  const monthNet=monthRev-monthExp;
-  const prevMonthRev=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=prevMStart&&d<=prevMEnd;}),'total');
-  const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
-  const weekRev=sumArr(sales.filter(s=>new Date(s.date)>=wStart),'total');
-  const weekExp=sumArr(expenses.filter(e=>new Date(e.date)>=wStart),'amount');
-  const weekNet=weekRev-weekExp;
-  const prevWStart=new Date(wStart);prevWStart.setDate(wStart.getDate()-7);
-  const prevWeekRev=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=prevWStart&&d<wStart;}),'total');
-  const weekMom=prevWeekRev?Math.round((weekRev-prevWeekRev)/prevWeekRev*100):0;
-  const daily={};sales.forEach(s=>{if(s.date)daily[s.date]=(daily[s.date]||0)+(s.total||0);});
-  const activeDays=Object.keys(daily).length||1;
-  const avgDaily=Math.round(totalRev/activeDays);
-  const rawPct=DAILY_TARGET>0?Math.round(todayRev/DAILY_TARGET*100):0;
-  const displayPct=Math.min(rawPct,100);
-  const fillClass=rawPct>=100?'exceed':rawPct>=70?'ok':rawPct>=40?'warn':'low';
-  const remaining=Math.max(DAILY_TARGET-todayRev,0);
-  const momPct=prevMonthRev?Math.round((monthRev-prevMonthRev)/prevMonthRev*100):0;
-  const momClass=momPct>0?'mom-up':momPct<0?'mom-down':'mom-flat';
-  const momSign=momPct>0?'▲ ':momPct<0?'▼ ':'';
-  const bestDays=Object.entries(daily).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const wdayRev=[0,0,0,0,0,0,0],wdayCount=[0,0,0,0,0,0,0];
-  Object.entries(daily).forEach(([ds,rev])=>{const dow=new Date(ds).getDay();wdayRev[dow]+=rev;wdayCount[dow]++;});
-  const wdayAvg=wdayRev.map((r,i)=>wdayCount[i]?Math.round(r/wdayCount[i]):0);
-  const bestWday=wdayAvg.indexOf(Math.max(...wdayAvg,0));
-  const maxWday=Math.max(...wdayAvg,1);
-  const maxHeat=Math.max(...Object.values(daily),1);
-  const hmDays=[];for(let i=55;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const rev=daily[ds]||0;const lv=rev===0?0:rev<maxHeat*.15?1:rev<maxHeat*.35?2:rev<maxHeat*.55?3:rev<maxHeat*.75?4:5;hmDays.push({ds,rev,lv,dow:d.getDay()});}
-  const bySvc={};sales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,txns:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;bySvc[s.service_name].txns++;});
-  const sortedSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total);
-  const maxSvc=sortedSvc.length?sortedSvc[0][1].total:1;
-  const byCat={};expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦',count:0};byCat[e.category].total+=e.amount||0;byCat[e.category].count++;});
-  const sortedExp=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);
-  const maxExp2=sortedExp.length?sortedExp[0][1].total:1;
-  const spark30=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;spark30.push(daily[ds]||0);}
-  const maxSpark=Math.max(...spark30,1);
-  const last30=spark30.reduce((a,b)=>a+b,0);
-  const prev30Days=[];for(let i=59;i>=30;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;prev30Days.push(daily[ds]||0);}
-  const prev30=prev30Days.reduce((a,b)=>a+b,0);
-  const growth30=prev30?Math.round((last30-prev30)/prev30*100):0;
-  const bestTxn=sales.reduce((a,b)=>(b.total||0)>(a.total||0)?b:a,{total:0,service_name:'—',date:''});
-  const daysHitTarget=Object.values(daily).filter(v=>v>=DAILY_TARGET).length;
-  const highestExp=expenses.reduce((a,b)=>(b.amount||0)>(a.amount||0)?b:a,{amount:0,category:'—',date:''});
-  const expRatio=totalRev?Math.round(totalExp/totalRev*100):0;
-  let hmHTML=`<div></div>`;
-  WDAYS.forEach(d=>hmHTML+=`<div class="hm-day-hdr">${d}</div>`);
-  for(let w=7;w>=0;w--){const wLabel=w===7?'now':'-'+(8-w)+'w';hmHTML+=`<div class="hm-label">${wLabel}</div>`;for(let d=6;d>=0;d--){const idx=hmDays.length-1-(w*7+d);if(idx<0||idx>=hmDays.length){hmHTML+=`<div class="hm-cell hm-lv0"></div>`;continue;}const cell=hmDays[idx];hmHTML+=`<div class="hm-cell hm-lv${cell.lv}"><span class="hm-tip">${cell.ds} — KSh ${cell.rev.toLocaleString()}</span></div>`;}}
+function renderReport(){const today=todayStr(),now=new Date();const mStart=new Date(now.getFullYear(),now.getMonth(),1);const prevMStart=new Date(now.getFullYear(),now.getMonth()-1,1);const prevMEnd=new Date(now.getFullYear(),now.getMonth(),0);const totalRev=sumArr(sales,'total'),totalExp=sumArr(expenses,'amount');const netProfit=totalRev-totalExp;const profitMargin=totalRev?Math.round(netProfit/totalRev*100):0;const todayRev=sumArr(sales.filter(s=>s.date===today),'total');const monthRev=sumArr(sales.filter(s=>new Date(s.date)>=mStart),'total');const monthExp=sumArr(expenses.filter(e=>new Date(e.date)>=mStart),'amount');const monthNet=monthRev-monthExp;const prevMonthRev=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=prevMStart&&d<=prevMEnd;}),'total');const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());const weekRev=sumArr(sales.filter(s=>new Date(s.date)>=wStart),'total');const weekExp=sumArr(expenses.filter(e=>new Date(e.date)>=wStart),'amount');const weekNet=weekRev-weekExp;const prevWStart=new Date(wStart);prevWStart.setDate(wStart.getDate()-7);const prevWeekRev=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=prevWStart&&d<wStart;}),'total');const weekMom=prevWeekRev?Math.round((weekRev-prevWeekRev)/prevWeekRev*100):0;const daily={};sales.forEach(s=>{if(s.date)daily[s.date]=(daily[s.date]||0)+(s.total||0);});const activeDays=Object.keys(daily).length||1;const avgDaily=Math.round(totalRev/activeDays);const rawPct=DAILY_TARGET>0?Math.round(todayRev/DAILY_TARGET*100):0;const displayPct=Math.min(rawPct,100);const fillClass=rawPct>=100?'exceed':rawPct>=70?'ok':rawPct>=40?'warn':'low';const remaining=Math.max(DAILY_TARGET-todayRev,0);const momPct=prevMonthRev?Math.round((monthRev-prevMonthRev)/prevMonthRev*100):0;const momClass=momPct>0?'mom-up':momPct<0?'mom-down':'mom-flat';const momSign=momPct>0?'▲ ':momPct<0?'▼ ':'';const bestDays=Object.entries(daily).sort((a,b)=>b[1]-a[1]).slice(0,10);const wdayRev=[0,0,0,0,0,0,0],wdayCount=[0,0,0,0,0,0,0];Object.entries(daily).forEach(([ds,rev])=>{const dow=new Date(ds).getDay();wdayRev[dow]+=rev;wdayCount[dow]++;});const wdayAvg=wdayRev.map((r,i)=>wdayCount[i]?Math.round(r/wdayCount[i]):0);const bestWday=wdayAvg.indexOf(Math.max(...wdayAvg,0));const maxWday=Math.max(...wdayAvg,1);const maxHeat=Math.max(...Object.values(daily),1);const hmDays=[];for(let i=55;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const rev=daily[ds]||0;const lv=rev===0?0:rev<maxHeat*.15?1:rev<maxHeat*.35?2:rev<maxHeat*.55?3:rev<maxHeat*.75?4:5;hmDays.push({ds,rev,lv,dow:d.getDay()});}const bySvc={};sales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,txns:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;bySvc[s.service_name].txns++;});const sortedSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total);const maxSvc=sortedSvc.length?sortedSvc[0][1].total:1;const byCat={};expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦',count:0};byCat[e.category].total+=e.amount||0;byCat[e.category].count++;});const sortedExp=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total);const maxExp2=sortedExp.length?sortedExp[0][1].total:1;const spark30=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;spark30.push(daily[ds]||0);}const maxSpark=Math.max(...spark30,1);const last30=spark30.reduce((a,b)=>a+b,0);const prev30Days=[];for(let i=59;i>=30;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;prev30Days.push(daily[ds]||0);}const prev30=prev30Days.reduce((a,b)=>a+b,0);const growth30=prev30?Math.round((last30-prev30)/prev30*100):0;const bestTxn=sales.reduce((a,b)=>(b.total||0)>(a.total||0)?b:a,{total:0,service_name:'—',date:''});const daysHitTarget=Object.values(daily).filter(v=>v>=DAILY_TARGET).length;const highestExp=expenses.reduce((a,b)=>(b.amount||0)>(a.amount||0)?b:a,{amount:0,category:'—',date:''});const expRatio=totalRev?Math.round(totalExp/totalRev*100):0;let hmHTML=`<div></div>`;WDAYS.forEach(d=>hmHTML+=`<div class="hm-day-hdr">${d}</div>`);for(let w=7;w>=0;w--){const wLabel=w===7?'now':'-'+(8-w)+'w';hmHTML+=`<div class="hm-label">${wLabel}</div>`;for(let d=6;d>=0;d--){const idx=hmDays.length-1-(w*7+d);if(idx<0||idx>=hmDays.length){hmHTML+=`<div class="hm-cell hm-lv0"></div>`;continue;}const cell=hmDays[idx];hmHTML+=`<div class="hm-cell hm-lv${cell.lv}"><span class="hm-tip">${cell.ds} — KSh ${cell.rev.toLocaleString()}</span></div>`;}}
+const el=document.getElementById('tab-report');
+el.innerHTML=`<div class="export-bar" style="margin-bottom:22px"><div class="export-bar-left"><div class="export-bar-icon">📤</div><div class="export-bar-info"><div class="eb-title">Export Report</div><div class="eb-sub">Download as PDF or Excel spreadsheet</div></div></div><div class="btn-row"><button class="btn btn-sm" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);color:var(--danger)" onclick="openExportModal('report')">📄 PDF</button><button class="btn btn-sm" style="background:var(--green-dim);border:1px solid rgba(34,197,94,.3);color:var(--green)" onclick="openExportModal('report')">📊 Excel</button></div></div><div class="stats-row"><div class="stat glow-green"><div class="stat-label">All-Time Revenue</div><div class="stat-val g">KSh ${totalRev.toLocaleString()}</div><div class="stat-sub">${sales.length} transactions · ${activeDays} active days</div></div><div class="stat danger glow-red"><div class="stat-label">All-Time Expenses</div><div class="stat-val r">KSh ${totalExp.toLocaleString()}</div><div class="stat-sub">${expenses.length} expense entries</div></div><div class="stat purple glow-purple"><div class="stat-label">Net Profit</div><div class="stat-val p">KSh ${netProfit.toLocaleString()}</div><div class="stat-sub">Margin: ${profitMargin}%</div></div><div class="stat blue glow-blue"><div class="stat-label">Avg Daily Revenue</div><div class="stat-val b">KSh ${avgDaily.toLocaleString()}</div><div class="stat-sub">Target: KSh ${DAILY_TARGET.toLocaleString()}/day</div></div></div><div class="stitle">📊 Profit by Period</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px"><div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">TODAY</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${todayRev-sumArr(expenses.filter(e=>e.date===today),'amount')>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${(todayRev-sumArr(expenses.filter(e=>e.date===today),'amount')).toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${todayRev.toLocaleString()} · Exp: KSh ${sumArr(expenses.filter(e=>e.date===today),'amount').toLocaleString()}</div></div><div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS WEEK</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${weekNet>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${weekNet.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${weekRev.toLocaleString()} · Exp: KSh ${weekExp.toLocaleString()}</div><div style="margin-top:8px"><span class="badge ${weekMom>=0?'badge-green':'badge-red'}">${weekMom>=0?'▲ +':'▼ '}${Math.abs(weekMom)}% vs last week</span></div></div><div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS MONTH</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${monthNet>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${monthNet.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${monthRev.toLocaleString()} · Exp: KSh ${monthExp.toLocaleString()}</div><div style="margin-top:8px"><span class="badge ${momPct>=0?'badge-green':'badge-red'}">${momSign}${Math.abs(momPct)}% vs last month</span></div></div><div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">ALL TIME</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${netProfit>=0?'var(--purple)':'var(--danger)'};margin-bottom:4px">KSh ${netProfit.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Margin: ${profitMargin}%</div></div></div><div class="stitle">🎯 Today's Target Progress</div><div class="target-section"><div class="target-header"><div><div class="target-main">KSh ${todayRev.toLocaleString()} <span style="font-size:1rem;color:var(--text3);font-weight:400">/ ${fmtKsh(DAILY_TARGET)}</span></div><div style="display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap"><span class="mom-badge ${momClass}">${momSign}${Math.abs(momPct)}% vs last month</span><span style="font-size:.75rem;color:var(--text3)">${rawPct>=100?'🏆 Target smashed!':remaining>0?`KSh ${remaining.toLocaleString()} to go`:'Keep going!'}</span></div></div><div class="target-pct-badge">${displayPct}%</div></div><div class="target-track"><div class="target-fill ${fillClass}" style="width:${displayPct}%"></div></div><div class="target-milestones"><span>KSh 0</span><span>25%</span><span>50%</span><span>75%</span><span>${fmtKsh(DAILY_TARGET)}</span></div></div><div class="stitle">💡 Key Insights</div><div class="insight-grid"><div class="insight-card"><div class="ic-icon">🏆</div><div class="ic-label">Best Day Ever</div><div class="ic-val">${bestDays[0]?new Date(bestDays[0][0]).toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'}):'—'}</div><div class="ic-sub ic-accent">${bestDays[0]?'KSh '+bestDays[0][1].toLocaleString():''}</div></div><div class="insight-card"><div class="ic-icon">📅</div><div class="ic-label">Best Day of Week</div><div class="ic-val">${WDAYS_FULL[bestWday]}</div><div class="ic-sub ic-accent">Avg KSh ${wdayAvg[bestWday].toLocaleString()}</div></div><div class="insight-card"><div class="ic-icon">⭐</div><div class="ic-label">Top Service</div><div class="ic-val ic-accent" style="font-size:.95rem">${sortedSvc[0]?sortedSvc[0][1].icon+' '+sortedSvc[0][0]:'—'}</div><div class="ic-sub">${sortedSvc[0]?'KSh '+sortedSvc[0][1].total.toLocaleString():''}</div></div><div class="insight-card"><div class="ic-icon">📊</div><div class="ic-label">Profit Margin</div><div class="ic-val ${profitMargin>=50?'ic-accent':profitMargin>=30?'ic-warn':'ic-danger'}">${profitMargin}%</div><div class="ic-sub">${profitMargin>=60?'🔥 Excellent':profitMargin>=40?'👍 Good':profitMargin>=20?'⚠️ Watch expenses':'❌ Loss-making'}</div></div></div><div class="stitle">🏆 Top-Selling Services</div><div style="margin-bottom:24px">${sortedSvc.slice(0,8).map(([n,d],i)=>`<div class="report-bar" style="margin-bottom:13px"><div class="bar-label" title="${n}"><span style="font-family:'JetBrains Mono',monospace;color:var(--text3);margin-right:6px">#${i+1}</span>${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/maxSvc*100).toFixed(1)}%"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:115px"><span class="bar-amount">KSh ${d.total.toLocaleString()}</span><span style="font-size:.6rem;color:var(--text3)">${d.txns} sales</span></div></div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'}</div><div class="stitle">📅 Best Days of the Week</div><div class="card" style="margin-bottom:24px"><div class="wday-wrap">${wdayAvg.map((avg,i)=>`<div class="wday-col"><div class="wday-bar-wrap"><div class="${i===bestWday?'wday-bar best-day':'wday-bar normal-day'}" style="height:${Math.max((avg/maxWday)*82,4)}px"></div></div><div class="wday-name">${WDAYS[i]}</div><div class="wday-amt">${avg>=1000?(avg/1000).toFixed(1)+'K':avg.toLocaleString()}</div><div class="wday-count">${wdayCount[i]}d</div></div>`).join('')}</div></div><div class="stitle">🗓 Revenue Heatmap</div><div class="card" style="margin-bottom:24px"><div class="hm-grid">${hmHTML}</div><div class="hm-legend"><span>Less</span>${[0,1,2,3,4,5].map(l=>`<div class="hm-swatch hm-lv${l}"></div>`).join('')}<span>More</span></div></div><div class="stitle">🏆 Top 10 Best Days</div><div class="card" style="margin-bottom:24px">${bestDays.length?bestDays.map(([ds,rev],i)=>{const d2=new Date(ds);const rankClass=i===0?'gold':i===1?'silver':i===2?'bronze':'other';const rankIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);const pct=(rev/bestDays[0][1]*100).toFixed(0);const cnt=sales.filter(s=>s.date===ds).length;return `<div class="bd-row"><div class="bd-rank ${rankClass}">${rankIcon}</div><div class="bd-info"><div class="bd-date">${d2.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div><div class="bd-sub">${cnt} transactions</div></div><div class="bd-bar-wrap"><div class="bd-bar-track"><div class="bd-bar-fill" style="width:${pct}%"></div></div></div><div class="bd-amt">KSh ${rev.toLocaleString()}</div></div>`;}).join(''):'<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'}</div><div class="stitle">💸 Expenses by Category</div><div style="margin-bottom:24px">${sortedExp.map(([n,d])=>`<div class="report-bar" style="margin-bottom:13px"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/maxExp2*100).toFixed(1)}%"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:115px"><span class="bar-amount expense">KSh ${d.total.toLocaleString()}</span></div></div>`).join('')||'<div class="empty"><div class="empty-icon">💸</div><p>No expenses recorded</p></div>'}</div>`;}
 
-  const el=document.getElementById('tab-report');
-  el.innerHTML=`
-  <!-- EXPORT BAR -->
-  <div class="export-bar" style="margin-bottom:22px">
-    <div class="export-bar-left">
-      <div class="export-bar-icon">📤</div>
-      <div class="export-bar-info">
-        <div class="eb-title">Export Report</div>
-        <div class="eb-sub">Download as PDF or Excel spreadsheet</div>
-      </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-sm" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);color:var(--danger)" onclick="openExportModal('report')">📄 PDF</button>
-      <button class="btn btn-sm" style="background:var(--green-dim);border:1px solid rgba(34,197,94,.3);color:var(--green)" onclick="openExportModal('report')">📊 Excel</button>
-    </div>
-  </div>
-
-  <!-- TOP KPIs -->
-  <div class="stats-row">
-    <div class="stat glow-green"><div class="stat-label">All-Time Revenue</div><div class="stat-val g">KSh ${totalRev.toLocaleString()}</div><div class="stat-sub">${sales.length} transactions · ${activeDays} active days</div></div>
-    <div class="stat danger glow-red"><div class="stat-label">All-Time Expenses</div><div class="stat-val r">KSh ${totalExp.toLocaleString()}</div><div class="stat-sub">${expenses.length} expense entries</div></div>
-    <div class="stat purple glow-purple"><div class="stat-label">Net Profit</div><div class="stat-val p">KSh ${netProfit.toLocaleString()}</div><div class="stat-sub">Margin: ${profitMargin}%</div></div>
-    <div class="stat blue glow-blue"><div class="stat-label">Avg Daily Revenue</div><div class="stat-val b">KSh ${avgDaily.toLocaleString()}</div><div class="stat-sub">Target: KSh ${DAILY_TARGET.toLocaleString()}/day</div></div>
-  </div>
-
-  <div class="stitle">📊 Profit by Period</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px">
-    <div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">TODAY</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${todayRev-sumArr(expenses.filter(e=>e.date===today),'amount')>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${(todayRev-sumArr(expenses.filter(e=>e.date===today),'amount')).toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${todayRev.toLocaleString()} · Exp: KSh ${sumArr(expenses.filter(e=>e.date===today),'amount').toLocaleString()}</div><div style="height:4px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden"><div style="height:100%;width:${Math.min(rawPct,100)}%;background:${rawPct>=70?'var(--accent)':'var(--warn)'};border-radius:2px;transition:width .8s"></div></div><div style="font-size:.62rem;color:var(--text3);margin-top:4px">${rawPct}% of daily target</div></div>
-    <div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS WEEK</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${weekNet>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${weekNet.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${weekRev.toLocaleString()} · Exp: KSh ${weekExp.toLocaleString()}</div><div style="margin-top:8px"><span class="badge ${weekMom>=0?'badge-green':'badge-red'}">${weekMom>=0?'▲ +':'▼ '}${Math.abs(weekMom)}% vs last week</span></div></div>
-    <div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS MONTH</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${monthNet>=0?'var(--accent)':'var(--danger)'};margin-bottom:4px">KSh ${monthNet.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Rev: KSh ${monthRev.toLocaleString()} · Exp: KSh ${monthExp.toLocaleString()}</div><div style="margin-top:8px"><span class="badge ${momPct>=0?'badge-green':'badge-red'}">${momSign}${Math.abs(momPct)}% vs last month</span></div></div>
-    <div class="card"><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">ALL TIME</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:${netProfit>=0?'var(--purple)':'var(--danger)'};margin-bottom:4px">KSh ${netProfit.toLocaleString()}</div><div style="font-size:.72rem;color:var(--text3)">Margin: ${profitMargin}% · Exp ratio: ${expRatio}%</div><div style="margin-top:8px"><span class="badge ${profitMargin>=40?'badge-green':profitMargin>=20?'badge-amber':'badge-red'}">${profitMargin>=60?'🔥 Excellent':profitMargin>=40?'👍 Good':profitMargin>=20?'⚠️ Watch expenses':'❌ Loss-making'}</span></div></div>
-  </div>
-
-  <div class="stitle">⚖️ Revenue vs Expenses</div>
-  <div class="card" style="margin-bottom:24px">
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><div style="flex:1"><div style="font-size:.62rem;color:var(--text3);margin-bottom:5px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Revenue</div><div style="height:24px;background:var(--border);border-radius:5px;overflow:hidden"><div style="height:100%;width:100%;background:linear-gradient(90deg,#009970,var(--accent));border-radius:5px"></div></div><div style="font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--accent);margin-top:5px">KSh ${totalRev.toLocaleString()}</div></div></div>
-    <div style="display:flex;gap:6px;align-items:center"><div style="flex:1"><div style="font-size:.62rem;color:var(--text3);margin-bottom:5px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Expenses</div><div style="height:24px;background:var(--border);border-radius:5px;overflow:hidden"><div style="height:100%;width:${totalRev?Math.min((totalExp/totalRev)*100,100).toFixed(1):0}%;background:linear-gradient(90deg,var(--danger),var(--warn));border-radius:5px;transition:width 1s"></div></div><div style="font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--danger);margin-top:5px">KSh ${totalExp.toLocaleString()} (${expRatio}% of revenue)</div></div></div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:20px;flex-wrap:wrap">
-      <div><div style="font-size:.62rem;color:var(--text3);margin-bottom:3px">NET PROFIT</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:${netProfit>=0?'var(--purple)':'var(--danger)'}">KSh ${netProfit.toLocaleString()}</div></div>
-      <div><div style="font-size:.62rem;color:var(--text3);margin-bottom:3px">PROFIT MARGIN</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:${profitMargin>=40?'var(--accent)':profitMargin>=20?'var(--warn)':'var(--danger)'}">${profitMargin}%</div></div>
-      <div><div style="font-size:.62rem;color:var(--text3);margin-bottom:3px">AVG DAILY</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--blue)">KSh ${avgDaily.toLocaleString()}</div></div>
-    </div>
-  </div>
-
-  <div class="stitle">🎯 Today's Target Progress</div>
-  <div class="target-section">
-    <div class="target-header">
-      <div><div class="target-main">KSh ${todayRev.toLocaleString()} <span style="font-size:1rem;color:var(--text3);font-weight:400">/ ${fmtKsh(DAILY_TARGET)}</span></div><div style="display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap"><span class="mom-badge ${momClass}">${momSign}${Math.abs(momPct)}% vs last month</span><span style="font-size:.75rem;color:var(--text3)">${rawPct>=100?'🏆 Target smashed!':remaining>0?`KSh ${remaining.toLocaleString()} to go`:'Keep going!'}</span></div></div>
-      <div class="target-pct-badge">${displayPct}%</div>
-    </div>
-    <div class="target-track"><div class="target-fill ${fillClass}" style="width:${displayPct}%"></div></div>
-    <div class="target-milestones"><span>KSh 0</span><span>25%</span><span>50%</span><span>75%</span><span>${fmtKsh(DAILY_TARGET)}</span></div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:.73rem;color:var(--text3)"><span>📅 Days hit target: <strong style="color:var(--accent)">${daysHitTarget}</strong></span><span>📊 30-day avg: <strong style="color:var(--blue)">KSh ${Math.round(last30/30).toLocaleString()}/day</strong></span><span>📈 30-day growth: <strong style="color:${growth30>=0?'var(--accent)':'var(--danger)'}">${growth30>=0?'+':''}${growth30}%</strong></span></div>
-  </div>
-
-  <div class="stitle">💡 Key Insights</div>
-  <div class="insight-grid">
-    <div class="insight-card"><div class="ic-icon">🏆</div><div class="ic-label">Best Day Ever</div><div class="ic-val">${bestDays[0]?new Date(bestDays[0][0]).toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'}):'—'}</div><div class="ic-sub ic-accent">${bestDays[0]?'KSh '+bestDays[0][1].toLocaleString():''}</div></div>
-    <div class="insight-card"><div class="ic-icon">📅</div><div class="ic-label">Best Day of Week</div><div class="ic-val">${WDAYS_FULL[bestWday]}</div><div class="ic-sub ic-accent">Avg KSh ${wdayAvg[bestWday].toLocaleString()}</div></div>
-    <div class="insight-card"><div class="ic-icon">💰</div><div class="ic-label">Best Single Sale</div><div class="ic-val ic-accent" style="font-size:.95rem">${bestTxn.icon||''} ${bestTxn.service_name}</div><div class="ic-sub">${bestTxn.total?'KSh '+bestTxn.total.toLocaleString():''} ${bestTxn.date?'· '+bestTxn.date:''}</div></div>
-    <div class="insight-card"><div class="ic-icon">⭐</div><div class="ic-label">Top Service</div><div class="ic-val ic-accent" style="font-size:.95rem">${sortedSvc[0]?sortedSvc[0][1].icon+' '+sortedSvc[0][0]:'—'}</div><div class="ic-sub">${sortedSvc[0]?'KSh '+sortedSvc[0][1].total.toLocaleString():''}</div></div>
-    <div class="insight-card"><div class="ic-icon">📊</div><div class="ic-label">Profit Margin</div><div class="ic-val ${profitMargin>=50?'ic-accent':profitMargin>=30?'ic-warn':'ic-danger'}">${profitMargin}%</div><div class="ic-sub">${profitMargin>=60?'🔥 Excellent':profitMargin>=40?'👍 Good':profitMargin>=20?'⚠️ Watch expenses':'❌ Loss-making'}</div></div>
-    <div class="insight-card"><div class="ic-icon">💸</div><div class="ic-label">Expense Ratio</div><div class="ic-val ${expRatio<=40?'ic-accent':expRatio<=65?'ic-warn':'ic-danger'}">${expRatio}%</div><div class="ic-sub">of revenue spent on expenses</div></div>
-    <div class="insight-card"><div class="ic-icon">📉</div><div class="ic-label">Highest Expense</div><div class="ic-val ic-danger" style="font-size:.95rem">${highestExp.category}</div><div class="ic-sub">KSh ${(highestExp.amount||0).toLocaleString()} ${highestExp.date?'· '+highestExp.date:''}</div></div>
-    <div class="insight-card"><div class="ic-icon">🎯</div><div class="ic-label">Target Hit Rate</div><div class="ic-val ic-blue">${activeDays?Math.round(daysHitTarget/activeDays*100):0}%</div><div class="ic-sub">${daysHitTarget} of ${activeDays} days hit target</div></div>
-  </div>
-
-  <div class="stitle">🏆 Top-Selling Services (All Time)</div>
-  <div style="margin-bottom:24px">${sortedSvc.slice(0,8).map(([n,d],i)=>`<div class="report-bar" style="margin-bottom:13px"><div class="bar-label" title="${n}"><span style="font-family:'JetBrains Mono',monospace;color:var(--text3);margin-right:6px">#${i+1}</span>${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/maxSvc*100).toFixed(1)}%"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:115px"><span class="bar-amount">KSh ${d.total.toLocaleString()}</span><span style="font-size:.6rem;color:var(--text3)">${d.txns} sales · ${Math.round(d.total/totalRev*100)}% share</span></div></div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'}</div>
-
-  <div class="stitle">📈 Last 30 Days Revenue</div>
-  <div class="card" style="margin-bottom:24px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px"><div><div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700">KSh ${last30.toLocaleString()}</div><div style="font-size:.7rem;color:var(--text3);margin-top:3px">vs KSh ${prev30.toLocaleString()} previous 30 days</div></div><span class="badge ${growth30>=0?'badge-green':'badge-red'}">${growth30>=0?'▲ +':'▼ '}${Math.abs(growth30)}% growth</span></div>
-    <div style="display:flex;align-items:flex-end;gap:3px;height:70px">${spark30.map((v,i)=>{const h=Math.max((v/maxSpark)*64,2).toFixed(1);const isToday=i===29;return `<div style="flex:1;height:${h}px;border-radius:2px 2px 0 0;background:${isToday?'var(--accent)':v>=DAILY_TARGET?'rgba(0,229,160,.5)':'rgba(0,229,160,.22)'};min-height:2px;" title="Day ${i+1}: KSh ${v.toLocaleString()}"></div>`;}).join('')}</div>
-    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:.63rem;color:var(--text3)"><span>30 days ago</span><span style="color:var(--accent)">▪ Today</span></div>
-  </div>
-
-  <div class="stitle">📅 Best Days of the Week</div>
-  <div class="card" style="margin-bottom:24px">
-    <div class="wday-wrap">${wdayAvg.map((avg,i)=>`<div class="wday-col"><div class="wday-bar-wrap"><div class="${i===bestWday?'wday-bar best-day':'wday-bar normal-day'}" style="height:${Math.max((avg/maxWday)*82,4)}px"></div></div><div class="wday-name">${WDAYS[i]}</div><div class="wday-amt">${avg>=1000?(avg/1000).toFixed(1)+'K':avg.toLocaleString()}</div><div class="wday-count">${wdayCount[i]}d</div></div>`).join('')}</div>
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:.73rem;color:var(--text3)">🔥 Best day: <span style="color:var(--warn);font-weight:700">${WDAYS_FULL[bestWday]}</span> — avg KSh ${wdayAvg[bestWday].toLocaleString()}</div>
-  </div>
-
-  <div class="stitle">🗓 Revenue Heatmap (8 Weeks)</div>
-  <div class="card" style="margin-bottom:24px"><div class="hm-grid">${hmHTML}</div><div class="hm-legend"><span>Less</span>${[0,1,2,3,4,5].map(l=>`<div class="hm-swatch hm-lv${l}"></div>`).join('')}<span>More</span><span style="margin-left:8px">Peak: KSh ${maxHeat.toLocaleString()}/day</span></div></div>
-
-  <div class="stitle">🏆 Top 10 Best Days</div>
-  <div class="card" style="margin-bottom:24px">${bestDays.length?bestDays.map(([ds,rev],i)=>{const d2=new Date(ds);const rankClass=i===0?'gold':i===1?'silver':i===2?'bronze':'other';const rankIcon=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);const pct=(rev/bestDays[0][1]*100).toFixed(0);const cnt=sales.filter(s=>s.date===ds).length;return `<div class="bd-row"><div class="bd-rank ${rankClass}">${rankIcon}</div><div class="bd-info"><div class="bd-date">${d2.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div><div class="bd-sub">${cnt} transactions</div></div><div class="bd-bar-wrap"><div class="bd-bar-track"><div class="bd-bar-fill" style="width:${pct}%"></div></div><span style="font-size:.7rem;color:var(--text3);min-width:32px">${pct}%</span></div><div class="bd-amt">KSh ${rev.toLocaleString()}</div></div>`;}).join(''):'<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'}</div>
-
-  <div class="stitle">💸 Expenses by Category</div>
-  <div style="margin-bottom:24px">${sortedExp.map(([n,d])=>`<div class="report-bar" style="margin-bottom:13px"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/maxExp2*100).toFixed(1)}%"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:115px"><span class="bar-amount expense">KSh ${d.total.toLocaleString()}</span><span style="font-size:.6rem;color:var(--text3)">${d.count} entries · ${totalExp?Math.round(d.total/totalExp*100):0}%</span></div></div>`).join('')||'<div class="empty"><div class="empty-icon">💸</div><p>No expenses recorded</p></div>'}</div>
-  `;
-}
-
-// ===== WHATSAPP =====
 function loadWASettings(){try{const s=localStorage.getItem('gb_wa_settings');if(s)waSettings=JSON.parse(s);const l=localStorage.getItem('gb_wa_log');if(l)waLog=JSON.parse(l);}catch(e){}applyWASettingsToForm();}
 function applyWASettingsToForm(){document.getElementById('wa-number').value=waSettings.number||'';document.getElementById('wa-time').value=waSettings.time||'21:00';document.getElementById('wa-biz').value=waSettings.biz||'GB ICT Solutions';updateWAScheduleStatus();}
 function saveWASettings(){waSettings.number=document.getElementById('wa-number').value.trim();waSettings.time=document.getElementById('wa-time').value;waSettings.biz=document.getElementById('wa-biz').value.trim()||'GB ICT Solutions';localStorage.setItem('gb_wa_settings',JSON.stringify(waSettings));updateWAScheduleStatus();renderWAPreview();toast('✅ WhatsApp settings saved!');}
 function updateWAScheduleStatus(){const el=document.getElementById('wa-schedule-status');if(!el)return;if(waSettings.number&&waSettings.time){el.textContent=`⏰ Auto-send: ${waSettings.time} daily`;el.className='wa-status on';}else{el.textContent='⏰ Auto-send: OFF';el.className='wa-status off';}}
-function buildWAMessage(dateStr){
-  const d=dateStr||todayStr(),daySales=sales.filter(s=>s.date===d),dayExp=expenses.filter(e=>e.date===d);
-  const rev=sumArr(daySales,'total'),exp=sumArr(dayExp,'amount'),net=rev-exp;
-  const dateLabel=new Date(d).toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const bySvc={};daySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;});
-  const svcLines=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()} (${d.qty}x)`).join('\n');
-  const byCat={};dayExp.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
-  const expLines=Object.entries(byCat).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()}`).join('\n');
-  const msg=`🏪 *${waSettings.biz||'GB ICT Solutions'}*\n📅 Daily Report — ${dateLabel}\n${'─'.repeat(30)}\n\n💰 *REVENUE: KSh ${rev.toLocaleString()}*\n${svcLines||'  No sales recorded'}\n\n💸 *EXPENSES: KSh ${exp.toLocaleString()}*\n${expLines||'  No expenses recorded'}\n\n${net>=0?'✅':'⚠️'} *NET PROFIT: KSh ${net.toLocaleString()}*\n\n📊 Transactions: ${daySales.length} | Expenses: ${dayExp.length}\n${'─'.repeat(30)}\n_Sent by GB ICT Sales Tracker_`;
-  return{msg,rev,exp,net};
-}
+function buildWAMessage(dateStr){const d=dateStr||todayStr(),daySales=sales.filter(s=>s.date===d),dayExp=expenses.filter(e=>e.date===d);const rev=sumArr(daySales,'total'),exp=sumArr(dayExp,'amount'),net=rev-exp;const dateLabel=new Date(d).toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});const bySvc={};daySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;});const svcLines=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()} (${d.qty}x)`).join('\n');const byCat={};dayExp.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});const expLines=Object.entries(byCat).map(([n,d])=>`  ${d.icon} ${n}: KSh ${d.total.toLocaleString()}`).join('\n');const msg=`🏪 *${waSettings.biz||'GB ICT Solutions'}*\n📅 Daily Report — ${dateLabel}\n${'─'.repeat(30)}\n\n💰 *REVENUE: KSh ${rev.toLocaleString()}*\n${svcLines||'  No sales recorded'}\n\n💸 *EXPENSES: KSh ${exp.toLocaleString()}*\n${expLines||'  No expenses recorded'}\n\n${net>=0?'✅':'⚠️'} *NET PROFIT: KSh ${net.toLocaleString()}*\n\n📊 Transactions: ${daySales.length} | Expenses: ${dayExp.length}\n${'─'.repeat(30)}\n_Sent by GB ICT Sales Tracker_`;return{msg,rev,exp,net};}
 function renderWAPreview(){const{msg}=buildWAMessage(todayStr());const el=document.getElementById('wa-preview');if(el)el.textContent=msg;}
 function sendWAReport(dateStr){const num=waSettings.number;if(!num){toast('Enter your WhatsApp number!','amber');return;}const{msg,rev,exp,net}=buildWAMessage(dateStr||todayStr());window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');const entry={date:dateStr||todayStr(),time:nowTime(),rev,exp,net,status:'Sent'};waLog.unshift(entry);if(waLog.length>30)waLog=waLog.slice(0,30);localStorage.setItem('gb_wa_log',JSON.stringify(waLog));renderWALog();toast('📲 Opening WhatsApp...','whatsapp');}
 let lastAutoSendDate='';
@@ -1499,7 +952,6 @@ function checkAutoSend(now){if(!waSettings.number||!waSettings.time)return;const
 function renderWATab(){applyWASettingsToForm();renderWAPreview();renderWALog();}
 function renderWALog(){const tbody=document.getElementById('wa-log-tbody');if(!tbody)return;if(!waLog.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📲</div><p>No reports sent yet</p></div></td></tr>';return;}tbody.innerHTML=waLog.map(e=>`<tr><td>${e.date}</td><td style="color:var(--text3)">${e.time}</td><td><span class="badge badge-green">KSh ${(e.rev||0).toLocaleString()}</span></td><td><span class="badge badge-red">KSh ${(e.exp||0).toLocaleString()}</span></td><td><span class="badge badge-purple">KSh ${(e.net||0).toLocaleString()}</span></td><td><span class="badge badge-green">${e.status}</span></td></tr>`).join('');}
 
-// ===== MPESA =====
 function getMpesaSettings(){try{const s=JSON.parse(localStorage.getItem('gb_mpesa_settings')||'{}');if(!s.till)s.till='4009152';return s;}catch(e){return{till:'4009152'};}}
 function saveMpesaSettings(){const cfg={till:document.getElementById('mp-cfg-till').value.trim()||'4009152',shortcode:document.getElementById('mp-cfg-shortcode').value.trim(),consumerKey:document.getElementById('mp-cfg-ck').value.trim(),consumerSecret:document.getElementById('mp-cfg-cs').value.trim(),passkey:document.getElementById('mp-cfg-pk').value.trim(),sandbox:document.getElementById('mp-cfg-env').value==='sandbox'};localStorage.setItem('gb_mpesa_settings',JSON.stringify(cfg));const msg=document.getElementById('mp-saved-msg');msg.style.display='inline';setTimeout(()=>msg.style.display='none',2000);toast('📱 M-Pesa settings saved!');}
 function loadMpesaSettingsForm(){const cfg=getMpesaSettings();['till','shortcode','consumerKey','consumerSecret','passkey'].forEach(k=>{const idMap={till:'mp-cfg-till',shortcode:'mp-cfg-shortcode',consumerKey:'mp-cfg-ck',consumerSecret:'mp-cfg-cs',passkey:'mp-cfg-pk'};const el=document.getElementById(idMap[k]);if(el)el.value=cfg[k]||'';});if(document.getElementById('mp-cfg-env'))document.getElementById('mp-cfg-env').value=cfg.sandbox?'sandbox':'live';}
@@ -1513,290 +965,152 @@ async function mpesaVerifyManually(){const code=prompt('Enter the M-Pesa transac
 async function confirmManualPayment(){const code=document.getElementById('mp-txn-code').value.trim().toUpperCase();if(!code||code.length<6){toast('Enter a valid M-Pesa code','amber');return;}setMpStatus('manual','sending','⏳','Recording...','Saving payment...');await finaliseMpesaSale(code,'Manual');}
 async function finaliseMpesaSale(txnCode,method){const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}const saleNote=(document.getElementById('sale-note').value||'')+` [M-Pesa:${txnCode}]`;const today=todayStr(),time=nowTime();const inserts=[];keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note:saleNote.trim()});});try{const{data,error}=await sb.from('gb_sales').insert(inserts).select();if(error)throw error;sales=[...(data||[]),...sales];clearCart();closeMpesaPanel();document.getElementById('sale-note').value='';toast('✅ M-Pesa confirmed! '+txnCode);renderDashboard();}catch(e){setMpStatus('manual','failed','❌','Error',e.message);toast('Error: '+e.message,'red');}}
 
-// ===== REALTIME =====
-function subscribeRealtime(){
-  sb.channel('gb-changes')
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_sales'},payload=>{if(!sales.find(s=>s.id==payload.new.id)){sales=[payload.new,...sales];renderDashboard();toast('🔔 New sale synced!');}})
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},payload=>{sales=sales.filter(s=>s.id!=payload.old.id);renderDashboard();})
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_expenses'},payload=>{if(!expenses.find(e=>e.id==payload.new.id)){expenses=[payload.new,...expenses];renderDashboard();toast('💸 Expense synced!','amber');}})
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},payload=>{expenses=expenses.filter(e=>e.id!=payload.old.id);renderDashboard();})
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_services'},payload=>{if(!services.find(s=>s.id==payload.new.id))services.push(payload.new);})
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_services'},payload=>{services=services.filter(s=>s.id!=payload.old.id);})
-    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'gb_inventory'},payload=>{const idx=inventory.findIndex(i=>i.id==payload.new.id);if(idx>=0)inventory[idx]=payload.new;updateInventoryNavAlert();})
-    .subscribe(status=>{if(status==='SUBSCRIBED')setOnline();else setOffline();});
-}
+function subscribeRealtime(){sb.channel('gb-changes').on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_sales'},payload=>{if(!sales.find(s=>s.id==payload.new.id)){sales=[payload.new,...sales];renderDashboard();toast('🔔 New sale synced!');}}).on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},payload=>{sales=sales.filter(s=>s.id!=payload.old.id);renderDashboard();}).on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_expenses'},payload=>{if(!expenses.find(e=>e.id==payload.new.id)){expenses=[payload.new,...expenses];renderDashboard();toast('💸 Expense synced!','amber');}}).on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},payload=>{expenses=expenses.filter(e=>e.id!=payload.old.id);renderDashboard();}).on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_services'},payload=>{if(!services.find(s=>s.id==payload.new.id))services.push(payload.new);}).on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_services'},payload=>{services=services.filter(s=>s.id!=payload.old.id);}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gb_inventory'},payload=>{const idx=inventory.findIndex(i=>i.id==payload.new.id);if(idx>=0)inventory[idx]=payload.new;updateInventoryNavAlert();}).subscribe(status=>{if(status==='SUBSCRIBED')setOnline();else setOffline();});}
 
-// ===== INIT =====
-async function init(){
-  loadTarget();
-  await loadServices();await loadSales();await loadExpenses();await loadInventory();
-  loadWASettings();renderDashboard();subscribeRealtime();
-}
+async function init(){loadTarget();await loadServices();await loadSales();await loadExpenses();await loadInventory();loadWASettings();renderDashboard();subscribeRealtime();}
 if(sessionStorage.getItem('gb_ict_unlocked')==='1'){init();}
 
-// ============================================================
-// ===== EXPORT: PDF & EXCEL ===================================
-// ============================================================
-
-let exportFormat='pdf'; // 'pdf' | 'excel'
-
-function openExportModal(context){
-  // Pre-set sensible defaults based on where it was opened from
-  const now=new Date();
-  if(context==='report'){
-    // Default to this month
-    const mStart=new Date(now.getFullYear(),now.getMonth(),1);
-    document.getElementById('exp-from').value=`${mStart.getFullYear()}-${pad(mStart.getMonth()+1)}-01`;
-    document.getElementById('exp-to').value=todayStr();
-  }else if(context==='monthly'){
-    // Default to all time
-    document.getElementById('exp-from').value='';
-    document.getElementById('exp-to').value='';
-  }else{
-    document.getElementById('exp-from').value=todayStr();
-    document.getElementById('exp-to').value=todayStr();
-  }
-  selectFormat('pdf');
-  document.getElementById('exportModal').classList.add('open');
-}
-
-function closeExportModal(){
-  document.getElementById('exportModal').classList.remove('open');
-  document.getElementById('exp-generating').classList.remove('show');
-}
-
-// Close on backdrop click
+// ===== EXPORT =====
+let exportFormat='pdf';
+function openExportModal(context){const now=new Date();if(context==='report'){const mStart=new Date(now.getFullYear(),now.getMonth(),1);document.getElementById('exp-from').value=`${mStart.getFullYear()}-${pad(mStart.getMonth()+1)}-01`;document.getElementById('exp-to').value=todayStr();}else if(context==='monthly'){document.getElementById('exp-from').value='';document.getElementById('exp-to').value='';}else{document.getElementById('exp-from').value=todayStr();document.getElementById('exp-to').value=todayStr();}selectFormat('pdf');document.getElementById('exportModal').classList.add('open');}
+function closeExportModal(){document.getElementById('exportModal').classList.remove('open');document.getElementById('exp-generating').classList.remove('show');}
 document.getElementById('exportModal').addEventListener('click',function(e){if(e.target===this)closeExportModal();});
+function selectFormat(fmt){exportFormat=fmt;document.getElementById('fmt-pdf').className='format-btn'+(fmt==='pdf'?' active-pdf':'');document.getElementById('fmt-excel').className='format-btn'+(fmt==='excel'?' active-excel':'');}
+function setExportRange(range){const now=new Date();let from,to=todayStr();if(range==='today'){from=todayStr();}else if(range==='week'){const d=new Date(now);d.setDate(d.getDate()-d.getDay());from=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}else if(range==='month'){from=`${now.getFullYear()}-${pad(now.getMonth()+1)}-01`;}else{from='';to='';}document.getElementById('exp-from').value=from;document.getElementById('exp-to').value=to;}
+function getFilteredData(){const from=document.getElementById('exp-from').value;const to=document.getElementById('exp-to').value;let filteredSales=sales,filteredExp=expenses;if(from){filteredSales=filteredSales.filter(s=>s.date>=from);filteredExp=filteredExp.filter(e=>e.date>=from);}if(to){filteredSales=filteredSales.filter(s=>s.date<=to);filteredExp=filteredExp.filter(e=>e.date<=to);}return{filteredSales,filteredExp,from,to};}
+async function runExport(){const genEl=document.getElementById('exp-generating');genEl.classList.add('show');document.getElementById('exp-download-btn').disabled=true;try{if(exportFormat==='pdf')await exportPDF();else await exportExcel();toast('✅ Report downloaded!');closeExportModal();}catch(err){toast('Export failed: '+err.message,'red');}finally{genEl.classList.remove('show');document.getElementById('exp-download-btn').disabled=false;}}
+async function exportPDF(){const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';const totalRev=sumArr(filteredSales,'total');const totalExp=sumArr(filteredExp,'amount');const net=totalRev-totalExp;const margin=totalRev?Math.round(net/totalRev*100):0;doc.setFillColor(0,229,160);doc.rect(0,0,210,28,'F');doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(biz,14,12);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.text('Sales & Financial Report',14,19);doc.text(`Period: ${dateRange}`,14,25);doc.text(`Generated: ${new Date().toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`,105,25,{align:'right'});let y=36;if(document.getElementById('inc-summary').checked){doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SUMMARY',14,y);y+=5;doc.setDrawColor(0,229,160);doc.setLineWidth(.3);doc.line(14,y,196,y);y+=5;doc.setTextColor(50,50,50);doc.setFontSize(9);doc.setFont('helvetica','normal');const summaryData=[['Total Revenue','KSh '+totalRev.toLocaleString(),'Total Expenses','KSh '+totalExp.toLocaleString()],['Net Profit','KSh '+net.toLocaleString(),'Profit Margin',margin+'%'],['Total Transactions',filteredSales.length.toString(),'Expense Entries',filteredExp.length.toString()]];doc.autoTable({startY:y,head:[['Metric','Value','Metric','Value']],body:summaryData,theme:'grid',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8.5,cellPadding:3},columnStyles:{0:{fontStyle:'bold',cellWidth:45},1:{textColor:[0,180,120],fontStyle:'bold',cellWidth:45},2:{fontStyle:'bold',cellWidth:45},3:{textColor:[0,180,120],fontStyle:'bold'}},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-sales').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SALES TRANSACTIONS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const salesRows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty.toString(),'KSh '+(s.unit_price||0).toLocaleString(),'KSh '+(s.total||0).toLocaleString(),s.note||'']);doc.autoTable({startY:y,head:[['Date','Time','Service','Qty','Unit Price','Total','Note']],body:salesRows.length?salesRows:[['No sales in range','','','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:7},styles:{fontSize:7,overflow:'ellipsize'},columnStyles:{0:{cellWidth:22},1:{cellWidth:14},5:{textColor:[0,180,120],fontStyle:'bold'},6:{cellWidth:28}},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-expenses').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('EXPENSE RECORDS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const expRows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'','KSh '+(e.amount||0).toLocaleString()]);doc.autoTable({startY:y,head:[['Date','Time','Category','Description','Amount']],body:expRows.length?expRows:[['No expenses in range','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[244,63,94],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{4:{textColor:[220,40,60],fontStyle:'bold'}},margin:{left:14,right:14}});}const pageCount=doc.getNumberOfPages();for(let i=1;i<=pageCount;i++){doc.setPage(i);doc.setFontSize(7);doc.setTextColor(150);doc.setFont('helvetica','normal');doc.text(`${biz} — Confidential Report`,14,290);doc.text(`Page ${i} of ${pageCount}`,196,290,{align:'right'});}const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.pdf`;doc.save(fname);}
+async function exportExcel(){const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const wb=XLSX.utils.book_new();const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';const totalRev=sumArr(filteredSales,'total');const totalExp=sumArr(filteredExp,'amount');const net=totalRev-totalExp;const margin=totalRev?Math.round(net/totalRev*100):0;if(document.getElementById('inc-summary').checked){const summaryWS=XLSX.utils.aoa_to_sheet([[biz+' — Sales Report'],['Period: '+dateRange],['Generated: '+new Date().toLocaleString('en-KE')],[],['FINANCIAL SUMMARY'],['Metric','Value'],['Total Revenue','KSh '+totalRev.toLocaleString()],['Total Expenses','KSh '+totalExp.toLocaleString()],['Net Profit','KSh '+net.toLocaleString()],['Profit Margin',margin+'%'],['Total Transactions',filteredSales.length],['Expense Entries',filteredExp.length]]);summaryWS['!cols']=[{wch:28},{wch:22}];XLSX.utils.book_append_sheet(wb,summaryWS,'Summary');}if(document.getElementById('inc-sales').checked){const header=['Date','Time','Service','Qty','Unit Price (KSh)','Total (KSh)','Note'];const rows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty||0,s.unit_price||0,s.total||0,s.note||'']);const salesWS=XLSX.utils.aoa_to_sheet([header,...rows]);salesWS['!cols']=[{wch:14},{wch:10},{wch:28},{wch:8},{wch:16},{wch:16},{wch:30}];XLSX.utils.book_append_sheet(wb,salesWS,'Sales');}if(document.getElementById('inc-expenses').checked){const header=['Date','Time','Category','Description','Amount (KSh)'];const rows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'',e.amount||0]);const expWS=XLSX.utils.aoa_to_sheet([header,...rows]);expWS['!cols']=[{wch:14},{wch:10},{wch:16},{wch:34},{wch:16}];XLSX.utils.book_append_sheet(wb,expWS,'Expenses');}const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.xlsx`;XLSX.writeFile(wb,fname);}
 
-function selectFormat(fmt){
-  exportFormat=fmt;
-  document.getElementById('fmt-pdf').className='format-btn'+(fmt==='pdf'?' active-pdf':'');
-  document.getElementById('fmt-excel').className='format-btn'+(fmt==='excel'?' active-excel':'');
-}
+// ============================================================
+// ===== AI SALES INTELLIGENCE ================================
+// ============================================================
+let aiChatHistory=[];
+let aiReportText='';
 
-function setExportRange(range){
-  const now=new Date();
-  let from,to=todayStr();
-  if(range==='today'){from=todayStr();}
-  else if(range==='week'){const d=new Date(now);d.setDate(d.getDate()-d.getDay());from=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
-  else if(range==='month'){from=`${now.getFullYear()}-${pad(now.getMonth()+1)}-01`;}
-  else{from='';to='';}
-  document.getElementById('exp-from').value=from;
-  document.getElementById('exp-to').value=to;
-}
+function aiQuick(el){document.getElementById('aiInput').value=el.textContent.trim();aiSend();}
 
-function getFilteredData(){
-  const from=document.getElementById('exp-from').value;
-  const to=document.getElementById('exp-to').value;
-  let filteredSales=sales,filteredExp=expenses;
-  if(from){filteredSales=filteredSales.filter(s=>s.date>=from);filteredExp=filteredExp.filter(e=>e.date>=from);}
-  if(to){filteredSales=filteredSales.filter(s=>s.date<=to);filteredExp=filteredExp.filter(e=>e.date<=to);}
-  return{filteredSales,filteredExp,from,to};
-}
-
-async function runExport(){
-  const genEl=document.getElementById('exp-generating');
-  genEl.classList.add('show');
-  document.getElementById('exp-download-btn').disabled=true;
+async function aiSend(){
+  const input=document.getElementById('aiInput');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  aiAppendMsg('user',text);
+  aiChatHistory.push({role:'user',content:text});
+  const typingId=aiShowTyping();
   try{
-    if(exportFormat==='pdf')await exportPDF();
-    else await exportExcel();
-    toast('✅ Report downloaded!');
-    closeExportModal();
-  }catch(err){
-    toast('Export failed: '+err.message,'red');
-    console.error(err);
-  }finally{
-    genEl.classList.remove('show');
-    document.getElementById('exp-download-btn').disabled=false;
+    const ctx=aiBuildContext();
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh.\n\nLive business data:\n${ctx}\n\nAnalyze this data and answer questions clearly. Be specific with numbers. Use KSh for amounts. Spot issues proactively. Keep answers concise but insightful.`,
+        messages:aiChatHistory.slice(-10)
+      })
+    });
+    aiRemoveTyping(typingId);
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'Sorry, could not process that.';
+    aiChatHistory.push({role:'assistant',content:reply});
+    aiAppendMsg('bot',reply);
+  }catch(e){
+    aiRemoveTyping(typingId);
+    aiAppendMsg('bot','❌ AI connection error. Please check your internet and try again.');
   }
 }
 
-// -------- PDF EXPORT --------
-async function exportPDF(){
-  const{jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const{filteredSales,filteredExp,from,to}=getFilteredData();
-  const biz=waSettings.biz||'GB ICT Solutions';
-  const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';
-  const totalRev=sumArr(filteredSales,'total');
-  const totalExp=sumArr(filteredExp,'amount');
-  const net=totalRev-totalExp;
-  const margin=totalRev?Math.round(net/totalRev*100):0;
-
-  // Header band
-  doc.setFillColor(0,229,160);
-  doc.rect(0,0,210,28,'F');
-  doc.setTextColor(0,0,0);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(18);
-  doc.text(biz,14,12);
-  doc.setFontSize(9);
-  doc.setFont('helvetica','normal');
-  doc.text('Sales & Financial Report',14,19);
-  doc.text(`Period: ${dateRange}`,14,25);
-  doc.text(`Generated: ${new Date().toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`,105,25,{align:'right'});
-
-  let y=36;
-
-  // Summary section
-  if(document.getElementById('inc-summary').checked){
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);
-    doc.text('SUMMARY',14,y);y+=5;
-    doc.setDrawColor(0,229,160);doc.setLineWidth(.3);doc.line(14,y,196,y);y+=5;
-    doc.setTextColor(50,50,50);doc.setFontSize(9);doc.setFont('helvetica','normal');
-
-    const summaryData=[
-      ['Total Revenue','KSh '+totalRev.toLocaleString(),'Total Expenses','KSh '+totalExp.toLocaleString()],
-      ['Net Profit','KSh '+net.toLocaleString(),'Profit Margin',margin+'%'],
-      ['Total Transactions',filteredSales.length.toString(),'Expense Entries',filteredExp.length.toString()],
-    ];
-    doc.autoTable({startY:y,head:[['Metric','Value','Metric','Value']],body:summaryData,theme:'grid',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8.5,cellPadding:3},columnStyles:{0:{fontStyle:'bold',cellWidth:45},1:{textColor:[0,180,120],fontStyle:'bold',cellWidth:45},2:{fontStyle:'bold',cellWidth:45},3:{textColor:[0,180,120],fontStyle:'bold'}},margin:{left:14,right:14}});
-    y=doc.lastAutoTable.finalY+10;
-  }
-
-  // Service breakdown
-  if(document.getElementById('inc-services').checked){
-    const bySvc={};filteredSales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,txns:0};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;bySvc[s.service_name].txns++;});
-    const svcRows=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d],i)=>[i+1,n,d.txns.toString(),d.qty.toString(),'KSh '+d.total.toLocaleString(),totalRev?Math.round(d.total/totalRev*100)+'%':'0%']);
-    if(svcRows.length){
-      if(y>240){doc.addPage();y=20;}
-      doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);
-      doc.text('REVENUE BY SERVICE',14,y);y+=5;
-      doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;
-      doc.autoTable({startY:y,head:[['#','Service','Sales','Qty','Revenue','Share']],body:svcRows,theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{0:{cellWidth:10},4:{textColor:[0,180,120],fontStyle:'bold'},5:{cellWidth:18}},margin:{left:14,right:14}});
-      y=doc.lastAutoTable.finalY+10;
-    }
-  }
-
-  // Daily totals
-  if(document.getElementById('inc-daily').checked){
-    const daily={};filteredSales.forEach(s=>{if(s.date)daily[s.date]=(daily[s.date]||{rev:0,txns:0});daily[s.date].rev+=s.total||0;daily[s.date].txns++;});
-    filteredExp.forEach(e=>{if(e.date){if(!daily[e.date])daily[e.date]={rev:0,txns:0};if(!daily[e.date].exp)daily[e.date].exp=0;daily[e.date].exp+=e.amount||0;}});
-    const dailyRows=Object.entries(daily).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v])=>{const net=v.rev-(v.exp||0);return[d,v.txns.toString(),'KSh '+v.rev.toLocaleString(),'KSh '+(v.exp||0).toLocaleString(),'KSh '+net.toLocaleString()];});
-    if(dailyRows.length){
-      if(y>220){doc.addPage();y=20;}
-      doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);
-      doc.text('DAILY TOTALS',14,y);y+=5;
-      doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;
-      doc.autoTable({startY:y,head:[['Date','Transactions','Revenue','Expenses','Net Profit']],body:dailyRows,theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{2:{textColor:[0,180,120]},4:{fontStyle:'bold'}},margin:{left:14,right:14}});
-      y=doc.lastAutoTable.finalY+10;
-    }
-  }
-
-  // Sales transactions
-  if(document.getElementById('inc-sales').checked){
-    if(y>210){doc.addPage();y=20;}
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);
-    doc.text('SALES TRANSACTIONS',14,y);y+=5;
-    doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;
-    const salesRows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty.toString(),'KSh '+(s.unit_price||0).toLocaleString(),'KSh '+(s.total||0).toLocaleString(),s.note||'']);
-    doc.autoTable({startY:y,head:[['Date','Time','Service','Qty','Unit Price','Total','Note']],body:salesRows.length?salesRows:[['No sales in range','','','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:7},styles:{fontSize:7,overflow:'ellipsize'},columnStyles:{0:{cellWidth:22},1:{cellWidth:14},5:{textColor:[0,180,120],fontStyle:'bold'},6:{cellWidth:28}},margin:{left:14,right:14}});
-    y=doc.lastAutoTable.finalY+10;
-  }
-
-  // Expenses
-  if(document.getElementById('inc-expenses').checked){
-    if(y>210){doc.addPage();y=20;}
-    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);
-    doc.text('EXPENSE RECORDS',14,y);y+=5;
-    doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;
-    const expRows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'','KSh '+(e.amount||0).toLocaleString()]);
-    doc.autoTable({startY:y,head:[['Date','Time','Category','Description','Amount']],body:expRows.length?expRows:[['No expenses in range','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[244,63,94],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{4:{textColor:[220,40,60],fontStyle:'bold'}},margin:{left:14,right:14}});
-  }
-
-  // Footer on all pages
-  const pageCount=doc.getNumberOfPages();
-  for(let i=1;i<=pageCount;i++){
-    doc.setPage(i);
-    doc.setFontSize(7);doc.setTextColor(150);doc.setFont('helvetica','normal');
-    doc.text(`${biz} — Confidential Report`,14,290);
-    doc.text(`Page ${i} of ${pageCount}`,196,290,{align:'right'});
-  }
-
-  const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.pdf`;
-  doc.save(fname);
+async function aiGenerateReport(){
+  const type=document.getElementById('aiReportType').value;
+  toast('✨ Generating AI report...');
+  try{
+    const ctx=aiBuildContext();
+    const today=new Date().toLocaleDateString();
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:`Generate a ${type} business report for GB ICT Solutions (cyber cafe & M-Pesa agency, Nairobi, Kenya). Date: ${today}.\n\nData:\n${ctx}\n\nWrite a comprehensive report with: Executive Summary, Sales Performance, Top Services, Inventory Status, Financial Overview (Revenue/Expenses/Profit), Key Insights, Recommendations for Henry. Use KSh for all amounts. Be specific with numbers.`}]
+      })
+    });
+    const data=await res.json();
+    aiReportText=data.content?.[0]?.text||'Could not generate report.';
+    document.getElementById('aiReportEmpty').style.display='none';
+    const el=document.getElementById('aiReportContent');
+    el.style.display='block';
+    el.innerHTML='<div class="ai-report-content">'+aiReportText.replace(/^#{1,3} (.+)$/gm,'<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';
+    document.getElementById('aiReportActions').style.display='flex';
+    toast('✅ Report generated!');
+  }catch(e){toast('❌ Failed to generate report','red');}
 }
 
-// -------- EXCEL EXPORT --------
-async function exportExcel(){
-  const{filteredSales,filteredExp,from,to}=getFilteredData();
-  const biz=waSettings.biz||'GB ICT Solutions';
+function aiBuildContext(){
+  const today=todayStr(),now=new Date();
+  const todaySales=sales.filter(s=>s.date===today);
+  const totalRev=sumArr(sales,'total');
+  const todayRev=sumArr(todaySales,'total');
+  const totalExp=sumArr(expenses,'amount');
+  const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
+  const weekRev=sumArr(sales.filter(s=>new Date(s.date)>=wStart),'total');
+  const lowStock=inventory.filter(i=>i.qty<=i.reorder_level);
+  const svcTotals={};
+  sales.forEach(s=>{const n=s.service_name||'?';svcTotals[n]=(svcTotals[n]||0)+(s.total||0);});
+  const top5=Object.entries(svcTotals).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>`${e[0]}: KSh ${e[1].toLocaleString()}`).join(', ');
+  return `SALES (${sales.length} records): Total Revenue KSh ${totalRev.toLocaleString()}, Today KSh ${todayRev.toLocaleString()} (${todaySales.length} txns), This Week KSh ${weekRev.toLocaleString()}
+TOP SERVICES: ${top5||'none'}
+EXPENSES (${expenses.length} records): Total KSh ${totalExp.toLocaleString()}, Net Profit KSh ${(totalRev-totalExp).toLocaleString()}, Margin ${totalRev?Math.round((totalRev-totalExp)/totalRev*100):0}%
+INVENTORY (${inventory.length} items): ${lowStock.length} low/out of stock — ${lowStock.slice(0,5).map(i=>`${i.name||i.icon} (${i.qty||0} left)`).join(', ')||'all good'}
+SERVICES: ${services.slice(0,10).map(s=>`${s.icon}${s.name} KSh ${s.price}`).join(', ')}`;
+}
+
+function aiAppendMsg(role,text){
+  const msgs=document.getElementById('aiMsgs');
+  const div=document.createElement('div');
+  div.className=`ai-msg ${role}`;
+  div.innerHTML=`<div class="ai-msg-avatar">${role==='bot'?'🤖':'👤'}</div><div class="ai-bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function aiShowTyping(){
+  const msgs=document.getElementById('aiMsgs');
+  const id='ait_'+Date.now();
+  const div=document.createElement('div');
+  div.className='ai-msg bot';div.id=id;
+  div.innerHTML='<div class="ai-msg-avatar">🤖</div><div class="ai-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+  return id;
+}
+
+function aiRemoveTyping(id){const el=document.getElementById(id);if(el)el.remove();}
+
+function aiExportPDF(){
+  if(!aiReportText){toast('Generate a report first','amber');return;}
+  const{jsPDF}=window.jspdf;const doc=new jsPDF();
+  const today=new Date().toLocaleDateString();
+  doc.setFillColor(5,8,15);doc.rect(0,0,210,28,'F');
+  doc.setTextColor(0,229,160);doc.setFontSize(16);doc.setFont('helvetica','bold');
+  doc.text('GB ICT Solutions',14,13);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);
+  doc.text('AI Sales Report · '+today,14,21);
+  doc.setTextColor(30,30,30);doc.setFontSize(9.5);doc.setFont('helvetica','normal');
+  const lines=doc.splitTextToSize(aiReportText.replace(/[#*]/g,''),182);
+  doc.text(lines,14,36);
+  doc.save('GB_ICT_AI_Report_'+today.replace(/\//g,'-')+'.pdf');
+  toast('📄 PDF downloaded!');
+}
+
+function aiExportExcel(){
   const wb=XLSX.utils.book_new();
-  const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';
-  const totalRev=sumArr(filteredSales,'total');
-  const totalExp=sumArr(filteredExp,'amount');
-  const net=totalRev-totalExp;
-  const margin=totalRev?Math.round(net/totalRev*100):0;
-
-  // ---- Sheet 1: Summary ----
-  if(document.getElementById('inc-summary').checked){
-    const summaryWS=XLSX.utils.aoa_to_sheet([
-      [biz+' — Sales Report'],
-      ['Period: '+dateRange],
-      ['Generated: '+new Date().toLocaleString('en-KE')],
-      [],
-      ['FINANCIAL SUMMARY'],
-      ['Metric','Value'],
-      ['Total Revenue','KSh '+totalRev.toLocaleString()],
-      ['Total Expenses','KSh '+totalExp.toLocaleString()],
-      ['Net Profit','KSh '+net.toLocaleString()],
-      ['Profit Margin',margin+'%'],
-      ['Total Transactions',filteredSales.length],
-      ['Expense Entries',filteredExp.length],
-      ['Active Days',[...new Set(filteredSales.map(s=>s.date))].length],
-      ['Average Daily Revenue',totalRev&&filteredSales.length?'KSh '+Math.round(totalRev/Math.max([...new Set(filteredSales.map(s=>s.date))].length,1)).toLocaleString():'KSh 0'],
-    ]);
-    summaryWS['!cols']=[{wch:28},{wch:22}];
-    XLSX.utils.book_append_sheet(wb,summaryWS,'Summary');
-  }
-
-  // ---- Sheet 2: Sales ----
-  if(document.getElementById('inc-sales').checked){
-    const header=['Date','Time','Service','Qty','Unit Price (KSh)','Total (KSh)','Note'];
-    const rows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty||0,s.unit_price||0,s.total||0,s.note||'']);
-    const salesWS=XLSX.utils.aoa_to_sheet([header,...rows]);
-    salesWS['!cols']=[{wch:14},{wch:10},{wch:28},{wch:8},{wch:16},{wch:16},{wch:30}];
-    // Total row
-    XLSX.utils.sheet_add_aoa(salesWS,[['','','','','TOTAL','KSh '+totalRev.toLocaleString(),'']],{origin:-1});
-    XLSX.utils.book_append_sheet(wb,salesWS,'Sales');
-  }
-
-  // ---- Sheet 3: Expenses ----
-  if(document.getElementById('inc-expenses').checked){
-    const header=['Date','Time','Category','Description','Amount (KSh)'];
-    const rows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'',e.amount||0]);
-    const expWS=XLSX.utils.aoa_to_sheet([header,...rows]);
-    expWS['!cols']=[{wch:14},{wch:10},{wch:16},{wch:34},{wch:16}];
-    XLSX.utils.sheet_add_aoa(expWS,[['','','','TOTAL','KSh '+totalExp.toLocaleString()]],{origin:-1});
-    XLSX.utils.book_append_sheet(wb,expWS,'Expenses');
-  }
-
-  // ---- Sheet 4: By Service ----
-  if(document.getElementById('inc-services').checked){
-    const bySvc={};filteredSales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,txns:0};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;bySvc[s.service_name].txns++;});
-    const header=['Rank','Service','Transactions','Total Qty','Revenue (KSh)','Revenue Share'];
-    const rows=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d],i)=>[i+1,n,d.txns,d.qty,d.total,totalRev?Math.round(d.total/totalRev*100)+'%':'0%']);
-    const svcWS=XLSX.utils.aoa_to_sheet([header,...rows]);
-    svcWS['!cols']=[{wch:8},{wch:28},{wch:14},{wch:12},{wch:18},{wch:14}];
-    XLSX.utils.book_append_sheet(wb,svcWS,'By Service');
-  }
-
-  // ---- Sheet 5: Daily Totals ----
-  if(document.getElementById('inc-daily').checked){
-    const daily={};
-    filteredSales.forEach(s=>{if(s.date){if(!daily[s.date])daily[s.date]={rev:0,exp:0,txns:0};daily[s.date].rev+=s.total||0;daily[s.date].txns++;}});
-    filteredExp.forEach(e=>{if(e.date){if(!daily[e.date])daily[e.date]={rev:0,exp:0,txns:0};daily[e.date].exp+=e.amount||0;}});
-    const header=['Date','Transactions','Revenue (KSh)','Expenses (KSh)','Net Profit (KSh)','Margin'];
-    const rows=Object.entries(daily).sort((a,b)=>a[0].localeCompare(b[0])).map(([d,v])=>{const net=v.rev-v.exp;const m=v.rev?Math.round(net/v.rev*100):0;return[d,v.txns,v.rev,v.exp,net,m+'%'];});
-    const dailyWS=XLSX.utils.aoa_to_sheet([header,...rows]);
-    dailyWS['!cols']=[{wch:14},{wch:14},{wch:18},{wch:18},{wch:18},{wch:10}];
-    XLSX.utils.book_append_sheet(wb,dailyWS,'Daily Totals');
-  }
-
-  const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.xlsx`;
-  XLSX.writeFile(wb,fname);
+  const ws=XLSX.utils.aoa_to_sheet([['GB ICT Solutions — AI Sales Report'],['Generated: '+new Date().toLocaleString()],[''],['',...aiReportText.split('\n').map(l=>[l])]]);
+  XLSX.utils.book_append_sheet(wb,ws,'AI Report');
+  XLSX.writeFile(wb,'GB_ICT_AI_Report_'+new Date().toISOString().split('T')[0]+'.xlsx');
+  toast('📊 Excel downloaded!');
 }
+// ============================================================
 </script>
 
 <script>
