@@ -739,6 +739,21 @@ tr:hover td{background:rgba(255,255,255,.015);}
     </div>
   </div>
   <div class="form-card" style="margin-top:8px">
+    <div class="stitle">🤖 AI Settings</div>
+    <div class="form-row">
+      <div class="fg"><label>AI Provider</label><select id="ai-provider"><option value="openai">OpenAI GPT</option><option value="anthropic">Anthropic Claude</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>API Key</label><input type="password" id="ai-api-key" placeholder="sk-... or sk-ant-api03-..."></div>
+    </div>
+    <div style="font-size:.75rem;color:var(--text3);margin-bottom:12px">Get API key from <a href="https://platform.openai.com/api-keys" target="_blank" id="ai-link">platform.openai.com</a>. Anthropic blocked by CORS in browsers.</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="testAIConnection()">🔍 Test Connection</button>
+      <button class="btn btn-primary" onclick="saveAISettings()">💾 Save AI Settings</button>
+      <span id="ai-saved-msg" style="font-size:.78rem;color:var(--accent);display:none">✅ Saved!</span>
+    </div>
+  </div>
+  <div class="form-card" style="margin-top:8px">
     <div class="stitle">🔐 Security</div>
     <div style="background:var(--accent-dim);border:1px solid rgba(0,229,160,.15);border-radius:var(--radius-sm);padding:14px;font-size:.82rem;color:var(--text3);line-height:1.8">
       <div style="color:var(--accent);font-weight:700;margin-bottom:4px">🔒 Login Features</div>
@@ -928,7 +943,17 @@ function renderSaleTab(){document.getElementById('services-grid').innerHTML=serv
 async function renderHistory(){const df=document.getElementById('filter-date').value,sf=document.getElementById('filter-svc').value;const fsel=document.getElementById('filter-svc');if(fsel.options.length<=1){services.forEach(s=>{if(!Array.from(fsel.options).find(o=>o.value===s.id)){const o=document.createElement('option');o.value=s.id;o.textContent=s.name;fsel.appendChild(o);}});}try{let query=sb.from('gb_sales').select('*').order('id',{ascending:false});if(df)query=query.eq('date',df);if(sf)query=query.eq('service_id',sf);const{data,error}=await query;if(error)throw error;const tbody=document.getElementById('history-tbody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-icon">📭</div><p>No records found</p></div></td></tr>';return;}tbody.innerHTML=data.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.date}</td><td style="color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td style="color:var(--text3)">KSh ${(s.unit_price||0).toLocaleString()}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3)">${s.note||'—'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">🗑</button></td></tr>`).join('');}catch(e){toast('Error loading history','red');}}
 function clearFilter(){document.getElementById('filter-date').value='';document.getElementById('filter-svc').value='';renderHistory();}
 
-function renderSettings(){document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');loadMpesaSettingsForm();}
+function renderSettings(){document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');loadMpesaSettingsForm();loadAISettings();updateAIWelcome();}
+
+function loadAISettings(){try{const provider=localStorage.getItem('gb_ai_provider')||'openai';const key=localStorage.getItem('gb_ai_api_key')||'';document.getElementById('ai-provider').value=provider;document.getElementById('ai-api-key').value=key;updateAILink();document.getElementById('ai-provider').addEventListener('change',updateAILink);}catch(e){}}
+
+function saveAISettings(){const provider=document.getElementById('ai-provider').value;const key=document.getElementById('ai-api-key').value.trim();localStorage.setItem('gb_ai_provider',provider);localStorage.setItem('gb_ai_api_key',key);const msg=document.getElementById('ai-saved-msg');msg.style.display='inline';setTimeout(()=>msg.style.display='none',2000);toast('🤖 AI settings saved!','green');updateAIWelcome();}
+
+function testAIConnection(){const provider=document.getElementById('ai-provider').value;const apiKey=document.getElementById('ai-api-key').value.trim();if(!apiKey){toast('Enter your API key first','amber');return;}if(provider==='anthropic'){toast('⚠️ Anthropic API blocked by CORS in browsers, use OpenAI.','amber');return;}toast('🔍 Testing AI connection...','blue');fetch('https://api.openai.com/v1/models',{method:'GET',headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'}}).then(res=>res.json()).then(data=>{if(data.error){toast('❌ Connection failed: '+(data.error.message||'Unknown'),'red');}else{toast('✅ Connection OK','green');}}).catch(e=>{toast('❌ Connection error: '+e.message,'red');});}
+
+function updateAILink(){const provider=document.getElementById('ai-provider').value;const link=document.getElementById('ai-link');const placeholder=document.getElementById('ai-api-key');if(provider==='anthropic'){link.href='https://console.anthropic.com/';link.textContent='console.anthropic.com';placeholder.placeholder='sk-ant-api03-...';}else{link.href='https://platform.openai.com/api-keys';link.textContent='platform.openai.com';placeholder.placeholder='sk-...';}}
+
+function updateAIWelcome(){const provider=localStorage.getItem('gb_ai_provider')||'openai';const el=document.querySelector('.ai-chat-hdr-info p');if(el){el.textContent=`Powered by ${provider==='anthropic'?'Claude':'GPT'} · Live Supabase data`;}}
 async function updatePrice(id,val){const s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Price updated!');}
 async function deleteService(id){if(!confirm('Remove this service?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Removed','amber');}
 async function addService(){const icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;if(!name){toast('Enter service name!','amber');return;}const newSvc={id:'s'+Date.now(),icon,name,price};try{const{data,error}=await sb.from('gb_services').insert(newSvc).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('✅ Service added!');}catch(e){toast('Error: '+e.message,'red');}}
@@ -994,22 +1019,27 @@ async function aiSend(){
   const input=document.getElementById('aiInput');
   const text=input.value.trim();
   if(!text)return;
+  const provider=localStorage.getItem('gb_ai_provider')||'openai';
+  const apiKey=localStorage.getItem('gb_ai_api_key');
+  if(!apiKey){aiAppendMsg('bot','❌ Please set your API key in Settings first.');return;}
+  if(provider==='anthropic'){aiAppendMsg('bot','❌ Anthropic is blocked by CORS in browsers; please use OpenAI.');return;}
   input.value='';
   aiAppendMsg('user',text);
   aiChatHistory.push({role:'user',content:text});
   const typingId=aiShowTyping();
   try{
     const ctx=aiBuildContext();
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:`You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh.\n\nLive business data:\n${ctx}\n\nAnalyze this data and answer questions clearly. Be specific with numbers. Use KSh for amounts. Spot issues proactively. Keep answers concise but insightful.`,
-        messages:aiChatHistory.slice(-10)
-      })
-    });
+    let url,headers,body;
+    if(provider==='anthropic'){
+      url='https://api.anthropic.com/v1/messages';
+      headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey,'anthropic-version':'2023-06-01'};
+      body=JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:`You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh.\n\nLive business data:\n${ctx}\n\nAnalyze this data and answer questions clearly. Be specific with numbers. Use KSh for amounts. Spot issues proactively. Keep answers concise but insightful.`,messages:aiChatHistory.slice(-10)});
+    } else {
+      url='https://api.openai.com/v1/chat/completions';
+      headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey};
+      body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:1000,messages:[{role:'system',content:`You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh.\n\nLive business data:\n${ctx}\n\nAnalyze this data and answer questions clearly. Be specific with numbers. Use KSh for amounts. Spot issues proactively. Keep answers concise but insightful.`},...aiChatHistory.slice(-10)]});
+    }
+    const res=await fetch(url,{method:'POST',headers,body});
     aiRemoveTyping(typingId);
     const data=await res.json();
     const reply=data.content?.[0]?.text||'Sorry, could not process that.';
@@ -1023,21 +1053,20 @@ async function aiSend(){
 
 async function aiGenerateReport(){
   const type=document.getElementById('aiReportType').value;
+  const provider=localStorage.getItem('gb_ai_provider')||'openai';
+  const apiKey=localStorage.getItem('gb_ai_api_key');
+  if(!apiKey){toast('Please set your API key in Settings first','amber');return;}
+  if(provider==='anthropic'){toast('Anthropic is blocked by CORS in browsers. Please use OpenAI.','amber');return;}
   toast('✨ Generating AI report...');
   try{
     const ctx=aiBuildContext();
     const today=new Date().toLocaleDateString();
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:`Generate a ${type} business report for GB ICT Solutions (cyber cafe & M-Pesa agency, Nairobi, Kenya). Date: ${today}.\n\nData:\n${ctx}\n\nWrite a comprehensive report with: Executive Summary, Sales Performance, Top Services, Inventory Status, Financial Overview (Revenue/Expenses/Profit), Key Insights, Recommendations for Henry. Use KSh for all amounts. Be specific with numbers.`}]
-      })
-    });
+    let url='https://api.openai.com/v1/chat/completions';
+    let headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey};
+    let body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:2000,messages:[{role:'user',content:`Generate a ${type} business report for GB ICT Solutions (cyber cafe & M-Pesa agency, Nairobi, Kenya). Date: ${today}.\n\nData:\n${ctx}\n\nWrite a comprehensive report with: Executive Summary, Sales Performance, Top Services, Inventory Status, Financial Overview (Revenue/Expenses/Profit), Key Insights, Recommendations for Henry. Use KSh for all amounts. Be specific with numbers.`}]});
+    const res=await fetch(url,{method:'POST',headers,body});
     const data=await res.json();
-    aiReportText=data.content?.[0]?.text||'Could not generate report.';
+    aiReportText=data.choices?.[0]?.message?.content || data.content?.[0]?.text || 'Could not generate report.';
     document.getElementById('aiReportEmpty').style.display='none';
     const el=document.getElementById('aiReportContent');
     el.style.display='block';
