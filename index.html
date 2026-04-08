@@ -985,7 +985,7 @@ function toggleMpesaPanel(){const panel=document.getElementById('mpesa-panel');i
 function closeMpesaPanel(){document.getElementById('mpesa-panel').style.display='none';resetMpesaStatus();if(window._mpesaPollTimer){clearInterval(window._mpesaPollTimer);window._mpesaPollTimer=null;}}
 function resetMpesaStatus(){setMpStatus('stk','idle','📱','Ready','Enter phone number and tap Send Prompt');setMpStatus('manual','idle','🔢','Awaiting Code','Ask customer for their M-Pesa code');if(document.getElementById('mp-txn-code'))document.getElementById('mp-txn-code').value='';if(document.getElementById('mp-phone'))document.getElementById('mp-phone').value='';if(document.getElementById('mp-manual-verify-btn'))document.getElementById('mp-manual-verify-btn').style.display='none';if(document.getElementById('mp-stk-btn'))document.getElementById('mp-stk-btn').disabled=false;}
 function setMpStatus(panel,type,icon,title,msg){const el=document.getElementById('mp-'+panel+'-status');if(!el)return;el.className='mpesa-status '+type;el.innerHTML=`<div class="mpesa-status-icon">${icon}</div><div><strong>${title}</strong>${msg}</div>`;}
-const MPESA_PROXY_URL='https://gb-mpesa-proxy-9ygc.vercel.app';async function sendSTKPush(){
+const MPESA_PROXY_URL='https://https://gb-mpesa-proxy-4gmu.vercel.app';async function sendSTKPush(){
   const phone=document.getElementById('mp-phone').value.trim().replace(/\s/g,'');
   if(!phone){toast('Enter customer phone!','amber');return;}
   const norm=phone.startsWith('0')?'254'+phone.slice(1):phone.startsWith('+')?phone.slice(1):phone;
