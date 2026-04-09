@@ -988,68 +988,52 @@ function setMpStatus(panel,type,icon,title,msg){const el=document.getElementById
 const MPESA_PROXY_URL='https://https://gb-mpesa-proxy-4gmu.vercel.app';async function sendSTKPush(){
   const phone=document.getElementById('mp-phone').value.trim().replace(/\s/g,'');
   if(!phone){toast('Enter customer phone!','amber');return;}
+
   const norm=phone.startsWith('0')?'254'+phone.slice(1):phone.startsWith('+')?phone.slice(1):phone;
-  if(!/^2547\d{8}$/.test(norm)){toast('Invalid Kenyan phone number','amber');return;}
-  const total=Object.keys(cart).reduce((sum,id)=>{const s=services.find(x=>x.id===id);return sum+(s?s.price*cart[id]:0);},0);
+  if(!/^2547\d{8}$/.test(norm)){toast('Invalid Kenyan number','amber');return;}
+
+  const total=Object.keys(cart).reduce((sum,id)=>{
+    const s=services.find(x=>x.id===id);return sum+(s?s.price*cart[id]:0);
+  },0);
   if(!total){toast('Cart is empty!','amber');return;}
-  setMpStatus('stk','sending','⏳','Sending Prompt...','Contacting Safaricom via secure proxy...');
+
+  setMpStatus('stk','sending','⏳','Sending Prompt...','Contacting Safaricom...');
   document.getElementById('mp-stk-btn').disabled=true;
+
   try{
     const res=await fetch(MPESA_PROXY_URL+'/api/mpesa',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:norm,amount:total,accountRef:'GB ICT Solutions',description:'Payment for services'})
+      body:JSON.stringify({phone:norm,amount:total,accountRef:'GB ICT Solutions',description:'Payment'})
     });
     const data=await res.json();
     console.log('STK Push response:',data);
 
-    // FIX: proxy returns checkout_request_id (snake_case), not data.success
-    if(data.checkout_request_id){
-      const checkoutId=data.checkout_request_id;
-      setMpStatus('stk','waiting','⏳','Waiting for Payment...','Prompt sent! Customer should enter M-Pesa PIN.');
+    if(data.success && data.checkout_request_id){
+
+      // ✅ Prompt reached phone — record sale immediately
+      // No polling needed: customer gets the prompt, they pay, we record
+      setMpStatus('stk','waiting','📱','Prompt Sent to Phone!',
+        'Customer enters PIN → Click "✅ Confirm Paid" once they show you M-Pesa SMS.');
+
+      // Show the manual confirm button
       document.getElementById('mp-manual-verify-btn').style.display='inline-flex';
-      toast('📲 M-Pesa prompt sent to '+phone);
-      let pollCount=0;
-      window._mpesaPollTimer=setInterval(async()=>{
-        pollCount++;
-        if(pollCount>12){
-          clearInterval(window._mpesaPollTimer);
-          setMpStatus('stk','failed','⏱️','Timed Out','No confirmation received. Use Manual Code tab.');
-          document.getElementById('mp-stk-btn').disabled=false;
-          return;
-        }
-        try{
-          const qRes=await fetch(MPESA_PROXY_URL+'/api/query',{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({checkoutRequestID:checkoutId})
-          });
-          const qData=await qRes.json();
-          console.log('Poll #'+pollCount+' response:',qData);
-          // FIX: proxy returns {status:"completed"} not {success:true}
-          if(qData.status==='completed'){
-            clearInterval(window._mpesaPollTimer);
-            setMpStatus('stk','success','✅','Payment Confirmed!','Recording sale...');
-            await finaliseMpesaSale('MPESA-'+checkoutId.slice(-8),'STK Push');
-          // FIX: proxy returns status:"cancelled" or "failed", not qData.cancelled
-          }else if(qData.status==='cancelled'||qData.status==='failed'){
-            clearInterval(window._mpesaPollTimer);
-            setMpStatus('stk','failed','❌','Cancelled','Customer cancelled. Try again.');
-            document.getElementById('mp-stk-btn').disabled=false;
-          }
-          // if status==='pending', keep polling
-        }catch(e){console.warn('Poll error:',e);}
-      },5000);
-    }else{
-      // STK failed — show error from proxy
-      setMpStatus('stk','failed','❌','Failed',data.error||'STK Push failed. Check M-Pesa settings.');
       document.getElementById('mp-stk-btn').disabled=false;
-      toast('STK Push failed: '+(data.error||'unknown error'),'amber');
+
+      toast('📲 STK Push sent! Ask customer to enter M-Pesa PIN.');
+
+    }else{
+      // ❌ STK failed
+      const msg=data.error||'STK Push failed. Check M-Pesa settings in Settings tab.';
+      setMpStatus('stk','failed','❌','Failed',msg);
+      document.getElementById('mp-stk-btn').disabled=false;
+      toast('M-Pesa error: '+msg,'amber');
     }
+
   }catch(err){
+    console.error('STK error:',err);
     setMpStatus('stk','failed','❌','Connection Error',err.message);
     document.getElementById('mp-stk-btn').disabled=false;
-    toast('Proxy error: '+err.message,'red');
   }
 }
 
