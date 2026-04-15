@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -347,7 +346,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .export-bar-icon{font-size:1.4rem;}
 .export-bar-info .eb-title{font-size:.9rem;font-weight:700;color:var(--text);}
 .export-bar-info .eb-sub{font-size:.68rem;color:var(--text3);margin-top:2px;}
-
 /* ===== AI TAB STYLES ===== */
 .ai-wrap{display:grid;grid-template-columns:1fr 360px;gap:18px;min-height:520px;}
 .ai-chat-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;min-height:520px;}
@@ -746,7 +744,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
     <div class="form-row">
       <div class="fg"><label>API Key</label><input type="password" id="ai-api-key" placeholder="Paste your API key here"></div>
     </div>
-    <div style="font-size:.75rem;color:var(--text3);margin-bottom:12px">Get API key from <a href="https://platform.openai.com/api-keys" target="_blank" id="ai-link">platform.openai.com</a><br><span style="color:var(--accent);font-size:.7rem">💡 Recommendation: Use Groq (fastest free tier) or Gemini (generous limits). OpenAI has rate limits on free tier.</span></div>
+    <div style="font-size:.75rem;color:var(--text3);margin-bottom:12px">Get API key from <a href="https://platform.openai.com/api-keys" target="_blank" id="ai-link">platform.openai.com</a><br><span style="color:var(--accent);font-size:.7rem">💡 Recommendation: Use Groq (fastest free tier) or Gemini (generous limits).</span></div>
     <div class="btn-row">
       <button class="btn btn-secondary btn-sm" onclick="testAIConnection()">🔍 Test Connection</button>
       <button class="btn btn-primary" onclick="saveAISettings()">💾 Save AI Settings</button>
@@ -769,13 +767,12 @@ tr:hover td{background:rgba(255,255,255,.015);}
 <div class="tab" id="tab-ai">
   <div class="stitle">🤖 AI Sales Intelligence</div>
   <div class="ai-wrap">
-    <!-- CHAT PANEL -->
     <div class="ai-chat-panel">
       <div class="ai-chat-hdr">
         <div class="ai-avatar">🤖</div>
         <div class="ai-chat-hdr-info">
           <h4>GB Sales AI</h4>
-          <p>Powered by Claude · Live Supabase data</p>
+          <p id="ai-provider-label">Powered by Groq · Live Supabase data</p>
         </div>
         <div class="ai-online"></div>
       </div>
@@ -798,7 +795,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
         <button class="ai-send" onclick="aiSend()">➤</button>
       </div>
     </div>
-    <!-- REPORT PANEL -->
     <div class="ai-report-panel">
       <div class="ai-report-hdr">
         <h4>📄 AI Written Report</h4>
@@ -825,7 +821,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
     </div>
   </div>
 </div>
-<!-- ===== END AI TAB ===== -->
 
 </main>
 <div id="toast"></div>
@@ -854,7 +849,6 @@ function startLockout(){isLockedOut=true;document.getElementById('pinKeypad').st
 function unlockApp(){sessionStorage.setItem('gb_ict_unlocked','1');const ov=document.getElementById('loginOverlay');ov.style.transition='opacity .4s ease';ov.style.opacity='0';setTimeout(()=>{ov.style.display='none';document.getElementById('appRoot').style.display='block';document.getElementById('logoutBtn').style.display='inline-flex';init();},400);}
 function doLogout(){sessionStorage.removeItem('gb_ict_unlocked');pinBuffer='';failedAttempts=0;isLockedOut=false;for(let i=0;i<4;i++){const d=document.getElementById('dot'+i);d.classList.remove('filled','error');}for(let i=0;i<3;i++)document.getElementById('pip'+i).className='attempt-pip';document.getElementById('loginError').classList.remove('show');document.getElementById('appRoot').style.display='none';document.getElementById('logoutBtn').style.display='none';const ov=document.getElementById('loginOverlay');ov.style.display='flex';ov.style.opacity='1';updateDots();}
 document.addEventListener('keydown',e=>{if(document.getElementById('loginOverlay').style.display==='none')return;if(e.key>='0'&&e.key<='9')pinPress(e.key);if(e.key==='Backspace'||e.key==='Delete')pinDelete();});
-if(sessionStorage.getItem('gb_ict_unlocked')==='1'){document.getElementById('loginOverlay').style.display='none';document.getElementById('appRoot').style.display='block';document.getElementById('logoutBtn').style.display='inline-flex';}
 
 // ===== APP CONFIG =====
 const SUPABASE_URL='https://rgpuequojgsxpfxvsizu.supabase.co';
@@ -893,6 +887,26 @@ function setOffline(){document.getElementById('syncDot').className='sync-dot off
 function toast(msg,type='green'){const t=document.getElementById('toast');t.textContent=msg;const c={green:'#00e5a0',red:'#f43f5e',amber:'#f59e0b',whatsapp:'#25D366',blue:'#38bdf8'};t.style.background=c[type]||c.green;t.style.color=(type==='green'||type==='whatsapp'||type==='amber')?'#000':'#fff';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function loadTarget(){let v=localStorage.getItem('gb_daily_target');if(v)DAILY_TARGET=parseFloat(v)||3000;const inp=document.getElementById('target-input');if(inp)inp.value=DAILY_TARGET;}
 function saveTarget(){const v=parseFloat(document.getElementById('target-input').value)||3000;DAILY_TARGET=v;localStorage.setItem('gb_daily_target',v);const m=document.getElementById('target-saved-msg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);toast('🎯 Target saved!');}
+
+// ===== INIT FUNCTION — THIS IS THE FIX =====
+async function init(){
+  try{
+    document.getElementById('syncStatus').textContent='Loading...';
+    await loadServices();
+    await loadSales();
+    await loadExpenses();
+    await loadInventory();
+    loadWASettings();
+    loadTarget();
+    updateAIWelcome();
+    renderDashboard();
+    setOnline();
+  }catch(e){
+    console.error('Init error:',e);
+    setOffline();
+    renderDashboard();
+  }
+}
 
 function switchTab(t,btn){
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
@@ -945,15 +959,19 @@ function clearFilter(){document.getElementById('filter-date').value='';document.
 
 function renderSettings(){document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div class="sicon">${s.icon}</div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑 Remove</button></div>`).join('');loadMpesaSettingsForm();loadAISettings();updateAIWelcome();}
 
-function loadAISettings(){try{const provider=localStorage.getItem('gb_ai_provider')||'openai';const key=localStorage.getItem('gb_ai_api_key')||'';document.getElementById('ai-provider').value=provider;document.getElementById('ai-api-key').value=key;updateAILink();document.getElementById('ai-provider').addEventListener('change',updateAILink);}catch(e){}}
+function loadAISettings(){try{const provider=localStorage.getItem('gb_ai_provider')||'groq';const key=localStorage.getItem('gb_ai_api_key')||'';document.getElementById('ai-provider').value=provider;document.getElementById('ai-api-key').value=key;updateAILink();document.getElementById('ai-provider').addEventListener('change',updateAILink);}catch(e){}}
 
 function saveAISettings(){const provider=document.getElementById('ai-provider').value;const key=document.getElementById('ai-api-key').value.trim();localStorage.setItem('gb_ai_provider',provider);localStorage.setItem('gb_ai_api_key',key);const msg=document.getElementById('ai-saved-msg');msg.style.display='inline';setTimeout(()=>msg.style.display='none',2000);toast('🤖 AI settings saved!','green');updateAIWelcome();}
 
-function testAIConnection(){const provider=document.getElementById('ai-provider').value;const apiKey=document.getElementById('ai-api-key').value.trim();if(!apiKey){toast('Enter your API key first','amber');return;}if(provider==='anthropic'){toast('⚠️ Anthropic blocked by CORS. Use Groq or Gemini.','amber');return;}toast('🔍 Testing connection...','blue');let url,headers,body;if(provider==='groq'){url='https://api.groq.com/openai/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}else if(provider==='gemini'){url='https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key='+apiKey;headers={'Content-Type':'application/json'};body=JSON.stringify({contents:[{role:'user',parts:[{text:'Hi'}]}]});}else{url='https://api.openai.com/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}console.log('Test request body:',body);fetch(url,{method:'POST',headers,body}).then(res=>{const status=res.status;const ok=res.ok;return res.json().then(data=>({status,ok,data}));}).then(({status,ok,data})=>{console.log('Test response - Status:',status,'OK:',ok);if(data.error){console.log('Error message:',data.error.message||data.error);}console.log('Full response:',JSON.stringify(data,null,2));if(ok){toast('✅ Connection successful!','green');}else{const err=data?.error?.message||data?.error||JSON.stringify(data);toast('❌ '+err+' (Status: '+status+')','red');}}).catch(e=>{console.error('Test error:',e);toast('❌ Connection error: '+e.message,'red');});}
+function testAIConnection(){const provider=document.getElementById('ai-provider').value;const apiKey=document.getElementById('ai-api-key').value.trim();if(!apiKey){toast('Enter your API key first','amber');return;}if(provider==='anthropic'){toast('⚠️ Anthropic blocked by CORS. Use Groq or Gemini.','amber');return;}toast('🔍 Testing connection...','blue');let url,headers,body;if(provider==='groq'){url='https://api.groq.com/openai/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}else if(provider==='gemini'){url='https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key='+apiKey;headers={'Content-Type':'application/json'};body=JSON.stringify({contents:[{role:'user',parts:[{text:'Hi'}]}]});}else{url='https://api.openai.com/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}fetch(url,{method:'POST',headers,body}).then(res=>{const status=res.status;const ok=res.ok;return res.json().then(data=>({status,ok,data}));}).then(({status,ok,data})=>{if(ok){toast('✅ Connection successful!','green');}else{const err=data?.error?.message||data?.error||JSON.stringify(data);toast('❌ '+err+' (Status: '+status+')','red');}}).catch(e=>{toast('❌ Connection error: '+e.message,'red');});}
 
 function updateAILink(){const provider=document.getElementById('ai-provider').value;const link=document.getElementById('ai-link');const placeholder=document.getElementById('ai-api-key');if(provider==='anthropic'){link.href='https://console.anthropic.com/';link.textContent='console.anthropic.com';placeholder.placeholder='sk-ant-...';}else if(provider==='groq'){link.href='https://console.groq.com/';link.textContent='console.groq.com';placeholder.placeholder='gsk_...';}else if(provider==='gemini'){link.href='https://aistudio.google.com/app/apikey';link.textContent='aistudio.google.com/app/apikey';placeholder.placeholder='AIzaSy...';}else{link.href='https://platform.openai.com/api-keys';link.textContent='platform.openai.com';placeholder.placeholder='sk-...';}}
 
-function updateAIWelcome(){const provider=localStorage.getItem('gb_ai_provider')||'openai';const el=document.querySelector('.ai-chat-hdr-info p');if(el){let pName='GPT';if(provider==='anthropic')pName='Claude';else if(provider==='groq')pName='Groq';else if(provider==='gemini')pName='Gemini';el.textContent=`Powered by ${pName} · Live Supabase data`;}}
+function updateAIWelcome(){
+  const provider=localStorage.getItem('gb_ai_provider')||'groq';
+  const el=document.getElementById('ai-provider-label');
+  if(el){let pName='Groq';if(provider==='anthropic')pName='Claude';else if(provider==='openai')pName='GPT';else if(provider==='gemini')pName='Gemini';el.textContent=`Powered by ${pName} · Live Supabase data`;}
+}
 async function updatePrice(id,val){const s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Price updated!');}
 async function deleteService(id){if(!confirm('Remove this service?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Removed','amber');}
 async function addService(){const icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;if(!name){toast('Enter service name!','amber');return;}const newSvc={id:'s'+Date.now(),icon,name,price};try{const{data,error}=await sb.from('gb_services').insert(newSvc).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('✅ Service added!');}catch(e){toast('Error: '+e.message,'red');}}
@@ -985,56 +1003,71 @@ function toggleMpesaPanel(){const panel=document.getElementById('mpesa-panel');i
 function closeMpesaPanel(){document.getElementById('mpesa-panel').style.display='none';resetMpesaStatus();if(window._mpesaPollTimer){clearInterval(window._mpesaPollTimer);window._mpesaPollTimer=null;}}
 function resetMpesaStatus(){setMpStatus('stk','idle','📱','Ready','Enter phone number and tap Send Prompt');setMpStatus('manual','idle','🔢','Awaiting Code','Ask customer for their M-Pesa code');if(document.getElementById('mp-txn-code'))document.getElementById('mp-txn-code').value='';if(document.getElementById('mp-phone'))document.getElementById('mp-phone').value='';if(document.getElementById('mp-manual-verify-btn'))document.getElementById('mp-manual-verify-btn').style.display='none';if(document.getElementById('mp-stk-btn'))document.getElementById('mp-stk-btn').disabled=false;}
 function setMpStatus(panel,type,icon,title,msg){const el=document.getElementById('mp-'+panel+'-status');if(!el)return;el.className='mpesa-status '+type;el.innerHTML=`<div class="mpesa-status-icon">${icon}</div><div><strong>${title}</strong>${msg}</div>`;}
-const MPESA_PROXY_URL='https://https://gb-mpesa-proxy-4gmu.vercel.app';async function sendSTKPush(){
+
+// ===== M-PESA PROXY URL (FIXED — no duplicate https://) =====
+const MPESA_PROXY_URL='https://gb-mpesa-proxy-9ygc.vercel.app';
+
+async function sendSTKPush(){
   const phone=document.getElementById('mp-phone').value.trim().replace(/\s/g,'');
   if(!phone){toast('Enter customer phone!','amber');return;}
-
   const norm=phone.startsWith('0')?'254'+phone.slice(1):phone.startsWith('+')?phone.slice(1):phone;
   if(!/^2547\d{8}$/.test(norm)){toast('Invalid Kenyan number','amber');return;}
-
-  const total=Object.keys(cart).reduce((sum,id)=>{
-    const s=services.find(x=>x.id===id);return sum+(s?s.price*cart[id]:0);
-  },0);
+  const total=Object.keys(cart).reduce((sum,id)=>{const s=services.find(x=>x.id===id);return sum+(s?s.price*cart[id]:0);},0);
   if(!total){toast('Cart is empty!','amber');return;}
-
   setMpStatus('stk','sending','⏳','Sending Prompt...','Contacting Safaricom...');
   document.getElementById('mp-stk-btn').disabled=true;
-
   try{
-    const res=await fetch(MPESA_PROXY_URL+'/api/mpesa',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({phone:norm,amount:total,accountRef:'GB ICT Solutions',description:'Payment'})
-    });
+    const res=await fetch(MPESA_PROXY_URL+'/api/mpesa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:norm,amount:total,accountRef:'GB ICT Solutions',description:'Payment'})});
     const data=await res.json();
-    console.log('STK Push response:',data);
-
-    if(data.success && data.checkout_request_id){
-
-      // ✅ Prompt reached phone — record sale immediately
-      // No polling needed: customer gets the prompt, they pay, we record
-      setMpStatus('stk','waiting','📱','Prompt Sent to Phone!',
-        'Customer enters PIN → Click "✅ Confirm Paid" once they show you M-Pesa SMS.');
-
-      // Show the manual confirm button
+    if(data.success&&data.checkout_request_id){
+      setMpStatus('stk','waiting','📱','Prompt Sent to Phone!','Customer enters PIN → Click "✅ Confirm Paid" once they show you M-Pesa SMS.');
       document.getElementById('mp-manual-verify-btn').style.display='inline-flex';
       document.getElementById('mp-stk-btn').disabled=false;
-
       toast('📲 STK Push sent! Ask customer to enter M-Pesa PIN.');
-
     }else{
-      // ❌ STK failed
-      const msg=data.error||'STK Push failed. Check M-Pesa settings in Settings tab.';
+      const msg=data.error||'STK Push failed. Check M-Pesa settings.';
       setMpStatus('stk','failed','❌','Failed',msg);
       document.getElementById('mp-stk-btn').disabled=false;
       toast('M-Pesa error: '+msg,'amber');
     }
-
   }catch(err){
-    console.error('STK error:',err);
     setMpStatus('stk','failed','❌','Connection Error',err.message);
     document.getElementById('mp-stk-btn').disabled=false;
   }
+}
+
+async function mpesaVerifyManually(){
+  const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}
+  const note='M-Pesa STK - '+document.getElementById('mp-phone').value;
+  const today=todayStr(),time=nowTime();
+  const inserts=[];
+  keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});});
+  try{
+    const{data,error}=await sb.from('gb_sales').insert(inserts).select();
+    if(error)throw error;
+    sales=[...(data||[]),...sales];
+    setMpStatus('stk','success','✅','Payment Confirmed & Recorded!','Sale saved successfully.');
+    setTimeout(()=>{clearCart();closeMpesaPanel();renderDashboard();},1500);
+    toast('✅ M-Pesa payment recorded!');
+  }catch(e){toast('Error saving sale: '+e.message,'red');}
+}
+
+async function confirmManualPayment(){
+  const code=document.getElementById('mp-txn-code').value.trim();
+  if(!code){toast('Enter M-Pesa transaction code!','amber');return;}
+  const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}
+  const note='M-Pesa: '+code;
+  const today=todayStr(),time=nowTime();
+  const inserts=[];
+  keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;inserts.push({id:Date.now()+Math.floor(Math.random()*10000),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note});});
+  try{
+    const{data,error}=await sb.from('gb_sales').insert(inserts).select();
+    if(error)throw error;
+    sales=[...(data||[]),...sales];
+    setMpStatus('manual','success','✅','Payment Confirmed!','Sale recorded with code: '+code);
+    setTimeout(()=>{clearCart();closeMpesaPanel();renderDashboard();},1500);
+    toast('✅ M-Pesa payment recorded!');
+  }catch(e){toast('Error saving sale: '+e.message,'red');}
 }
 
 // ===== EXPORT =====
@@ -1049,9 +1082,7 @@ async function runExport(){const genEl=document.getElementById('exp-generating')
 async function exportPDF(){const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';const totalRev=sumArr(filteredSales,'total');const totalExp=sumArr(filteredExp,'amount');const net=totalRev-totalExp;const margin=totalRev?Math.round(net/totalRev*100):0;doc.setFillColor(0,229,160);doc.rect(0,0,210,28,'F');doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(biz,14,12);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.text('Sales & Financial Report',14,19);doc.text(`Period: ${dateRange}`,14,25);doc.text(`Generated: ${new Date().toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`,105,25,{align:'right'});let y=36;if(document.getElementById('inc-summary').checked){doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SUMMARY',14,y);y+=5;doc.setDrawColor(0,229,160);doc.setLineWidth(.3);doc.line(14,y,196,y);y+=5;doc.setTextColor(50,50,50);doc.setFontSize(9);doc.setFont('helvetica','normal');const summaryData=[['Total Revenue','KSh '+totalRev.toLocaleString(),'Total Expenses','KSh '+totalExp.toLocaleString()],['Net Profit','KSh '+net.toLocaleString(),'Profit Margin',margin+'%'],['Total Transactions',filteredSales.length.toString(),'Expense Entries',filteredExp.length.toString()]];doc.autoTable({startY:y,head:[['Metric','Value','Metric','Value']],body:summaryData,theme:'grid',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8.5,cellPadding:3},columnStyles:{0:{fontStyle:'bold',cellWidth:45},1:{textColor:[0,180,120],fontStyle:'bold',cellWidth:45},2:{fontStyle:'bold',cellWidth:45},3:{textColor:[0,180,120],fontStyle:'bold'}},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-sales').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SALES TRANSACTIONS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const salesRows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty.toString(),'KSh '+(s.unit_price||0).toLocaleString(),'KSh '+(s.total||0).toLocaleString(),s.note||'']);doc.autoTable({startY:y,head:[['Date','Time','Service','Qty','Unit Price','Total','Note']],body:salesRows.length?salesRows:[['No sales in range','','','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:7},styles:{fontSize:7,overflow:'ellipsize'},columnStyles:{0:{cellWidth:22},1:{cellWidth:14},5:{textColor:[0,180,120],fontStyle:'bold'},6:{cellWidth:28}},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-expenses').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('EXPENSE RECORDS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const expRows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'','KSh '+(e.amount||0).toLocaleString()]);doc.autoTable({startY:y,head:[['Date','Time','Category','Description','Amount']],body:expRows.length?expRows:[['No expenses in range','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[244,63,94],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{4:{textColor:[220,40,60],fontStyle:'bold'}},margin:{left:14,right:14}});}const pageCount=doc.getNumberOfPages();for(let i=1;i<=pageCount;i++){doc.setPage(i);doc.setFontSize(7);doc.setTextColor(150);doc.setFont('helvetica','normal');doc.text(`${biz} — Confidential Report`,14,290);doc.text(`Page ${i} of ${pageCount}`,196,290,{align:'right'});}const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.pdf`;doc.save(fname);}
 async function exportExcel(){const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const wb=XLSX.utils.book_new();const dateRange=from&&to?`${from} to ${to}`:from?`From ${from}`:to?`To ${to}`:'All Time';const totalRev=sumArr(filteredSales,'total');const totalExp=sumArr(filteredExp,'amount');const net=totalRev-totalExp;const margin=totalRev?Math.round(net/totalRev*100):0;if(document.getElementById('inc-summary').checked){const summaryWS=XLSX.utils.aoa_to_sheet([[biz+' — Sales Report'],['Period: '+dateRange],['Generated: '+new Date().toLocaleString('en-KE')],[],['FINANCIAL SUMMARY'],['Metric','Value'],['Total Revenue','KSh '+totalRev.toLocaleString()],['Total Expenses','KSh '+totalExp.toLocaleString()],['Net Profit','KSh '+net.toLocaleString()],['Profit Margin',margin+'%'],['Total Transactions',filteredSales.length],['Expense Entries',filteredExp.length]]);summaryWS['!cols']=[{wch:28},{wch:22}];XLSX.utils.book_append_sheet(wb,summaryWS,'Summary');}if(document.getElementById('inc-sales').checked){const header=['Date','Time','Service','Qty','Unit Price (KSh)','Total (KSh)','Note'];const rows=filteredSales.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty||0,s.unit_price||0,s.total||0,s.note||'']);const salesWS=XLSX.utils.aoa_to_sheet([header,...rows]);salesWS['!cols']=[{wch:14},{wch:10},{wch:28},{wch:8},{wch:16},{wch:16},{wch:30}];XLSX.utils.book_append_sheet(wb,salesWS,'Sales');}if(document.getElementById('inc-expenses').checked){const header=['Date','Time','Category','Description','Amount (KSh)'];const rows=filteredExp.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'',e.amount||0]);const expWS=XLSX.utils.aoa_to_sheet([header,...rows]);expWS['!cols']=[{wch:14},{wch:10},{wch:16},{wch:34},{wch:16}];XLSX.utils.book_append_sheet(wb,expWS,'Expenses');}const fname=`GB-ICT-Report-${(from||'all').replace(/-/g,'')}-${(to||'all').replace(/-/g,'')}.xlsx`;XLSX.writeFile(wb,fname);}
 
-// ============================================================
-// ===== AI SALES INTELLIGENCE ================================
-// ============================================================
+// ===== AI SALES INTELLIGENCE =====
 let aiChatHistory=[];
 let aiReportText='';
 
@@ -1061,10 +1092,10 @@ async function aiSend(){
   const input=document.getElementById('aiInput');
   const text=input.value.trim();
   if(!text)return;
-  const provider=localStorage.getItem('gb_ai_provider')||'openai';
+  const provider=localStorage.getItem('gb_ai_provider')||'groq';
   const apiKey=localStorage.getItem('gb_ai_api_key');
-  if(!apiKey){aiAppendMsg('bot','❌ Please set your API key in Settings first.');return;}
-  if(provider==='anthropic'){aiAppendMsg('bot','❌ Anthropic is blocked by CORS in browsers; use Groq or Gemini instead.');return;}
+  if(!apiKey){aiAppendMsg('bot','❌ Please set your API key in ⚙️ Services → AI Settings first.');return;}
+  if(provider==='anthropic'){aiAppendMsg('bot','❌ Anthropic is blocked by CORS in browsers. Use Groq or Gemini instead.');return;}
   input.value='';
   aiAppendMsg('user',text);
   aiChatHistory.push({role:'user',content:text});
@@ -1073,11 +1104,7 @@ async function aiSend(){
     const ctx=aiBuildContext();
     const systemPrompt=`You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh.\n\nLive business data:\n${ctx}\n\nAnalyze this data and answer questions clearly. Be specific with numbers. Use KSh for amounts. Spot issues proactively. Keep answers concise but insightful.`;
     let url,headers,body;
-    if(provider==='anthropic'){
-      url='https://api.anthropic.com/v1/messages';
-      headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey,'anthropic-version':'2023-06-01'};
-      body=JSON.stringify({model:'claude-3-5-sonnet-20241022',max_tokens:1000,system:systemPrompt,messages:aiChatHistory.slice(-10)});
-    }else if(provider==='groq'){
+    if(provider==='groq'){
       url='https://api.groq.com/openai/v1/chat/completions';
       headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey};
       body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:1000,messages:[{role:'system',content:systemPrompt},...aiChatHistory.slice(-10)]});
@@ -1094,35 +1121,23 @@ async function aiSend(){
     const res=await fetch(url,{method:'POST',headers,body});
     aiRemoveTyping(typingId);
     const data=await res.json();
-    console.log('AI Response - Status:',res.status,'Data:',data);
     let reply='❌ Could not process response. Check API key and console.';
     if(res.ok){
-      if(provider==='gemini'){
-        reply=data?.candidates?.[0]?.content?.parts?.[0]?.text||reply;
-      }else if(provider==='anthropic'){
-        reply=data?.content?.[0]?.text||reply;
-      }else{
-        reply=data?.choices?.[0]?.message?.content||data?.choices?.[0]?.text||reply;
-      }
-    }else if(res.status===429){
-      reply='❌ Rate limit hit. Wait a moment and retry, or switch providers in Settings.';
-    }else if(res.status===400){
-      reply='❌ Bad request: '+(data?.error?.message||'Invalid request format')+'. Check API key and model name.';
-    }else{
-      reply='❌ API Error: '+(data?.error?.message||'Unknown error')+' (Status: '+res.status+')';
-    }
+      if(provider==='gemini'){reply=data?.candidates?.[0]?.content?.parts?.[0]?.text||reply;}
+      else{reply=data?.choices?.[0]?.message?.content||data?.choices?.[0]?.text||reply;}
+    }else if(res.status===429){reply='❌ Rate limit hit. Wait a moment and retry, or switch providers in Settings.';}
+    else{reply='❌ API Error: '+(data?.error?.message||'Unknown error')+' (Status: '+res.status+')';}
     aiChatHistory.push({role:'assistant',content:reply});
     aiAppendMsg('bot',reply);
   }catch(e){
     aiRemoveTyping(typingId);
     aiAppendMsg('bot','❌ AI connection error: '+e.message);
-    console.error('aiSend error:',e);
   }
 }
 
 async function aiGenerateReport(){
   const type=document.getElementById('aiReportType').value;
-  const provider=localStorage.getItem('gb_ai_provider')||'openai';
+  const provider=localStorage.getItem('gb_ai_provider')||'groq';
   const apiKey=localStorage.getItem('gb_ai_api_key');
   if(!apiKey){toast('Please set your API key in Settings first','amber');return;}
   if(provider==='anthropic'){toast('Anthropic is blocked by CORS; use Groq or Gemini instead.','amber');return;}
@@ -1148,26 +1163,17 @@ async function aiGenerateReport(){
     const res=await fetch(url,{method:'POST',headers,body});
     const data=await res.json();
     if(res.ok){
-      if(provider==='gemini'){
-        aiReportText=data?.candidates?.[0]?.content?.parts?.[0]?.text||'Could not generate report.';
-      }else{
-        aiReportText=data?.choices?.[0]?.message?.content||data?.choices?.[0]?.text||'Could not generate report.';
-      }
+      if(provider==='gemini'){aiReportText=data?.candidates?.[0]?.content?.parts?.[0]?.text||'Could not generate report.';}
+      else{aiReportText=data?.choices?.[0]?.message?.content||'Could not generate report.';}
       document.getElementById('aiReportEmpty').style.display='none';
       const el=document.getElementById('aiReportContent');
       el.style.display='block';
       el.innerHTML='<div class="ai-report-content">'+aiReportText.replace(/^#{1,3} (.+)$/gm,'<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';
       document.getElementById('aiReportActions').style.display='flex';
       toast('✅ Report generated!');
-    }else if(res.status===429){
-      toast('❌ Rate limit hit. Wait and retry, or switch providers.','red');
-    }else{
-      toast('❌ API Error: '+(data?.error?.message||'Unknown error'),'red');
-    }
-  }catch(e){
-    toast('❌ Failed to generate report: '+e.message,'red');
-    console.error('aiGenerateReport error:',e);
-  }
+    }else if(res.status===429){toast('❌ Rate limit. Wait and retry.','red');}
+    else{toast('❌ API Error: '+(data?.error?.message||'Unknown'),'red');}
+  }catch(e){toast('❌ Failed: '+e.message,'red');}
 }
 
 function aiBuildContext(){
@@ -1197,43 +1203,18 @@ function aiAppendMsg(role,text){
   msgs.appendChild(div);
   msgs.scrollTop=msgs.scrollHeight;
 }
-
-function aiShowTyping(){
-  const msgs=document.getElementById('aiMsgs');
-  const id='ait_'+Date.now();
-  const div=document.createElement('div');
-  div.className='ai-msg bot';div.id=id;
-  div.innerHTML='<div class="ai-msg-avatar">🤖</div><div class="ai-typing"><span></span><span></span><span></span></div>';
-  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
-  return id;
-}
-
+function aiShowTyping(){const msgs=document.getElementById('aiMsgs');const id='ait_'+Date.now();const div=document.createElement('div');div.className='ai-msg bot';div.id=id;div.innerHTML='<div class="ai-msg-avatar">🤖</div><div class="ai-typing"><span></span><span></span><span></span></div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return id;}
 function aiRemoveTyping(id){const el=document.getElementById(id);if(el)el.remove();}
+function aiExportPDF(){if(!aiReportText){toast('Generate a report first','amber');return;}const{jsPDF}=window.jspdf;const doc=new jsPDF();const today=new Date().toLocaleDateString();doc.setFillColor(5,8,15);doc.rect(0,0,210,28,'F');doc.setTextColor(0,229,160);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('GB ICT Solutions',14,13);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text('AI Sales Report · '+today,14,21);doc.setTextColor(30,30,30);doc.setFontSize(9.5);doc.setFont('helvetica','normal');const lines=doc.splitTextToSize(aiReportText.replace(/[#*]/g,''),182);doc.text(lines,14,36);doc.save('GB_ICT_AI_Report_'+today.replace(/\//g,'-')+'.pdf');toast('📄 PDF downloaded!');}
+function aiExportExcel(){const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet([['GB ICT Solutions — AI Sales Report'],['Generated: '+new Date().toLocaleString()],[''],[...aiReportText.split('\n').map(l=>[l])]]);XLSX.utils.book_append_sheet(wb,ws,'AI Report');XLSX.writeFile(wb,'GB_ICT_AI_Report_'+new Date().toISOString().split('T')[0]+'.xlsx');toast('📊 Excel downloaded!');}
 
-function aiExportPDF(){
-  if(!aiReportText){toast('Generate a report first','amber');return;}
-  const{jsPDF}=window.jspdf;const doc=new jsPDF();
-  const today=new Date().toLocaleDateString();
-  doc.setFillColor(5,8,15);doc.rect(0,0,210,28,'F');
-  doc.setTextColor(0,229,160);doc.setFontSize(16);doc.setFont('helvetica','bold');
-  doc.text('GB ICT Solutions',14,13);
-  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);
-  doc.text('AI Sales Report · '+today,14,21);
-  doc.setTextColor(30,30,30);doc.setFontSize(9.5);doc.setFont('helvetica','normal');
-  const lines=doc.splitTextToSize(aiReportText.replace(/[#*]/g,''),182);
-  doc.text(lines,14,36);
-  doc.save('GB_ICT_AI_Report_'+today.replace(/\//g,'-')+'.pdf');
-  toast('📄 PDF downloaded!');
+// ===== SESSION RESTORE — auto-init if already logged in =====
+if(sessionStorage.getItem('gb_ict_unlocked')==='1'){
+  document.getElementById('loginOverlay').style.display='none';
+  document.getElementById('appRoot').style.display='block';
+  document.getElementById('logoutBtn').style.display='inline-flex';
+  init();
 }
-
-function aiExportExcel(){
-  const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.aoa_to_sheet([['GB ICT Solutions — AI Sales Report'],['Generated: '+new Date().toLocaleString()],[''],['',...aiReportText.split('\n').map(l=>[l])]]);
-  XLSX.utils.book_append_sheet(wb,ws,'AI Report');
-  XLSX.writeFile(wb,'GB_ICT_AI_Report_'+new Date().toISOString().split('T')[0]+'.xlsx');
-  toast('📊 Excel downloaded!');
-}
-// ============================================================
 </script>
 
 <script>
