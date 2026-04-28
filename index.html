@@ -348,7 +348,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
 .receipt-row.total{font-family:'Fira Code',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);border-top:2px solid var(--accent);padding-top:10px;margin-top:8px;}
 .receipt-footer{padding:16px 20px;border-top:1px solid var(--border);text-align:center;font-size:.72rem;color:var(--text3);}
 .receipt-actions{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;}
-@media print{body *{display:none!important;}#receipt-print-area,#receipt-print-area *{display:block!important;}#receipt-print-area{position:fixed;top:0;left:0;width:100%;padding:20px;background:#fff;color:#000;}}
+@media print{   body > *{display:none!important;}   #receiptModal{display:block!important;position:fixed;inset:0;background:#fff!important;z-index:99999;}   .receipt-box{box-shadow:none!important;border:none!important;max-width:100%!important;}   .receipt-actions{display:none!important;}   #receipt-print-area{display:block!important;}   #receipt-print-area *{display:revert!important;}   .receipt-header{background:linear-gradient(135deg,#b45309,#f59e0b)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
 .ai-wrap{display:grid;grid-template-columns:1fr 360px;gap:18px;min-height:520px;}
 .ai-chat-panel{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;min-height:520px;}
 .ai-chat-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
