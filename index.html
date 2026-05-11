@@ -451,6 +451,14 @@ tr:hover td{background:rgba(255,255,255,.015);}
   .icon-grid{grid-template-columns:repeat(6,1fr);}
 }
 
+/* Float tab extra cards */
+.float-card.fc-exp-mp::before{background:linear-gradient(90deg,var(--danger),#f97316);}
+.float-card.fc-net::before{background:linear-gradient(90deg,var(--purple),#7c3aed);}
+.float-type-tab.mpexp.active{background:var(--danger);color:#fff;}
+.float-bar-seg{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height .6s ease;}
+.float-bar-seg.dep{background:var(--accent);}
+.float-bar-seg.with{background:var(--danger);}
+
 </style>
 </head>
 <body>
@@ -805,50 +813,78 @@ tr:hover td{background:rgba(255,255,255,.015);}
 </div>
 
 <div class="tab" id="tab-float">
-  <div class="stitle">M-Pesa Float Tracker</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+    <div class="stitle" style="margin-bottom:0">📲 M-Pesa Float Tracker</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="printAgentStatement()" style="border-color:rgba(56,189,248,.3);color:var(--blue)">🖨️ Agent Statement</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportFloatExcel()" style="border-color:rgba(34,197,94,.3);color:var(--green)">📊 Export</button>
+    </div>
+  </div>
   <div class="float-stats">
-    <div class="float-card fc-mpesa"><div class="float-label">M-Pesa Float</div><div class="float-val fv-mpesa" id="flt-float">KSh 0</div><div class="float-sub">Available float balance</div></div>
-    <div class="float-card fc-cash"><div class="float-label">Cash in Drawer</div><div class="float-val fv-cash" id="flt-cash">KSh 0</div><div class="float-sub">After M-Pesa conversions</div></div>
-    <div class="float-card fc-dep"><div class="float-label">Total Deposits</div><div class="float-val fv-dep" id="flt-dep">KSh 0</div><div class="float-sub" id="flt-dep-count">0 deposits</div></div>
-    <div class="float-card fc-with"><div class="float-label">Total Withdrawals</div><div class="float-val fv-with" id="flt-with">KSh 0</div><div class="float-sub" id="flt-with-count">0 withdrawals</div></div>
-    <div class="float-card fc-comm"><div class="float-label">Commission (Month)</div><div class="float-val fv-comm" id="flt-comm">KSh 0</div><div class="float-sub" id="flt-comm-count">0 transactions</div></div>
-    <div class="float-card fc-total"><div class="float-label">Total Value</div><div class="float-val fv-total" id="flt-total">KSh 0</div><div class="float-sub">Float + Cash + Comm</div></div>
+    <div class="float-card fc-mpesa"><div class="float-label">📱 M-Pesa Float</div><div class="float-val fv-mpesa" id="flt-float">KSh 0</div><div class="float-sub" id="flt-float-sub">Available float balance</div></div>
+    <div class="float-card fc-cash"><div class="float-label">💵 Cash in Drawer</div><div class="float-val fv-cash" id="flt-cash">KSh 0</div><div class="float-sub">After M-Pesa conversions</div></div>
+    <div class="float-card fc-dep"><div class="float-label">⬆️ Total Deposits</div><div class="float-val fv-dep" id="flt-dep">KSh 0</div><div class="float-sub" id="flt-dep-count">0 deposits</div></div>
+    <div class="float-card fc-with"><div class="float-label">⬇️ Total Withdrawals</div><div class="float-val fv-with" id="flt-with">KSh 0</div><div class="float-sub" id="flt-with-count">0 withdrawals</div></div>
+    <div class="float-card fc-comm"><div class="float-label">🏆 Commission (Month)</div><div class="float-val fv-comm" id="flt-comm">KSh 0</div><div class="float-sub" id="flt-comm-count">0 transactions</div></div>
+    <div class="float-card fc-exp-mp"><div class="float-label">💸 M-Pesa Expenses</div><div class="float-val" style="color:var(--danger)" id="flt-mpexp">KSh 0</div><div class="float-sub" id="flt-mpexp-count">airtime, bundles…</div></div>
+    <div class="float-card fc-net"><div class="float-label">📈 Net Profit (Month)</div><div class="float-val" id="flt-net">KSh 0</div><div class="float-sub">Commission minus Expenses</div></div>
+    <div class="float-card fc-total"><div class="float-label">💰 Total Asset Value</div><div class="float-val fv-total" id="flt-total">KSh 0</div><div class="float-sub">Float + Cash</div></div>
+  </div>
+  <div class="card" style="margin-bottom:20px;border-color:rgba(0,229,160,.15)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div class="stitle" style="margin-bottom:0">📊 Daily P&amp;L Summary</div>
+      <div class="fg" style="max-width:170px"><input type="date" id="float-pnl-date" onchange="renderFloatPnL()"></div>
+    </div>
+    <div id="float-pnl-content"><div class="empty"><div class="empty-icon">📊</div><p>Select a date above to see daily breakdown</p></div></div>
   </div>
   <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">7-Day Activity</div>
+    <div class="stitle" style="margin-bottom:12px">📅 7-Day Activity</div>
     <div class="float-mini-chart" id="float-mini-chart"></div>
-    <div class="chart-legend" style="margin-top:8px"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Deposits</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Withdrawals</div></div>
+    <div class="chart-legend" style="margin-top:8px"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Deposits</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Withdrawals</div><div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Commission</div></div>
   </div>
   <div class="form-card">
-    <div class="stitle">Record Transaction</div>
+    <div class="stitle">➕ Record Transaction</div>
     <div class="float-type-tabs">
-      <button class="float-type-tab dep active" id="ftab-dep" onclick="setFloatType('dep')">Deposit</button>
-      <button class="float-type-tab with" id="ftab-with" onclick="setFloatType('with')">Withdrawal</button>
-      <button class="float-type-tab comm" id="ftab-comm" onclick="setFloatType('comm')">Commission</button>
+      <button class="float-type-tab dep active" id="ftab-dep" onclick="setFloatType('dep')">⬆️ Deposit</button>
+      <button class="float-type-tab with" id="ftab-with" onclick="setFloatType('with')">⬇️ Withdrawal</button>
+      <button class="float-type-tab comm" id="ftab-comm" onclick="setFloatType('comm')">💰 Commission</button>
+      <button class="float-type-tab mpexp" id="ftab-mpexp" onclick="setFloatType('mpexp')">💸 M-Pesa Expense</button>
     </div>
-    <div class="form-row">
-      <div class="fg"><label>Customer Phone</label><input type="tel" id="float-phone" placeholder="07XXXXXXXX"></div>
-      <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-amount" placeholder="0" min="0" oninput="autoCalcCommission()"></div>
-      <div class="fg"><label>Commission Earned (KSh)</label><input type="number" id="float-commission-earned" placeholder="Auto-calculated" min="0"></div>
+    <div id="float-txn-fields">
+      <div class="form-row">
+        <div class="fg"><label>Customer Phone</label><input type="tel" id="float-phone" placeholder="07XXXXXXXX"></div>
+        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-amount" placeholder="0" min="0" oninput="autoCalcCommission()"></div>
+        <div class="fg" id="float-comm-field"><label>Commission Earned (KSh)</label><input type="number" id="float-commission-earned" placeholder="Auto-calculated" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Description</label><input type="text" id="float-desc" placeholder="e.g. Withdrawal – customer paid cash"></div>
+        <div class="fg"><label>Date</label><input type="date" id="float-date"></div>
+      </div>
     </div>
-    <div class="form-row">
-      <div class="fg"><label>Description</label><input type="text" id="float-desc" placeholder="e.g. Withdrawal - customer paid cash"></div>
-      <div class="fg"><label>Date</label><input type="date" id="float-date"></div>
+    <div id="float-mpexp-fields" style="display:none">
+      <div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:var(--text3);line-height:1.7"><div style="color:var(--danger);font-weight:700;margin-bottom:4px">💸 M-Pesa Expense</div>Record costs paid through or deducted from your M-Pesa float: airtime, bundles, reversal losses, Safaricom fees, agent charges.</div>
+      <div class="form-row">
+        <div class="fg"><label>Expense Category</label><select id="float-exp-cat"><option value="Airtime Top-up">📱 Airtime Top-up</option><option value="Data Bundle">🌐 Data Bundle</option><option value="Float Top-up Fee">💳 Float Top-up Fee</option><option value="Till Charges">🏦 Till / Paybill Charges</option><option value="Agent Fee">💼 Agent Service Fee</option><option value="Safaricom Charge">📡 Safaricom Charge</option><option value="Mpesa Reversal">↩️ M-Pesa Reversal Loss</option><option value="Other M-Pesa Expense">📦 Other M-Pesa Expense</option></select></div>
+        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-exp-amount" placeholder="0" min="0"></div>
+        <div class="fg"><label>Date</label><input type="date" id="float-exp-date"></div>
+      </div>
+      <div class="fg" style="margin-bottom:14px"><label>Description / Note</label><input type="text" id="float-exp-desc" placeholder="e.g. Airtime KSh 500 for business line"></div>
     </div>
-    <button class="btn btn-primary" id="float-record-btn" onclick="recordFloatTxn()">Record Deposit</button>
+    <button class="btn btn-primary" id="float-record-btn" onclick="recordFloatTxn()">✅ Record Deposit</button>
   </div>
   <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">Commission Rate Guide (Safaricom)</div>
-    <div id="float-comm-guide" style="font-size:.8rem;color:var(--text2);line-height:2.2"></div>
+    <div class="stitle" style="margin-bottom:12px">💡 Safaricom Commission Rate Guide</div>
+    <div id="float-comm-guide" style="font-size:.8rem;color:var(--text2);line-height:2.4;display:flex;flex-wrap:wrap;gap:0 24px"></div>
+    <div style="margin-top:10px;font-size:.72rem;color:var(--text3)">Rates are approximate. Actual commission may vary by Safaricom agent tier and promotions.</div>
   </div>
-  <div class="stitle">Transaction Log</div>
+  <div class="stitle">📋 Transaction Log</div>
   <div class="filter-row">
-    <select id="float-filter-type"><option value="">All Types</option><option value="dep">Deposits</option><option value="with">Withdrawals</option><option value="comm">Commission</option></select>
+    <select id="float-filter-type"><option value="">All Types</option><option value="dep">⬆️ Deposits</option><option value="with">⬇️ Withdrawals</option><option value="comm">💰 Commission</option><option value="mpexp">💸 M-Pesa Expenses</option></select>
     <input type="date" id="float-filter-date">
-    <button class="btn btn-secondary" onclick="renderFloatLog()">Filter</button>
-    <button class="btn btn-secondary" onclick="clearFloatFilter()">Clear</button>
+    <button class="btn btn-secondary" onclick="renderFloatLog()">🔍 Filter</button>
+    <button class="btn btn-secondary" onclick="clearFloatFilter()">✕ Clear</button>
   </div>
-  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Phone</th><th>Description</th><th>Amount</th><th>Commission</th><th></th></tr></thead><tbody id="float-log-tbody"></tbody></table></div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Phone / Category</th><th>Description</th><th>Amount</th><th>Commission</th><th>Running Float</th><th></th></tr></thead><tbody id="float-log-tbody"></tbody></table></div>
 </div>
 
 <div class="tab" id="tab-receipt">
@@ -1116,4 +1152,537 @@ async function addInventoryItem(){const icon=document.getElementById('inv-icon')
 async function adjustStock(id,delta){const item=inventory.find(i=>i.id===id);if(!item)return;const nq=Math.max(0,item.qty+delta);try{await sb.from('gb_inventory').update({qty:nq}).eq('id',id);item.qty=nq;renderInventory();toast(delta>0?'Stock added!':'Stock reduced!');}catch(e){toast('Error','red');}}
 async function setStockQty(id,val){const item=inventory.find(i=>i.id===id);if(!item)return;const nq=Math.max(0,parseInt(val)||0);try{await sb.from('gb_inventory').update({qty:nq}).eq('id',id);item.qty=nq;renderInventory();}catch(e){}}
 async function deleteInventoryItem(id){if(!confirm('Remove?'))return;try{await sb.from('gb_inventory').delete().eq('id',id);inventory=inventory.filter(i=>i.id!==id);renderInventory();toast('Removed','amber');}catch(e){toast('Error','red');}}
-function renderInventory(){updateInventoryNavAlert();const low=inventory.filter(i=>i.qty>0&&i.qty<=i.reorder_level),out=inventory.filter(i=>i.qty===0);const aw=document.getElementById('inv-alerts-wrap');aw.innerHTML=(low.length||out.length)?`<div class="alert-panel"><div class="stitle">Stock Alerts</div>${out.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> out of stock!</div><div class="alert-badge">0 ${i.unit||'pcs'}</div></div>`).join('')}${low.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> low stock</div><div class="alert-badge">${i.qty} left</div></div>`).join('')}</div>`:'';const tv=inventory.reduce((a,i)=>a+(i.qty*(i.unit_cost||0)),0);document.getElementById('inv-stat-total').textContent=inventory.length;document.getElementById('inv-stat-low').textContent=low.length;document.getElementById('inv-stat-out').textContent=out.length;document.getElementById('inv-stat-value').textContent=tv.toLocaleString();const grid=document.getElementById('inv-grid');if(!inventory.length){grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>No inventory yet.</p></div>';return;}grid.innerHTML=inventory.map(item=>{const pct=item.reorder_level>0?Math.min((item.qty/Math.max(item.reorder_level*2,item.qty||1
+function renderInventory(){updateInventoryNavAlert();const low=inventory.filter(i=>i.qty>0&&i.qty<=i.reorder_level),out=inventory.filter(i=>i.qty===0);const aw=document.getElementById('inv-alerts-wrap');aw.innerHTML=(low.length||out.length)?`<div class="alert-panel"><div class="stitle">Stock Alerts</div>${out.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> out of stock!</div><div class="alert-badge">0 ${i.unit||'pcs'}</div></div>`).join('')}${low.map(i=>`<div class="alert-item"><div class="alert-icon">${i.icon}</div><div class="alert-text"><strong>${i.name}</strong> low stock</div><div class="alert-badge">${i.qty} left</div></div>`).join('')}</div>`:'';const tv=inventory.reduce((a,i)=>a+(i.qty*(i.unit_cost||0)),0);document.getElementById('inv-stat-total').textContent=inventory.length;document.getElementById('inv-stat-low').textContent=low.length;document.getElementById('inv-stat-out').textContent=out.length;document.getElementById('inv-stat-value').textContent=tv.toLocaleString();const grid=document.getElementById('inv-grid');if(!inventory.length){grid.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>No inventory yet.</p></div>';return;}grid.innerHTML=inventory.map(item=>{const pct=item.reorder_level>0?Math.min((item.qty/Math.max(item.reorder_level*2,item.qty||1))*100,100):100;const sc=item.qty===0?'out-of-stock':item.qty<=item.reorder_level?'low-stock':'';const qc=item.qty===0||item.qty<=item.reorder_level?'low':'ok';const bc=item.qty===0?'low':item.qty<=item.reorder_level?'warn':'ok';return `<div class="inv-card ${sc}"><div class="inv-icon">${item.icon||'📦'}</div><div class="inv-name">${item.name}</div><div class="inv-cat">${item.category||''}</div><div class="inv-qty-row"><div class="inv-qty ${qc}">${item.qty}<span style="font-size:.7rem;color:var(--text3);font-weight:400"> ${item.unit||'pcs'}</span></div><div class="inv-reorder">Reorder: ${item.reorder_level}</div></div><div class="inv-progress"><div class="inv-progress-fill ${bc}" style="width:${pct}%"></div></div><div class="inv-adj-row"><button class="btn btn-secondary btn-xs" onclick="adjustStock('${item.id}',-1)">-</button><input class="inv-adj-input" type="number" value="${item.qty}" min="0" onchange="setStockQty('${item.id}',this.value)" style="padding:5px;font-size:.85rem;"><button class="btn btn-primary btn-xs" onclick="adjustStock('${item.id}',1)">+</button><button class="btn btn-danger btn-xs" onclick="deleteInventoryItem('${item.id}')">Del</button></div>${item.unit_cost?`<div class="inv-cost">Cost: KSh ${item.unit_cost.toLocaleString()} Value: KSh ${(item.qty*item.unit_cost).toLocaleString()}</div>`:''}</div>`;}).join('');}
+
+// EXPENSES
+async function recordExpense(){const cat=document.getElementById('exp-category').value,amount=parseFloat(document.getElementById('exp-amount').value)||0,desc=document.getElementById('exp-desc').value.trim(),date=document.getElementById('exp-date').value||todayStr();if(!amount||!desc){toast('Enter amount and description!','amber');return;}const rec={id:Date.now(),date,time:nowTime(),category:cat,icon:CATEGORY_ICONS[cat]||'📦',description:desc,amount};try{const{data,error}=await sb.from('gb_expenses').insert(rec).select().single();if(error)throw error;expenses=[data,...expenses];document.getElementById('exp-amount').value='';document.getElementById('exp-desc').value='';toast('Expense recorded!','amber');renderExpenses();renderExpenseStats();renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
+async function deleteExpense(id){if(!confirm('Delete?'))return;try{await sb.from('gb_expenses').delete().eq('id',id);expenses=expenses.filter(e=>e.id!=id);renderExpenses();renderExpenseStats();renderDashboard();toast('Deleted','amber');}catch(e){toast('Error','red');}}
+function renderExpenseStats(){const today=todayStr(),now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1);const te=expenses.filter(e=>e.date===today),me=expenses.filter(e=>new Date(e.date)>=mStart);document.getElementById('exp-today-total').textContent=sumArr(te,'amount').toLocaleString();document.getElementById('exp-today-count').textContent=te.length+' entries';document.getElementById('exp-month-total').textContent=sumArr(me,'amount').toLocaleString();document.getElementById('exp-alltime-total').textContent=sumArr(expenses,'amount').toLocaleString();const bc={};expenses.forEach(e=>{if(!bc[e.category])bc[e.category]={total:0,icon:e.icon||'📦'};bc[e.category].total+=e.amount||0;});const sorted=Object.entries(bc).sort((a,b)=>b[1].total-a[1].total),mx=sorted.length?sorted[0][1].total:1;const el=document.getElementById('expense-bars');if(el)el.innerHTML=sorted.length?sorted.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/mx*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join(''):'<div class="empty"><div class="empty-icon">💸</div><p>No expenses</p></div>';}
+async function renderExpenses(){const df=document.getElementById('exp-filter-date').value,cf=document.getElementById('exp-filter-cat').value;try{let q=sb.from('gb_expenses').select('*').order('id',{ascending:false});if(df)q=q.eq('date',df);if(cf)q=q.eq('category',cf);const{data}=await q;const tbody=document.getElementById('expenses-tbody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">💸</div><p>No expenses</p></div></td></tr>';return;}tbody.innerHTML=data.map(e=>`<tr><td>${e.date}</td><td style="color:var(--text3)">${e.time||''}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||''}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">Del</button></td></tr>`).join('');}catch(e){}}
+function clearExpFilter(){document.getElementById('exp-filter-date').value='';document.getElementById('exp-filter-cat').value='';renderExpenses();}
+
+// CART
+function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();}
+function removeFromCart(id){if(cart[id]){cart[id]--;if(!cart[id])delete cart[id];}renderCart();}
+function clearCart(){cart={};renderCart();}
+function getCartTotal(){return Object.keys(cart).reduce((s,id)=>{const sv=services.find(x=>x.id===id);return s+(sv?sv.price*cart[id]:0);},0);}
+function renderCart(){document.querySelectorAll('.svc-btn').forEach(btn=>{const id=btn.dataset.id,badge=btn.querySelector('.svc-badge');if(cart[id]){btn.classList.add('in-cart');badge.textContent=cart[id];}else{btn.classList.remove('in-cart');badge.textContent='';}});const keys=Object.keys(cart),panel=document.getElementById('cart-panel');if(!keys.length){panel.style.display='none';return;}panel.style.display='block';let total=0,html='';keys.forEach(id=>{const s=services.find(x=>x.id===id);if(!s)return;const sub=s.price*cart[id];total+=sub;html+=`<div class="cart-item"><span>${s.icon} ${s.name}</span><div style="display:flex;align-items:center;gap:14px"><div class="qty-ctrl"><button onclick="removeFromCart('${id}')">-</button><span>${cart[id]}</span><button onclick="addToCart('${id}')">+</button></div><span style="min-width:90px;text-align:right;font-family:'JetBrains Mono',monospace;color:var(--accent)">KSh ${sub.toLocaleString()}</span></div></div>`;});document.getElementById('cart-items').innerHTML=html;document.getElementById('cart-total-val').textContent='KSh '+total.toLocaleString();const mpAmt=document.getElementById('mp-amount-display');if(mpAmt)mpAmt.textContent='KSh '+total.toLocaleString();}
+async function recordSale(mpesaCode){const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}const note=(document.getElementById('sale-note')?.value||'').trim(),customer=(document.getElementById('sale-customer')?.value||'').trim(),today=todayStr(),time=nowTime();const inserts=keys.map(id=>{const s=services.find(x=>x.id===id);if(!s)return null;return{id:Date.now()+Math.floor(Math.random()*99999),date:today,time,service_id:id,service_name:s.name,icon:s.icon,qty:cart[id],unit_price:s.price,total:s.price*cart[id],note:mpesaCode?`${note} [M-Pesa:${mpesaCode}]`.trim():note,customer_name:customer};}).filter(Boolean);try{const{data,error}=await sb.from('gb_sales').insert(inserts).select();if(error)throw error;sales=[...(data||[]),...sales];if(customer)updateCustomerVisit(customer,sumArr(inserts,'total'));clearCart();if(document.getElementById('sale-note'))document.getElementById('sale-note').value='';if(document.getElementById('sale-customer'))document.getElementById('sale-customer').value='';toast('Sale recorded!');renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
+function openReceiptFromCart(){const keys=Object.keys(cart);if(!keys.length){toast('Cart is empty!','amber');return;}receiptItemsCache=keys.map(id=>{const s=services.find(x=>x.id===id);return s?{name:s.icon+' '+s.name,qty:cart[id],price:s.price,total:s.price*cart[id]}:null;}).filter(Boolean);const cust=(document.getElementById('sale-customer')?.value||'').trim();buildReceiptPreview(receiptItemsCache,cust,todayStr(),nowTime(),'Cash');switchTab('receipt',null);toast('Receipt ready to print!');}
+function autoFillPrice(){const id=document.getElementById('m-service').value;const s=services.find(x=>x.id===id);if(s)document.getElementById('m-price').value=s.price;}
+async function manualSale(){const id=document.getElementById('m-service').value,qty=parseInt(document.getElementById('m-qty').value)||1,price=parseFloat(document.getElementById('m-price').value)||0,note=document.getElementById('m-note').value;const s=services.find(x=>x.id===id);if(!s){toast('Select a service','amber');return;}const rec={id:Date.now(),date:todayStr(),time:nowTime(),service_id:id,service_name:s.name,icon:s.icon,qty,unit_price:price,total:price*qty,note};try{const{data,error}=await sb.from('gb_sales').insert(rec).select().single();if(error)throw error;sales=[data,...sales];document.getElementById('m-qty').value=1;document.getElementById('m-note').value='';toast('Sale added!');renderDashboard();}catch(e){toast('Error: '+e.message,'red');}}
+async function deleteSale(id){if(!confirm('Delete?'))return;try{await sb.from('gb_sales').delete().eq('id',id);sales=sales.filter(s=>s.id!=id);renderDashboard();renderHistory();toast('Deleted','amber');}catch(e){toast('Error','red');}}
+
+// DASHBOARD
+function renderDashboard(){
+  const today=todayStr(),now=new Date(),wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
+  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const ts=sales.filter(s=>s.date===today),te=expenses.filter(e=>e.date===today);
+  const ws=sales.filter(s=>new Date(s.date)>=wStart),ms=sales.filter(s=>new Date(s.date)>=mStart),me=expenses.filter(e=>new Date(e.date)>=mStart);
+  const tr=sumArr(ts,'total'),texp=sumArr(te,'amount'),tnet=tr-texp;
+  const mr=sumArr(ms,'total'),mexp=sumArr(me,'amount');
+  const ar=sumArr(sales,'total'),aexp=sumArr(expenses,'amount');
+  document.getElementById('v-today').textContent=tr.toLocaleString();
+  document.getElementById('v-today-count').textContent=ts.length+' transactions';
+  document.getElementById('v-today-exp').textContent=texp.toLocaleString();
+  document.getElementById('v-today-exp-count').textContent=te.length+' entries';
+  const ne=document.getElementById('v-today-net');ne.textContent='KSh '+(tnet<0?'-':'')+Math.abs(tnet).toLocaleString();ne.className='stat-val '+(tnet>=0?'p':'r');
+  document.getElementById('v-margin-sub').textContent='Margin: '+(tr?Math.round(tnet/tr*100):0)+'%';
+  document.getElementById('v-week').textContent=sumArr(ws,'total').toLocaleString();
+  document.getElementById('v-week-count').textContent=ws.length+' transactions';
+  document.getElementById('v-month').textContent=mr.toLocaleString();
+  document.getElementById('v-month-net').textContent='Net: KSh '+(mr-mexp).toLocaleString();
+  document.getElementById('v-alltime').textContent=ar.toLocaleString();
+  document.getElementById('v-alltime-net').textContent='Net: KSh '+(ar-aexp).toLocaleString();
+  const bySvc={};ts.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});
+  const topSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+  const topWrap=document.getElementById('dash-top-svc-wrap');
+  if(topSvc.length){const mx=topSvc[0][1].total||1;topWrap.innerHTML='<div class="stitle">Today Top Services</div><div style="margin-bottom:22px">'+topSvc.map(([n,d])=>'<div class="report-bar"><div class="bar-label">'+d.icon+' '+n+'</div><div class="bar-track"><div class="bar-fill" style="width:'+((d.total/mx*100).toFixed(1))+'%"></div></div><div class="bar-amount">KSh '+d.total.toLocaleString()+'</div></div>').join('')+'</div>';}else topWrap.innerHTML='';
+  const stbody=document.getElementById('today-tbody');
+  stbody.innerHTML=!ts.length?'<tr><td colspan="7"><div class="empty"><div class="empty-icon">📭</div><p>No sales today yet</p></div></td></tr>':ts.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3);font-size:.8rem">${s.customer_name||'-'}</td><td style="color:var(--text3)">${s.note||'-'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">Del</button></td></tr>`).join('');
+  const etbody=document.getElementById('today-exp-tbody');
+  etbody.innerHTML=!te.length?'<tr><td colspan="5"><div class="empty"><div class="empty-icon">💸</div><p>No expenses today</p></div></td></tr>':te.map(e=>`<tr><td style="color:var(--text3)">${e.time||'-'}</td><td><span class="badge badge-red">${e.icon||'📦'} ${e.category}</span></td><td style="color:var(--text2)">${e.description||'-'}</td><td><span class="badge badge-red">KSh ${(e.amount||0).toLocaleString()}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">Del</button></td></tr>`).join('');
+  const sb2=document.getElementById('dash-shift-banner');
+  const as=loadLS('gb_active_shift',null);
+  if(as){const el=Math.floor((Date.now()-new Date(as.startTime))/60000);const h=Math.floor(el/60),m=el%60;sb2.innerHTML=`<div class="shift-banner"><div class="shift-active-pill"><div class="shift-dot"></div><div><div class="shift-name-text">${as.empName} on duty</div><div class="shift-meta">${as.role} · Since ${(as.startTime||'').slice(11,16)}</div></div></div><div class="shift-timer">${h}h ${m}m</div><button class="btn btn-danger btn-sm" onclick="closeShiftFromDash()">End Shift</button></div>`;}else sb2.innerHTML='';
+}
+function closeShiftFromDash(){const as=loadLS('gb_active_shift',null);if(!as)return;const dur=Math.floor((Date.now()-new Date(as.startTime))/60000);const closed={...as,closeTime:nowTime(),closedAt:new Date().toISOString(),durationMin:dur};const shifts=loadLS('gb_shifts',[]);shifts.unshift(closed);saveLS('gb_shifts',shifts);localStorage.removeItem('gb_active_shift');toast('Shift closed. Duration: '+Math.floor(dur/60)+'h '+dur%60+'m','amber');renderDashboard();}
+
+function renderSaleTab(){
+  document.getElementById('services-grid').innerHTML=services.map(s=>`<div class="svc-btn" data-id="${s.id}" onclick="addToCart('${s.id}')"><div class="svc-badge"></div><div class="svc-icon">${s.icon}</div><div class="svc-name">${s.name}</div><div class="svc-price">KSh ${(s.price||0).toLocaleString()}</div></div>`).join('');
+  const sel=document.getElementById('m-service');sel.innerHTML=services.map(s=>`<option value="${s.id}">${s.icon} ${s.name} - KSh ${s.price}</option>`).join('');
+  autoFillPrice();renderCart();
+  const dl=document.getElementById('cust-datalist');if(dl)dl.innerHTML=customers.map(c=>`<option value="${c.name}">`).join('');
+}
+async function renderHistory(){
+  const df=document.getElementById('filter-date').value,sf=document.getElementById('filter-svc').value;
+  const fsel=document.getElementById('filter-svc');if(fsel.options.length<=1)services.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;fsel.appendChild(o);});
+  try{let q=sb.from('gb_sales').select('*').order('id',{ascending:false});if(df)q=q.eq('date',df);if(sf)q=q.eq('service_id',sf);const{data}=await q;const tbody=document.getElementById('history-tbody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-icon">📭</div><p>No records</p></div></td></tr>';return;}tbody.innerHTML=data.map(s=>`<tr><td style="font-family:'JetBrains Mono',monospace;color:var(--text3);font-size:.8rem">${s.date}</td><td style="color:var(--text3);font-size:.8rem">${s.time}</td><td>${s.icon||''} ${s.service_name}</td><td><span class="badge badge-muted">${s.qty}</span></td><td style="color:var(--text3)">KSh ${(s.unit_price||0).toLocaleString()}</td><td><span class="badge badge-green">KSh ${(s.total||0).toLocaleString()}</span></td><td style="color:var(--text3);font-size:.8rem">${s.customer_name||'-'}</td><td style="color:var(--text3);font-size:.8rem">${s.note||'-'}</td><td><button class="btn btn-danger btn-sm" onclick="deleteSale('${s.id}')">Del</button></td></tr>`).join('');}catch(e){}
+}
+function clearFilter(){document.getElementById('filter-date').value='';document.getElementById('filter-svc').value='';renderHistory();}
+
+// SETTINGS
+function renderSettings(){
+  document.getElementById('settings-grid').innerHTML=services.map(s=>`<div class="settings-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:1.8rem;cursor:pointer" onclick="openIconPicker('svc-icon-${s.id}')">${s.icon}</span><input type="text" id="svc-icon-${s.id}" value="${s.icon}" maxlength="4" style="width:52px;text-align:center;padding:5px;" onchange="updateServiceIcon('${s.id}',this.value)"></div><h3>${s.name}</h3><div class="fg" style="margin-bottom:10px"><label>Price (KSh)</label><input type="number" value="${s.price}" min="0" onchange="updatePrice('${s.id}',this.value)"></div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">Remove</button></div>`).join('');
+  loadMpesaSettingsForm();loadAISettings();updateAIWelcome();
+}
+async function updatePrice(id,val){const s=services.find(x=>x.id===id);if(!s)return;s.price=parseFloat(val)||0;await sb.from('gb_services').update({price:s.price}).eq('id',id);toast('Updated!');}
+async function updateServiceIcon(id,icon){const s=services.find(x=>x.id===id);if(!s)return;s.icon=icon||'🔧';await sb.from('gb_services').update({icon:s.icon}).eq('id',id);toast('Icon updated!');}
+async function deleteService(id){if(!confirm('Remove?'))return;await sb.from('gb_services').delete().eq('id',id);services=services.filter(s=>s.id!==id);renderSettings();toast('Removed','amber');}
+async function addService(){const icon=document.getElementById('new-icon').value.trim()||'🔧',name=document.getElementById('new-name').value.trim(),price=parseFloat(document.getElementById('new-price').value)||0;if(!name){toast('Enter name!','amber');return;}try{const{data,error}=await sb.from('gb_services').insert({id:'s'+Date.now(),icon,name,price}).select().single();if(error)throw error;services.push(data);renderSettings();document.getElementById('new-icon').value='';document.getElementById('new-name').value='';document.getElementById('new-price').value='';toast('Service added!');}catch(e){toast('Error: '+e.message,'red');}}
+function loadAISettings(){const p=loadLS('gb_ai_provider','groq'),k=loadLS('gb_ai_api_key','');const pe=document.getElementById('ai-provider'),ke=document.getElementById('ai-api-key');if(pe)pe.value=p;if(ke)ke.value=k;updateAILink();if(pe)pe.onchange=updateAILink;}
+function saveAISettings(){saveLS('gb_ai_provider',document.getElementById('ai-provider').value);saveLS('gb_ai_api_key',document.getElementById('ai-api-key').value.trim());const m=document.getElementById('ai-saved-msg');m.style.display='inline';setTimeout(()=>m.style.display='none',2000);toast('AI settings saved!');updateAIWelcome();}
+function testAIConnection(){const provider=document.getElementById('ai-provider').value,apiKey=document.getElementById('ai-api-key').value.trim();if(!apiKey){toast('Enter API key first','amber');return;}if(provider==='anthropic'){toast('Anthropic CORS blocked','amber');return;}toast('Testing...','blue');let url,headers,body;if(provider==='groq'){url='https://api.groq.com/openai/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}else if(provider==='gemini'){url='https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key='+apiKey;headers={'Content-Type':'application/json'};body=JSON.stringify({contents:[{role:'user',parts:[{text:'Hi'}]}]});}else{url='https://api.openai.com/v1/chat/completions';headers={'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'};body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:10,messages:[{role:'user',content:'Hi'}]});}fetch(url,{method:'POST',headers,body}).then(r=>r.json().then(d=>({ok:r.ok,status:r.status,d}))).then(({ok,status,d})=>{if(ok)toast('Connected!','green');else toast('Error: '+(d?.error?.message||status),'red');}).catch(e=>toast('Error: '+e.message,'red'));}
+function updateAILink(){const p=document.getElementById('ai-provider')?.value;const link=document.getElementById('ai-link');const ke=document.getElementById('ai-api-key');if(!p)return;const cfg={anthropic:{href:'https://console.anthropic.com/',text:'console.anthropic.com',ph:'sk-ant-...'},groq:{href:'https://console.groq.com/',text:'console.groq.com',ph:'gsk_...'},gemini:{href:'https://aistudio.google.com/app/apikey',text:'aistudio.google.com',ph:'AIzaSy...'},openai:{href:'https://platform.openai.com/api-keys',text:'platform.openai.com',ph:'sk-...'}};const c=cfg[p]||cfg.openai;if(link){link.href=c.href;link.textContent=c.text;}if(ke)ke.placeholder=c.ph;}
+function updateAIWelcome(){const p=loadLS('gb_ai_provider','groq');const n={anthropic:'Claude',groq:'Groq',gemini:'Gemini',openai:'GPT'};const el=document.getElementById('ai-hdr-sub');if(el)el.textContent='Powered by '+(n[p]||'Groq')+' · Live data';}
+
+// MONTHLY
+function getMonthlyData(){const months={},now=new Date();for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);const key=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;months[key]={label:MONTH_NAMES[d.getMonth()]+' '+(d.getFullYear()%100),fullLabel:MONTH_FULL[d.getMonth()]+' '+d.getFullYear(),rev:0,exp:0,txns:0,svcs:{}};}sales.forEach(s=>{const k=s.date?s.date.substring(0,7):'';if(months[k]){months[k].rev+=s.total||0;months[k].txns++;if(!months[k].svcs[s.service_name])months[k].svcs[s.service_name]=0;months[k].svcs[s.service_name]+=s.total||0;}});expenses.forEach(e=>{const k=e.date?e.date.substring(0,7):'';if(months[k])months[k].exp+=e.amount||0;});return months;}
+function renderMonthly(){const months=getMonthlyData(),entries=Object.entries(months);const rv=entries.map(([,d])=>d.rev),ev=entries.map(([,d])=>d.exp),nv=entries.map(([,d])=>d.rev-d.exp);const mx=Math.max(...rv,...ev,1);const bR=Math.max(...rv),bE=Math.max(...ev),bN=Math.max(...nv);const bRM=entries[rv.indexOf(bR)],bEM=entries[ev.indexOf(bE)],bNM=entries[nv.indexOf(bN)];document.getElementById('m-best-rev').textContent=bR.toLocaleString();document.getElementById('m-best-rev-label').textContent=bRM?bRM[1].label:'-';document.getElementById('m-best-exp').textContent=bE.toLocaleString();document.getElementById('m-best-exp-label').textContent=bEM?bEM[1].label:'-';document.getElementById('m-best-net').textContent=bN.toLocaleString();document.getElementById('m-best-net-label').textContent=bNM?bNM[1].label:'-';document.getElementById('month-chart').innerHTML=entries.map(([,d])=>{const net=d.rev-d.exp;const rh=Math.max((d.rev/mx)*148,2).toFixed(1);const eh=Math.max((d.exp/mx)*148,2).toFixed(1);const nh=Math.max((Math.abs(net)/mx)*148,2).toFixed(1);return `<div class="month-col"><div class="month-bars"><div class="month-bar rev" style="height:${rh}px" data-tip="Rev: KSh ${d.rev.toLocaleString()}"></div><div class="month-bar exp" style="height:${eh}px" data-tip="Exp: KSh ${d.exp.toLocaleString()}"></div><div class="month-bar net" style="height:${nh}px" data-tip="Net: KSh ${net.toLocaleString()}"></div></div><div class="month-label">${d.label}</div></div>`;}).join('');const tbody=document.getElementById('monthly-tbody');tbody.innerHTML=entries.slice().reverse().map(([,d])=>{const net=d.rev-d.exp,margin=d.rev?Math.round(net/d.rev*100):0;const top=Object.entries(d.svcs).sort((a,b)=>b[1]-a[1])[0];return `<tr><td style="font-weight:700">${d.fullLabel}</td><td><span class="badge badge-green">KSh ${d.rev.toLocaleString()}</span></td><td><span class="badge badge-red">KSh ${d.exp.toLocaleString()}</span></td><td><span class="badge ${net>=0?'badge-purple':'badge-red'}">KSh ${net.toLocaleString()}</span></td><td><span class="badge ${margin>=50?'badge-green':margin>=20?'badge-amber':'badge-red'}">${margin}%</span></td><td style="color:var(--text3)">${d.txns}</td><td style="color:var(--text3);font-size:.82rem">${top?top[0]:'-'}</td></tr>`;}).join('');const now2=new Date(),ck=`${now2.getFullYear()}-${pad(now2.getMonth()+1)}`,cm=months[ck];const sb3=document.getElementById('monthly-svc-bars');if(cm&&Object.keys(cm.svcs).length){const sorted=Object.entries(cm.svcs).sort((a,b)=>b[1]-a[1]);const mx2=sorted[0][1]||1;sb3.innerHTML=sorted.map(([n,v])=>`<div class="report-bar"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/mx2*100).toFixed(1)}%"></div></div><div class="bar-amount">KSh ${v.toLocaleString()}</div></div>`).join('');}else sb3.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No data</p></div>';}
+
+// REPORT
+function renderReport(){
+  const today=todayStr(),now=new Date();
+  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const prevMS=new Date(now.getFullYear(),now.getMonth()-1,1),prevME=new Date(now.getFullYear(),now.getMonth(),0);
+  const tr=sumArr(sales,'total'),texp=sumArr(expenses,'amount'),net=tr-texp,margin=tr?Math.round(net/tr*100):0;
+  const todayRev=sumArr(sales.filter(s=>s.date===today),'total');
+  const todayExp=sumArr(expenses.filter(e=>e.date===today),'amount');
+  const mr=sumArr(sales.filter(s=>new Date(s.date)>=mStart),'total'),me=sumArr(expenses.filter(e=>new Date(e.date)>=mStart),'amount');
+  const pmr=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=prevMS&&d<=prevME;}),'total');
+  const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
+  const wr=sumArr(sales.filter(s=>new Date(s.date)>=wStart),'total'),we=sumArr(expenses.filter(e=>new Date(e.date)>=wStart),'amount');
+  const pwS=new Date(wStart);pwS.setDate(wStart.getDate()-7);
+  const pwr=sumArr(sales.filter(s=>{const d=new Date(s.date);return d>=pwS&&d<wStart;}),'total');
+  const weekMom=pwr?Math.round((wr-pwr)/pwr*100):0,momPct=pmr?Math.round((mr-pmr)/pmr*100):0;
+  const daily={};sales.forEach(s=>{if(s.date)daily[s.date]=(daily[s.date]||0)+(s.total||0);});
+  const activeDays=Object.keys(daily).length||1,avgDaily=Math.round(tr/activeDays);
+  const rawPct=DAILY_TARGET>0?Math.round(todayRev/DAILY_TARGET*100):0,displayPct=Math.min(rawPct,100);
+  const fillClass=rawPct>=100?'exceed':rawPct>=70?'ok':rawPct>=40?'warn':'low';
+  const bestDays=Object.entries(daily).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const wdayRev=[0,0,0,0,0,0,0],wdayCount=[0,0,0,0,0,0,0];
+  Object.entries(daily).forEach(([ds,rev])=>{const dow=new Date(ds).getDay();wdayRev[dow]+=rev;wdayCount[dow]++;});
+  const wdayAvg=wdayRev.map((r,i)=>wdayCount[i]?Math.round(r/wdayCount[i]):0),bestWday=wdayAvg.indexOf(Math.max(...wdayAvg,0)),maxWday=Math.max(...wdayAvg,1);
+  const maxHeat=Math.max(...Object.values(daily),1),hmDays=[];
+  for(let i=55;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const rev=daily[ds]||0;const lv=rev===0?0:rev<maxHeat*.15?1:rev<maxHeat*.35?2:rev<maxHeat*.55?3:rev<maxHeat*.75?4:5;hmDays.push({ds,rev,lv});}
+  const bySvc={};sales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,txns:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].txns++;});
+  const sortedSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total),maxSvc=sortedSvc.length?sortedSvc[0][1].total:1;
+  const byCat={};expenses.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
+  const sortedExp=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total),maxExp=sortedExp.length?sortedExp[0][1].total:1;
+  const momClass=momPct>0?'mom-up':momPct<0?'mom-down':'mom-flat',momSign=momPct>0?'▲ ':momPct<0?'▼ ':'';
+  let hmHTML='<div></div>';WDAYS.forEach(d=>hmHTML+='<div class="hm-day-hdr">'+d+'</div>');
+  for(let w=7;w>=0;w--){hmHTML+='<div class="hm-label">'+(w===7?'now':'-'+(8-w)+'w')+'</div>';for(let d=6;d>=0;d--){const idx=hmDays.length-1-(w*7+d);if(idx<0||idx>=hmDays.length){hmHTML+='<div class="hm-cell hm-lv0"></div>';continue;}const cell=hmDays[idx];hmHTML+=`<div class="hm-cell hm-lv${cell.lv}"><span class="hm-tip">${cell.ds} KSh ${cell.rev.toLocaleString()}</span></div>`;}}
+  const el=document.getElementById('tab-report');
+  el.innerHTML=`<div class="export-bar" style="margin-bottom:22px"><div class="export-bar-left"><div class="export-bar-icon">📤</div><div class="export-bar-info"><div class="eb-title">Export Report</div><div class="eb-sub">PDF or Excel</div></div></div><div class="btn-row"><button class="btn btn-sm" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);color:var(--danger)" onclick="openExportModal('report')">PDF</button><button class="btn btn-sm" style="background:var(--green-dim);border:1px solid rgba(34,197,94,.3);color:var(--green)" onclick="openExportModal('report')">Excel</button></div></div><div class="stats-row"><div class="stat glow-green"><div class="stat-label">All-Time Revenue</div><div class="stat-val g">KSh ${tr.toLocaleString()}</div><div class="stat-sub">${sales.length} txns · ${activeDays} days</div></div><div class="stat danger glow-red"><div class="stat-label">All-Time Expenses</div><div class="stat-val r">KSh ${texp.toLocaleString()}</div></div><div class="stat purple glow-purple"><div class="stat-label">Net Profit</div><div class="stat-val p">KSh ${net.toLocaleString()}</div><div class="stat-sub">Margin: ${margin}%</div></div><div class="stat blue glow-blue"><div class="stat-label">Avg Daily Revenue</div><div class="stat-val b">KSh ${avgDaily.toLocaleString()}</div><div class="stat-sub">Target: ${fmtKsh(DAILY_TARGET)}/day</div></div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px"><div class="card"><div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">TODAY</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${todayRev-todayExp>=0?'var(--accent)':'var(--danger)'}">${fmtKsh(todayRev-todayExp)}</div><div style="font-size:.72rem;color:var(--text3)">Rev: ${fmtKsh(todayRev)} Exp: ${fmtKsh(todayExp)}</div></div><div class="card"><div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS WEEK</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${wr-we>=0?'var(--accent)':'var(--danger)'}">${fmtKsh(wr-we)}</div><div style="margin-top:8px"><span class="badge ${weekMom>=0?'badge-green':'badge-red'}">${weekMom>=0?'▲ +':'▼ '}${Math.abs(weekMom)}% vs last week</span></div></div><div class="card"><div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">THIS MONTH</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${mr-me>=0?'var(--accent)':'var(--danger)'}">${fmtKsh(mr-me)}</div><div style="margin-top:8px"><span class="badge ${momPct>=0?'badge-green':'badge-red'}">${momSign}${Math.abs(momPct)}% vs last month</span></div></div><div class="card"><div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700">ALL TIME</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:${net>=0?'var(--purple)':'var(--danger)'}">${fmtKsh(net)}</div><div style="font-size:.72rem;color:var(--text3)">Margin: ${margin}%</div></div></div><div class="stitle">Today's Target Progress</div><div class="target-section"><div class="target-header"><div><div class="target-main">KSh ${todayRev.toLocaleString()} <span style="font-size:1rem;color:var(--text3);font-weight:400">/ ${fmtKsh(DAILY_TARGET)}</span></div><div style="display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap"><span class="mom-badge ${momClass}">${momSign}${Math.abs(momPct)}% vs last month</span><span style="font-size:.75rem;color:var(--text3)">${rawPct>=100?'Target smashed!':rawPct>0?fmtKsh(Math.max(DAILY_TARGET-todayRev,0))+' to go':'Not started'}</span></div></div><div class="target-pct-badge">${displayPct}%</div></div><div class="target-track"><div class="target-fill ${fillClass}" style="width:${displayPct}%"></div></div><div class="target-milestones"><span>0</span><span>25%</span><span>50%</span><span>75%</span><span>${fmtKsh(DAILY_TARGET)}</span></div></div><div class="stitle">Key Insights</div><div class="insight-grid"><div class="insight-card"><div class="ic-icon">🏆</div><div class="ic-label">Best Day Ever</div><div class="ic-val">${bestDays[0]?new Date(bestDays[0][0]).toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'}):'-'}</div><div class="ic-sub ic-accent">${bestDays[0]?'KSh '+bestDays[0][1].toLocaleString():''}</div></div><div class="insight-card"><div class="ic-icon">📅</div><div class="ic-label">Best Day of Week</div><div class="ic-val">${WDAYS_FULL[bestWday]}</div><div class="ic-sub ic-accent">Avg KSh ${wdayAvg[bestWday].toLocaleString()}</div></div><div class="insight-card"><div class="ic-icon">⭐</div><div class="ic-label">Top Service</div><div class="ic-val ic-accent" style="font-size:.9rem">${sortedSvc[0]?sortedSvc[0][1].icon+' '+sortedSvc[0][0]:'-'}</div><div class="ic-sub">${sortedSvc[0]?'KSh '+sortedSvc[0][1].total.toLocaleString():''}</div></div><div class="insight-card"><div class="ic-icon">📊</div><div class="ic-label">Profit Margin</div><div class="ic-val ${margin>=50?'ic-accent':margin>=30?'ic-warn':'ic-danger'}">${margin}%</div><div class="ic-sub">${margin>=60?'Excellent':margin>=40?'Good':margin>=20?'Watch costs':'Loss-making'}</div></div></div><div class="stitle">Top-Selling Services</div><div style="margin-bottom:24px">${sortedSvc.slice(0,8).map(([n,d],i)=>`<div class="report-bar" style="margin-bottom:13px"><div class="bar-label">#${i+1} ${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill" style="width:${(d.total/maxSvc*100).toFixed(1)}%"></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;min-width:115px"><span class="bar-amount">KSh ${d.total.toLocaleString()}</span><span style="font-size:.6rem;color:var(--text3)">${d.txns} sales</span></div></div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div><p>No data</p></div>'}</div><div class="stitle">Best Days of Week</div><div class="card" style="margin-bottom:24px"><div class="wday-wrap">${wdayAvg.map((avg,i)=>`<div class="wday-col"><div class="wday-bar-wrap"><div class="${i===bestWday?'wday-bar best-day':'wday-bar normal-day'}" style="height:${Math.max((avg/maxWday)*82,4)}px"></div></div><div class="wday-name">${WDAYS[i]}</div><div class="wday-amt">${avg>=1000?(avg/1000).toFixed(1)+'K':avg}</div><div class="wday-count">${wdayCount[i]}d</div></div>`).join('')}</div></div><div class="stitle">Revenue Heatmap</div><div class="card" style="margin-bottom:24px"><div class="hm-grid">${hmHTML}</div><div class="hm-legend"><span>Less</span>${[0,1,2,3,4,5].map(l=>'<div class="hm-swatch hm-lv'+l+'"></div>').join('')}<span>More</span></div></div><div class="stitle">Top 10 Best Days</div><div class="card" style="margin-bottom:24px">${bestDays.length?bestDays.map(([ds,rev],i)=>{const rc=i===0?'gold':i===1?'silver':i===2?'bronze':'other';const ri=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);return `<div class="bd-row"><div class="bd-rank ${rc}">${ri}</div><div class="bd-info"><div class="bd-date">${new Date(ds).toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</div><div class="bd-sub">${sales.filter(s=>s.date===ds).length} txns</div></div><div class="bd-bar-wrap"><div class="bd-bar-track"><div class="bd-bar-fill" style="width:${(rev/bestDays[0][1]*100).toFixed(0)}%"></div></div></div><div class="bd-amt">KSh ${rev.toLocaleString()}</div></div>`;}).join(''):'<div class="empty"><div class="empty-icon">📊</div><p>No data</p></div>'}</div><div class="stitle">Expenses by Category</div><div style="margin-bottom:24px">${sortedExp.map(([n,d])=>`<div class="report-bar"><div class="bar-label">${d.icon} ${n}</div><div class="bar-track"><div class="bar-fill expense" style="width:${(d.total/maxExp*100).toFixed(1)}%"></div></div><div class="bar-amount expense">KSh ${d.total.toLocaleString()}</div></div>`).join('')||'<div class="empty"><div class="empty-icon">💸</div><p>No expenses</p></div>'}</div>`;
+}
+
+// WHATSAPP
+function applyWAForm(){document.getElementById('wa-number').value=waSettings.number||'';document.getElementById('wa-time').value=waSettings.time||'21:00';document.getElementById('wa-biz').value=waSettings.biz||'GB ICT Solutions';updateWAStatus();}
+function saveWASettings(){waSettings.number=document.getElementById('wa-number').value.trim();waSettings.time=document.getElementById('wa-time').value;waSettings.biz=document.getElementById('wa-biz').value.trim()||'GB ICT Solutions';saveLS('gb_wa_settings',waSettings);updateWAStatus();renderWAPreview();toast('WhatsApp settings saved!');}
+function updateWAStatus(){const el=document.getElementById('wa-schedule-status');if(!el)return;if(waSettings.number&&waSettings.time){el.textContent='Auto-send: '+waSettings.time+' daily';el.className='wa-status on';}else{el.textContent='Auto-send: OFF';el.className='wa-status off';}}
+function buildWAMessage(dateStr){const d=dateStr||todayStr(),ds=sales.filter(s=>s.date===d),de=expenses.filter(e=>e.date===d);const rev=sumArr(ds,'total'),exp=sumArr(de,'amount'),net=rev-exp;const dl=new Date(d).toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});const bySvc={};ds.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,qty:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].qty+=s.qty||0;});const sl=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,x])=>'  '+x.icon+' '+n+': KSh '+x.total.toLocaleString()+' ('+x.qty+'x)').join('\n');const byCat={};de.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});const el2=Object.entries(byCat).map(([n,x])=>'  '+x.icon+' '+n+': KSh '+x.total.toLocaleString()).join('\n');const msg='🏪 *'+(waSettings.biz||'GB ICT Solutions')+'*\n📅 Daily Report — '+dl+'\n'+'─'.repeat(30)+'\n\n💰 *REVENUE: KSh '+rev.toLocaleString()+'*\n'+(sl||'  No sales recorded')+'\n\n💸 *EXPENSES: KSh '+exp.toLocaleString()+'*\n'+(el2||'  No expenses recorded')+'\n\n'+(net>=0?'✅':'⚠️')+' *NET PROFIT: KSh '+net.toLocaleString()+'*\n\n📊 Txns: '+ds.length+' | Expenses: '+de.length+'\n'+'─'.repeat(30)+'\n_Sent by GB ICT Sales Tracker_';return{msg,rev,exp,net};}
+function renderWAPreview(){const{msg}=buildWAMessage(todayStr());const el=document.getElementById('wa-preview');if(el)el.textContent=msg;}
+function sendWAReport(dateStr){const num=waSettings.number;if(!num){toast('Enter WhatsApp number!','amber');return;}const{msg,rev,exp,net}=buildWAMessage(dateStr||todayStr());window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');const entry={date:dateStr||todayStr(),time:nowTime(),rev,exp,net,status:'Sent'};waLog.unshift(entry);if(waLog.length>30)waLog=waLog.slice(0,30);saveLS('gb_wa_log',waLog);renderWALog();toast('Opening WhatsApp...','whatsapp');}
+let lastAutoSendDate='';
+function checkAutoSend(now){if(!waSettings.number||!waSettings.time)return;const current=pad(now.getHours())+':'+pad(now.getMinutes()),today=todayStr();if(current===waSettings.time&&lastAutoSendDate!==today){lastAutoSendDate=today;sendWAReport(today);toast('Auto WhatsApp sent!','whatsapp');}}
+function renderWATab(){applyWAForm();renderWAPreview();renderWALog();}
+function renderWALog(){const tbody=document.getElementById('wa-log-tbody');if(!tbody)return;if(!waLog.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div class="empty-icon">📲</div><p>No reports sent yet</p></div></td></tr>';return;}tbody.innerHTML=waLog.map(e=>`<tr><td>${e.date}</td><td style="color:var(--text3)">${e.time}</td><td><span class="badge badge-green">KSh ${(e.rev||0).toLocaleString()}</span></td><td><span class="badge badge-red">KSh ${(e.exp||0).toLocaleString()}</span></td><td><span class="badge badge-purple">KSh ${(e.net||0).toLocaleString()}</span></td><td><span class="badge badge-green">${e.status}</span></td></tr>`).join('');}
+
+// MPESA
+function getMpesaSettings(){try{const s=JSON.parse(localStorage.getItem('gb_mpesa_settings')||'{}');if(!s.till)s.till='4009152';return s;}catch(e){return{till:'4009152'};}}
+function saveMpesaSettings(){const cfg={till:document.getElementById('mp-cfg-till').value.trim()||'4009152',shortcode:document.getElementById('mp-cfg-shortcode').value.trim(),consumerKey:document.getElementById('mp-cfg-ck').value.trim(),consumerSecret:document.getElementById('mp-cfg-cs').value.trim(),passkey:document.getElementById('mp-cfg-pk').value.trim(),sandbox:document.getElementById('mp-cfg-env').value==='sandbox'};localStorage.setItem('gb_mpesa_settings',JSON.stringify(cfg));const msg=document.getElementById('mp-saved-msg');msg.style.display='inline';setTimeout(()=>msg.style.display='none',2000);toast('M-Pesa settings saved!');}
+function loadMpesaSettingsForm(){const cfg=getMpesaSettings();const map={till:'mp-cfg-till',shortcode:'mp-cfg-shortcode',consumerKey:'mp-cfg-ck',consumerSecret:'mp-cfg-cs',passkey:'mp-cfg-pk'};Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=cfg[k]||'';});if(document.getElementById('mp-cfg-env'))document.getElementById('mp-cfg-env').value=cfg.sandbox?'sandbox':'live';}
+function mpSetMode(mode){['stk','manual'].forEach(m=>{document.getElementById('mp-tab-'+m).classList.toggle('active',m===mode);document.getElementById('mp-'+m+'-section').style.display=m===mode?'block':'none';});}
+function toggleMpesaPanel(){const panel=document.getElementById('mpesa-panel');if(panel.style.display!=='none'){closeMpesaPanel();return;}const total=getCartTotal();const cfg=getMpesaSettings();document.getElementById('mp-amount-display').textContent='KSh '+total.toLocaleString();document.getElementById('mp-till-display').textContent=cfg.till||'4009152';document.getElementById('mp-instr-amount').textContent='KSh '+total.toLocaleString();document.getElementById('mp-instr-till').textContent=cfg.till||'4009152';panel.style.display='block';panel.scrollIntoView({behavior:'smooth',block:'nearest'});mpSetMode('stk');resetMpesaStatus();}
+function closeMpesaPanel(){document.getElementById('mpesa-panel').style.display='none';resetMpesaStatus();if(window._mpPollTimer){clearInterval(window._mpPollTimer);window._mpPollTimer=null;}}
+function resetMpesaStatus(){setMpStatus('stk','idle','📱','Ready','Enter phone and tap Send Prompt');setMpStatus('manual','idle','🔢','Awaiting Code','Ask customer for M-Pesa code');const tc=document.getElementById('mp-txn-code');if(tc)tc.value='';const ph=document.getElementById('mp-phone');if(ph)ph.value='';const mv=document.getElementById('mp-manual-verify-btn');if(mv)mv.style.display='none';const stk=document.getElementById('mp-stk-btn');if(stk)stk.disabled=false;}
+function setMpStatus(panel,type,icon,title,msg){const el=document.getElementById('mp-'+panel+'-status');if(!el)return;el.className='mpesa-status '+type;el.innerHTML='<div class="mpesa-status-icon">'+icon+'</div><div><strong>'+title+'</strong>'+msg+'</div>';}
+const MPESA_PROXY_URL='https://gb-mpesa-proxy-9ygc.vercel.app';
+async function sendSTKPush(){const phone=document.getElementById('mp-phone').value.trim().replace(/\s/g,'');if(!phone){toast('Enter phone!','amber');return;}const norm=phone.startsWith('0')?'254'+phone.slice(1):phone.startsWith('+')?phone.slice(1):phone;if(!/^2547\d{8}$/.test(norm)){toast('Invalid Kenyan phone','amber');return;}const total=getCartTotal();if(!total){toast('Cart empty!','amber');return;}setMpStatus('stk','sending','⏳','Sending...','Contacting Safaricom...');document.getElementById('mp-stk-btn').disabled=true;try{const res=await fetch(MPESA_PROXY_URL+'/api/mpesa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:norm,amount:total,accountRef:'GB ICT Solutions',description:'Services payment'})});const data=await res.json();if(data.success){const cid=data.CheckoutRequestID;setMpStatus('stk','waiting','⏳','Waiting for Payment...','Prompt sent!');document.getElementById('mp-manual-verify-btn').style.display='inline-flex';toast('Prompt sent to '+phone);let pc=0;window._mpPollTimer=setInterval(async()=>{pc++;if(pc>12){clearInterval(window._mpPollTimer);setMpStatus('stk','failed','⏱️','Timed Out','Use Manual Code tab.');document.getElementById('mp-stk-btn').disabled=false;return;}try{const qr=await fetch(MPESA_PROXY_URL+'/api/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({checkoutRequestID:cid})});const qd=await qr.json();if(qd.success){clearInterval(window._mpPollTimer);setMpStatus('stk','success','✅','Confirmed!','Recording...');await recordSale('MPESA-'+cid.slice(-8));closeMpesaPanel();}else if(qd.cancelled){clearInterval(window._mpPollTimer);setMpStatus('stk','failed','❌','Cancelled','Customer cancelled.');document.getElementById('mp-stk-btn').disabled=false;}}catch(e){}},5000);}else{setMpStatus('stk','failed','❌','Failed',data.error||'STK Push failed.');document.getElementById('mp-stk-btn').disabled=false;}}catch(err){setMpStatus('stk','failed','❌','Error',err.message);document.getElementById('mp-stk-btn').disabled=false;}}
+async function mpesaVerifyManually(){const code=prompt('Enter M-Pesa transaction code:');if(!code)return;await recordSale(code.trim().toUpperCase());closeMpesaPanel();}
+async function confirmManualPayment(){const code=document.getElementById('mp-txn-code').value.trim().toUpperCase();if(!code||code.length<6){toast('Enter valid code','amber');return;}setMpStatus('manual','sending','⏳','Recording...','Saving...');await recordSale(code);closeMpesaPanel();}
+
+// REALTIME
+function subscribeRealtime(){sb.channel('gb-changes').on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_sales'},p=>{if(!sales.find(s=>s.id==p.new.id)){sales=[p.new,...sales];renderDashboard();toast('New sale synced!');}}).on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_sales'},p=>{sales=sales.filter(s=>s.id!=p.old.id);renderDashboard();}).on('postgres_changes',{event:'INSERT',schema:'public',table:'gb_expenses'},p=>{if(!expenses.find(e=>e.id==p.new.id)){expenses=[p.new,...expenses];renderDashboard();toast('Expense synced!','amber');}}).on('postgres_changes',{event:'DELETE',schema:'public',table:'gb_expenses'},p=>{expenses=expenses.filter(e=>e.id!=p.old.id);renderDashboard();}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'gb_inventory'},p=>{const idx=inventory.findIndex(i=>i.id==p.new.id);if(idx>=0)inventory[idx]=p.new;updateInventoryNavAlert();}).subscribe(s=>{if(s==='SUBSCRIBED')setOnline();else setOffline();});}
+
+// FEATURE 1: CASH RECONCILIATION
+function renderReconcileTab(){if(!document.getElementById('recon-date').value)document.getElementById('recon-date').value=todayStr();loadReconDate();renderReconHistory();}
+function loadReconDate(){const date=document.getElementById('recon-date').value||todayStr();const expected=sumArr(sales.filter(s=>s.date===date),'total');document.getElementById('recon-expected').textContent='KSh '+expected.toLocaleString();['recon-actual','recon-mpesa','recon-opening','recon-drawer-exp','recon-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('recon-diff-val').textContent='KSh 0';document.getElementById('recon-diff-label').textContent='Enter actual above';document.getElementById('recon-result-box').innerHTML='';}
+function calcRecon(){const date=document.getElementById('recon-date').value||todayStr();const sysTotal=sumArr(sales.filter(s=>s.date===date),'total');const mpesa=parseFloat(document.getElementById('recon-mpesa').value)||0;const opening=parseFloat(document.getElementById('recon-opening').value)||0;const drawerExp=parseFloat(document.getElementById('recon-drawer-exp').value)||0;const actual=parseFloat(document.getElementById('recon-actual').value)||0;const cashExp=sysTotal-mpesa+opening-drawerExp;const diff=actual-cashExp;const diffEl=document.getElementById('recon-diff-val');diffEl.textContent=(diff>=0?'+':'')+'KSh '+Math.abs(diff).toLocaleString();diffEl.style.color=Math.abs(diff)<=100?'var(--accent)':diff>0?'var(--green)':'var(--danger)';document.getElementById('recon-diff-label').textContent=Math.abs(diff)<=100?'Balanced!':diff>0?'Surplus — extra cash':'Deficit — cash short';const box=document.getElementById('recon-result-box');const cls=Math.abs(diff)<=100?'balanced':diff>0?'surplus':'deficit';box.innerHTML='<div class="recon-result '+cls+'" style="margin-bottom:16px"><div class="recon-result-icon">'+(Math.abs(diff)<=100?'✅':diff>0?'📈':'⚠️')+'</div><div><div class="recon-result-title">'+(Math.abs(diff)<=100?'Balanced':diff>0?'Surplus KSh '+Math.abs(diff).toLocaleString():'Short KSh '+Math.abs(diff).toLocaleString())+'</div><div style="font-size:.78rem;color:var(--text2);margin-top:4px">System: KSh '+sysTotal.toLocaleString()+' | M-Pesa: KSh '+mpesa.toLocaleString()+' | Opening: KSh '+opening.toLocaleString()+' | Drawer exp: KSh '+drawerExp.toLocaleString()+' | Expected cash: KSh '+cashExp.toLocaleString()+'</div></div></div>';}
+function saveReconciliation(){const date=document.getElementById('recon-date').value||todayStr();const actual=parseFloat(document.getElementById('recon-actual').value);if(isNaN(actual)){toast('Enter actual cash!','amber');return;}const sysTotal=sumArr(sales.filter(s=>s.date===date),'total');const mpesa=parseFloat(document.getElementById('recon-mpesa').value)||0;const opening=parseFloat(document.getElementById('recon-opening').value)||0;const drawerExp=parseFloat(document.getElementById('recon-drawer-exp').value)||0;const notes=document.getElementById('recon-notes').value.trim();const diff=actual-(sysTotal-mpesa+opening-drawerExp);const rec={id:'rc'+Date.now(),date,expected:sysTotal,actual,mpesa,opening,drawerExp,diff,notes,savedAt:new Date().toISOString()};reconHistory=reconHistory.filter(r=>r.date!==date);reconHistory.unshift(rec);saveLS('gb_recon_history',reconHistory);toast('Reconciliation saved!');renderReconHistory();document.getElementById('recon-notes').value='';}
+function deleteRecon(id){if(!confirm('Delete?'))return;reconHistory=reconHistory.filter(r=>r.id!==id);saveLS('gb_recon_history',reconHistory);renderReconHistory();toast('Deleted','amber');}
+function renderReconHistory(){const tbody=document.getElementById('recon-tbody');if(!reconHistory.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-icon">💰</div><p>No reconciliations yet</p></div></td></tr>';return;}tbody.innerHTML=reconHistory.slice(0,30).map(r=>`<tr><td style="font-weight:700">${r.date}</td><td><span class="badge badge-blue">KSh ${(r.expected||0).toLocaleString()}</span></td><td><span class="badge badge-green">KSh ${(r.actual||0).toLocaleString()}</span></td><td><span class="badge badge-amber">KSh ${(r.mpesa||0).toLocaleString()}</span></td><td><span class="badge ${r.diff>100?'badge-amber':r.diff<-100?'badge-red':'badge-green'}">${(r.diff||0)>=0?'+':''}KSh ${Math.abs(r.diff||0).toLocaleString()}</span></td><td><span class="badge ${Math.abs(r.diff||0)<=100?'badge-green':r.diff>0?'badge-amber':'badge-red'}">${Math.abs(r.diff||0)<=100?'Balanced':r.diff>0?'Surplus':'Deficit'}</span></td><td style="color:var(--text3);font-size:.78rem">${r.notes||'-'}</td><td><button class="btn btn-danger btn-xs" onclick="deleteRecon('${r.id}')">Del</button></td></tr>`).join('');}
+
+// FEATURE 2: LOYALTY
+const LOYALTY_TIERS=[{name:'Bronze',icon:'🥉',min:1,max:4,color:'tier-bronze',badge:'badge-muted'},{name:'Silver',icon:'🥈',min:5,max:9,color:'tier-silver',badge:'badge-blue'},{name:'Gold',icon:'🥇',min:10,max:24,color:'tier-gold',badge:'badge-amber'},{name:'VIP',icon:'💜',min:25,max:9999,color:'tier-vip',badge:'badge-purple'}];
+function getTier(visits){return LOYALTY_TIERS.find(t=>visits>=t.min&&visits<=t.max)||LOYALTY_TIERS[0];}
+function updateCustomerVisit(nameOrPhone,amount){let c=customers.find(x=>x.name===nameOrPhone||x.phone===nameOrPhone);if(!c){c={id:'c'+Date.now(),name:nameOrPhone,phone:'',notes:'',visits:0,totalSpend:0,lastVisit:''};customers.push(c);}c.visits=(c.visits||0)+1;c.totalSpend=(c.totalSpend||0)+amount;c.lastVisit=todayStr();saveLS('gb_customers',customers);}
+function saveCustomer(){const name=document.getElementById('cust-name').value.trim();if(!name){toast('Enter name!','amber');return;}let c=customers.find(x=>x.name===name);if(c){c.phone=document.getElementById('cust-phone').value.trim()||c.phone;c.notes=document.getElementById('cust-notes').value.trim()||c.notes;}else{c={id:'c'+Date.now(),name,phone:document.getElementById('cust-phone').value.trim(),notes:document.getElementById('cust-notes').value.trim(),visits:0,totalSpend:0,lastVisit:''};customers.push(c);}saveLS('gb_customers',customers);toast('Customer saved!');document.getElementById('cust-name').value='';document.getElementById('cust-phone').value='';document.getElementById('cust-notes').value='';renderLoyaltyList();}
+function deleteCustomer(id){if(!confirm('Remove?'))return;customers=customers.filter(c=>c.id!==id);saveLS('gb_customers',customers);renderLoyaltyList();toast('Removed','amber');}
+function renderLoyaltyTab(){const counts=LOYALTY_TIERS.map(t=>({...t,count:customers.filter(c=>(c.visits||0)>=t.min&&(c.visits||0)<=t.max).length}));document.getElementById('loyalty-tiers-row').innerHTML=counts.map(t=>'<div class="loyalty-tier '+t.color+'"><div class="tier-icon">'+t.icon+'</div><div class="tier-name">'+t.name+'</div><div class="tier-count">'+t.count+'</div><div style="font-size:.6rem;color:var(--text3);margin-top:4px">'+t.min+(t.max<9999?'-'+t.max:'+')+'  visits</div></div>').join('');renderLoyaltyList();}
+function renderLoyaltyList(){const search=(document.getElementById('loyalty-search')?.value||'').toLowerCase();let filtered=customers.filter(c=>!search||(c.name||'').toLowerCase().includes(search)||(c.phone||'').includes(search));filtered.sort((a,b)=>(b.visits||0)-(a.visits||0));const el=document.getElementById('loyalty-list');if(!filtered.length){el.innerHTML='<div class="empty"><div class="empty-icon">⭐</div><p>No customers yet. They appear when you add a customer name on a sale.</p></div>';return;}const bgs={VIP:'linear-gradient(135deg,var(--purple),#ec4899)',Gold:'linear-gradient(135deg,var(--warn),#d97706)',Silver:'linear-gradient(135deg,#94a3b8,#64748b)',Bronze:'linear-gradient(135deg,#b45309,#78350f)'};el.innerHTML=filtered.slice(0,60).map(c=>{const tier=getTier(c.visits||0);return '<div class="customer-card"><div class="cust-avatar" style="background:'+(bgs[tier.name]||bgs.Bronze)+'">'+tier.icon+'</div><div style="flex:1"><div class="cust-name">'+c.name+'</div><div class="cust-phone">'+(c.phone||'No phone')+'</div><span class="badge '+tier.badge+'" style="margin-top:4px">'+tier.icon+' '+tier.name+'</span>'+(c.notes?'<div style="font-size:.65rem;color:var(--text3);margin-top:3px">'+c.notes+'</div>':'')+'</div><div style="text-align:right"><div class="cust-visits">'+(c.visits||0)+'</div><div style="font-size:.65rem;color:var(--text3)">visits</div><div class="cust-spend">KSh '+(c.totalSpend||0).toLocaleString()+'</div><div style="font-size:.6rem;color:var(--text3)">'+(c.lastVisit?'Last: '+c.lastVisit:'')+'</div></div><button class="btn btn-danger btn-xs" onclick="deleteCustomer(\''+c.id+'\')">Del</button></div>';}).join('');}
+
+// FEATURE 3: FLOAT TRACKER (Enhanced with M-Pesa Expenses, Daily P&L, Agent Statement)
+let currentFloatType='dep';
+function setFloatType(type){
+  currentFloatType=type;
+  ['dep','with','comm','mpexp'].forEach(t=>{const btn=document.getElementById('ftab-'+t);if(btn)btn.classList.toggle('active',t===type);});
+  const btn=document.getElementById('float-record-btn');
+  const txnFields=document.getElementById('float-txn-fields');
+  const mpexpFields=document.getElementById('float-mpexp-fields');
+  const commField=document.getElementById('float-comm-field');
+  if(type==='mpexp'){
+    if(txnFields)txnFields.style.display='none';
+    if(mpexpFields)mpexpFields.style.display='block';
+    if(btn){btn.textContent='💸 Record M-Pesa Expense';btn.className='btn btn-danger';}
+    if(!document.getElementById('float-exp-date').value)document.getElementById('float-exp-date').value=todayStr();
+  }else{
+    if(txnFields)txnFields.style.display='block';
+    if(mpexpFields)mpexpFields.style.display='none';
+    if(commField)commField.style.display=type==='comm'?'flex':'flex';
+    if(btn){btn.textContent=type==='dep'?'✅ Record Deposit':type==='with'?'✅ Record Withdrawal':'✅ Record Commission';btn.className='btn '+(type==='dep'?'btn-primary':type==='with'?'btn-danger':'btn-amber');}
+  }
+  autoCalcCommission();
+}
+function autoCalcCommission(){
+  const amtEl=document.getElementById('float-amount'),commEl=document.getElementById('float-commission-earned');
+  if(!amtEl||!commEl)return;const a=parseFloat(amtEl.value)||0;
+  if(a>0&&currentFloatType!=='comm'&&currentFloatType!=='mpexp')commEl.value=getMpesaComm(a);
+}
+
+function renderFloatTab(){
+  if(!document.getElementById('float-date').value)document.getElementById('float-date').value=todayStr();
+  if(!document.getElementById('float-pnl-date').value)document.getElementById('float-pnl-date').value=todayStr();
+  const deps=floatTxns.filter(t=>t.type==='dep');
+  const withs=floatTxns.filter(t=>t.type==='with');
+  const comms=floatTxns.filter(t=>t.type==='comm');
+  const mpexps=floatTxns.filter(t=>t.type==='mpexp');
+  const now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const totalDep=sumArr(deps,'amount'),totalWith=sumArr(withs,'amount');
+  const mpesaFloat=Math.max(totalDep-totalWith,0);
+  const cash=Math.max(totalWith-totalDep,0);
+  const monthComm=sumArr(comms.filter(t=>new Date(t.date)>=mStart),'amount');
+  const monthExp=sumArr(mpexps.filter(t=>new Date(t.date)>=mStart),'amount');
+  const totalComm=sumArr(comms,'amount');
+  const totalMpExp=sumArr(mpexps,'amount');
+  const netProfit=monthComm-monthExp;
+  // Stats
+  document.getElementById('flt-float').textContent='KSh '+mpesaFloat.toLocaleString();
+  document.getElementById('flt-float-sub').textContent=deps.length+' dep - '+withs.length+' with = balance';
+  document.getElementById('flt-cash').textContent='KSh '+cash.toLocaleString();
+  document.getElementById('flt-dep').textContent='KSh '+totalDep.toLocaleString();
+  document.getElementById('flt-dep-count').textContent=deps.length+' deposits';
+  document.getElementById('flt-with').textContent='KSh '+totalWith.toLocaleString();
+  document.getElementById('flt-with-count').textContent=withs.length+' withdrawals';
+  document.getElementById('flt-comm').textContent='KSh '+monthComm.toLocaleString();
+  document.getElementById('flt-comm-count').textContent=comms.length+' total txns';
+  document.getElementById('flt-mpexp').textContent='KSh '+monthExp.toLocaleString();
+  document.getElementById('flt-mpexp-count').textContent=mpexps.length+' expense entries';
+  const netEl=document.getElementById('flt-net');
+  netEl.textContent='KSh '+netProfit.toLocaleString();
+  netEl.style.color=netProfit>=0?'var(--accent)':'var(--danger)';
+  document.getElementById('flt-total').textContent='KSh '+(mpesaFloat+cash).toLocaleString();
+  // 7-day chart
+  const chart=document.getElementById('float-mini-chart');
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+    days.push({label:WDAYS[d.getDay()],dep:sumArr(floatTxns.filter(t=>t.date===ds&&t.type==='dep'),'amount'),with:sumArr(floatTxns.filter(t=>t.date===ds&&t.type==='with'),'amount'),comm:sumArr(floatTxns.filter(t=>t.date===ds&&t.type==='comm'),'amount')});
+  }
+  const maxA=Math.max(...days.map(d=>Math.max(d.dep,d.with,d.comm)),1);
+  chart.innerHTML=days.map(d=>'<div class="float-bar-col"><div class="float-bar-seg dep" style="height:'+Math.max((d.dep/maxA)*50,d.dep>0?4:0)+'px"></div><div class="float-bar-seg with" style="height:'+Math.max((d.with/maxA)*50,d.with>0?4:0)+'px"></div><div class="float-bar-seg" style="height:'+Math.max((d.comm/maxA)*50,d.comm>0?4:0)+'px;background:var(--warn);border-radius:3px 3px 0 0"></div><div class="float-bar-day">'+d.label+'</div></div>').join('');
+  // Commission guide
+  const guide=document.getElementById('float-comm-guide');
+  if(guide)guide.innerHTML=MPESA_COMM_RATES.map(t=>'<span style="display:inline-block;margin:2px 18px 2px 0;white-space:nowrap">KSh '+t.min.toLocaleString()+' - '+t.max.toLocaleString()+': <strong style="color:var(--warn)">KSh '+t.comm+'</strong></span>').join('');
+  renderFloatLog();
+  renderFloatPnL();
+}
+
+function renderFloatPnL(){
+  const date=document.getElementById('float-pnl-date')?.value||todayStr();
+  const dayDeps=floatTxns.filter(t=>t.date===date&&t.type==='dep');
+  const dayWiths=floatTxns.filter(t=>t.date===date&&t.type==='with');
+  const dayComms=floatTxns.filter(t=>t.date===date&&t.type==='comm');
+  const dayExps=floatTxns.filter(t=>t.date===date&&t.type==='mpexp');
+  const depAmt=sumArr(dayDeps,'amount'),withAmt=sumArr(dayWiths,'amount');
+  const commAmt=sumArr(dayComms,'amount'),expAmt=sumArr(dayExps,'amount');
+  const netAmt=commAmt-expAmt;
+  const txnCount=dayDeps.length+dayWiths.length;
+  const box=document.getElementById('float-pnl-content');
+  if(!box)return;
+  if(!txnCount&&!dayComms.length&&!dayExps.length){
+    box.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No M-Pesa transactions on '+date+'</p></div>';return;
+  }
+  const dateLabel=new Date(date+'T12:00:00').toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  box.innerHTML=`
+    <div style="margin-bottom:14px;font-size:.78rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${dateLabel}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">
+      <div style="background:var(--surface);border:1px solid rgba(0,229,160,.15);border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">⬆️ Deposits</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent)">KSh ${depAmt.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayDeps.length} transaction${dayDeps.length!==1?'s':''}</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(244,63,94,.15);border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">⬇️ Withdrawals</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--danger)">KSh ${withAmt.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayWiths.length} transaction${dayWiths.length!==1?'s':''}</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(245,158,11,.15);border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">💰 Commission</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--warn)">KSh ${commAmt.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayComms.length} entr${dayComms.length!==1?'ies':'y'}</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid rgba(244,63,94,.1);border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">💸 M-Pesa Expenses</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--danger)">KSh ${expAmt.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayExps.length} entr${dayExps.length!==1?'ies':'y'}</div>
+      </div>
+      <div style="background:${netAmt>=0?'var(--accent-dim)':'var(--danger-dim)'};border:1px solid ${netAmt>=0?'rgba(0,229,160,.25)':'rgba(244,63,94,.25)'};border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">📈 Net Profit</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:${netAmt>=0?'var(--accent)':'var(--danger)'}">KSh ${netAmt.toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">Commission minus Expenses</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
+        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">📊 Total Turnover</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--blue)">KSh ${(depAmt+withAmt).toLocaleString()}</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${txnCount} M-Pesa transaction${txnCount!==1?'s':''}</div>
+      </div>
+    </div>
+    ${dayExps.length?'<div style="margin-bottom:8px;font-size:.72rem;font-weight:700;color:var(--danger)">M-Pesa Expenses Breakdown:</div><div style="display:flex;flex-direction:column;gap:6px">'+dayExps.map(e=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--danger-dim);border-radius:var(--radius-sm);font-size:.8rem"><span style="color:var(--text2)">'+e.category+' — '+(e.description||'')+'</span><span style="font-family:'JetBrains Mono',monospace;color:var(--danger);font-weight:700">KSh '+(e.amount||0).toLocaleString()+'</span></div>').join('')+'</div>':''}
+  `;
+}
+
+function recordFloatTxn(){
+  if(currentFloatType==='mpexp'){
+    // Record M-Pesa Expense
+    const cat=document.getElementById('float-exp-cat')?.value||'Other M-Pesa Expense';
+    const amount=parseFloat(document.getElementById('float-exp-amount')?.value)||0;
+    const desc=document.getElementById('float-exp-desc')?.value?.trim()||'';
+    const date=document.getElementById('float-exp-date')?.value||todayStr();
+    if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}
+    const rec={id:'fl'+Date.now(),date,time:nowTime(),type:'mpexp',category:cat,phone:'',description:desc,amount,commission:0};
+    floatTxns.unshift(rec);saveLS('gb_float_txns',floatTxns);
+    if(document.getElementById('float-exp-amount'))document.getElementById('float-exp-amount').value='';
+    if(document.getElementById('float-exp-desc'))document.getElementById('float-exp-desc').value='';
+    toast('💸 M-Pesa expense recorded!','amber');renderFloatTab();return;
+  }
+  const phone=document.getElementById('float-phone').value.trim();
+  const amount=parseFloat(document.getElementById('float-amount').value)||0;
+  const commEarned=parseFloat(document.getElementById('float-commission-earned').value)||getMpesaComm(amount);
+  const desc=document.getElementById('float-desc').value.trim();
+  const date=document.getElementById('float-date').value||todayStr();
+  if(!amount||amount<=0){toast('Enter a valid amount!','amber');return;}
+  const rec={id:'fl'+Date.now(),date,time:nowTime(),type:currentFloatType,phone,description:desc,amount,commission:currentFloatType==='comm'?amount:commEarned,category:''};
+  floatTxns.unshift(rec);saveLS('gb_float_txns',floatTxns);
+  document.getElementById('float-phone').value='';document.getElementById('float-amount').value='';document.getElementById('float-commission-earned').value='';document.getElementById('float-desc').value='';
+  toast(currentFloatType==='dep'?'✅ Deposit recorded!':currentFloatType==='with'?'✅ Withdrawal recorded!':'💰 Commission recorded!',currentFloatType==='dep'?'green':currentFloatType==='with'?'red':'amber');
+  renderFloatTab();
+}
+
+function deleteFloatTxn(id){if(!confirm('Delete?'))return;floatTxns=floatTxns.filter(t=>t.id!==id);saveLS('gb_float_txns',floatTxns);renderFloatTab();toast('Deleted','amber');}
+function clearFloatFilter(){document.getElementById('float-filter-type').value='';document.getElementById('float-filter-date').value='';renderFloatLog();}
+
+function renderFloatLog(){
+  const tf=document.getElementById('float-filter-type').value,df=document.getElementById('float-filter-date').value;
+  let f=floatTxns;if(tf)f=f.filter(t=>t.type===tf);if(df)f=f.filter(t=>t.date===df);
+  const tbody=document.getElementById('float-log-tbody');
+  if(!f.length){tbody.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-icon">📲</div><p>No transactions yet</p></div></td></tr>';return;}
+  const tc={dep:{icon:'⬆️',label:'Deposit',badge:'badge-green'},with:{icon:'⬇️',label:'Withdrawal',badge:'badge-red'},comm:{icon:'💰',label:'Commission',badge:'badge-amber'},mpexp:{icon:'💸',label:'M-Pesa Exp',badge:'badge-red'}};
+  // Calculate running float
+  const allDeps=floatTxns.filter(t=>t.type==='dep');
+  const allWiths=floatTxns.filter(t=>t.type==='with');
+  const startFloat=sumArr(allDeps,'amount')-sumArr(allWiths,'amount');
+  tbody.innerHTML=f.map((t,i)=>{
+    const c=tc[t.type]||tc.dep;
+    const phoneOrCat=t.type==='mpexp'?(t.category||'M-Pesa Exp'):(t.phone||'-');
+    const runFloat=t.type==='dep'?startFloat-sumArr(f.slice(0,i).filter(x=>x.type==='dep'),'amount')+sumArr(f.slice(0,i).filter(x=>x.type==='with'),'amount'):
+                   t.type==='with'?startFloat-sumArr(f.slice(0,i).filter(x=>x.type==='dep'),'amount')+sumArr(f.slice(0,i).filter(x=>x.type==='with'),'amount'):null;
+    return '<tr><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text3)">'+t.date+'</td><td style="color:var(--text3)">'+( t.time||'-')+'</td><td><span class="badge '+c.badge+'">'+c.icon+' '+c.label+'</span></td><td style="font-size:.8rem;color:var(--text3)">'+phoneOrCat+'</td><td style="color:var(--text2);font-size:.82rem">'+(t.description||'-')+'</td><td><span class="badge '+c.badge+'">KSh '+(t.amount||0).toLocaleString()+'</span></td><td>'+(t.commission&&t.type!=='mpexp'?'<span class="badge badge-amber">KSh '+t.commission+'</span>':'-')+'</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:'+(runFloat!==null&&runFloat>=0?'var(--accent)':'var(--danger)')+'">'+( runFloat!==null?'KSh '+Math.abs(runFloat||0).toLocaleString():'-')+'</td><td><button class="btn btn-danger btn-xs" onclick="deleteFloatTxn(''+t.id+'')">Del</button></td></tr>';
+  }).join('');
+}
+
+function printAgentStatement(){
+  const now=new Date();
+  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const monthStr=now.toLocaleDateString('en-KE',{month:'long',year:'numeric'});
+  const cfg=getMpesaSettings();
+  const deps=floatTxns.filter(t=>t.type==='dep'&&new Date(t.date)>=mStart);
+  const withs=floatTxns.filter(t=>t.type==='with'&&new Date(t.date)>=mStart);
+  const comms=floatTxns.filter(t=>t.type==='comm'&&new Date(t.date)>=mStart);
+  const exps=floatTxns.filter(t=>t.type==='mpexp'&&new Date(t.date)>=mStart);
+  const totalDep=sumArr(deps,'amount'),totalWith=sumArr(withs,'amount');
+  const totalComm=sumArr(comms,'amount'),totalExp=sumArr(exps,'amount');
+  const netProfit=totalComm-totalExp;
+  const totalFloat=Math.max(sumArr(floatTxns.filter(t=>t.type==='dep'),'amount')-sumArr(floatTxns.filter(t=>t.type==='with'),'amount'),0);
+  const win=window.open('','_blank','width=700,height=900');
+  win.document.write(`<!DOCTYPE html><html><head><title>Agent Statement - ${monthStr}</title>
+  <style>
+    body{font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:24px;color:#111;background:#fff;font-size:13px}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #00b374;padding-bottom:16px;margin-bottom:20px}
+    .biz-name{font-size:22px;font-weight:800;color:#00b374;margin-bottom:4px}
+    .biz-meta{font-size:11px;color:#666}
+    .statement-title{text-align:right}
+    .statement-title h2{font-size:18px;margin:0;color:#111}
+    .statement-title p{font-size:11px;color:#666;margin:4px 0 0}
+    .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+    .sum-box{border:1px solid #e0e0e0;border-radius:8px;padding:12px;text-align:center}
+    .sum-box .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:6px}
+    .sum-box .val{font-size:18px;font-weight:700}
+    .sum-box.green .val{color:#00b374}
+    .sum-box.red .val{color:#dc2626}
+    .sum-box.amber .val{color:#d97706}
+    .sum-box.blue .val{color:#2563eb}
+    .section-title{font-size:13px;font-weight:700;background:#f3f4f6;padding:8px 12px;margin:16px 0 8px;border-left:4px solid #00b374}
+    table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+    th{background:#f9fafb;padding:8px 10px;text-align:left;font-weight:600;color:#555;border-bottom:2px solid #e5e7eb}
+    td{padding:7px 10px;border-bottom:1px solid #f0f0f0}
+    tr:hover td{background:#f9fafb}
+    .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700}
+    .badge-green{background:#d1fae5;color:#065f46}
+    .badge-red{background:#fee2e2;color:#991b1b}
+    .badge-amber{background:#fef3c7;color:#92400e}
+    .net-section{margin-top:20px;padding:16px;border-radius:8px;background:${netProfit>=0?'#d1fae5':'#fee2e2'};border:1px solid ${netProfit>=0?'#6ee7b7':'#fca5a5'}}
+    .net-section h3{margin:0 0 6px;font-size:16px;color:${netProfit>=0?'#065f46':'#991b1b'}}
+    .net-section p{margin:0;font-size:12px;color:#555}
+    .footer{margin-top:24px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:10px;color:#999;display:flex;justify-content:space-between}
+    @media print{body{padding:0} button{display:none}}
+  </style></head><body>
+  <div class="header">
+    <div>
+      <div class="biz-name">GB ICT Solutions</div>
+      <div class="biz-meta">M-Pesa Agent · Till: ${cfg.till||'4009152'}<br>Nairobi, Kenya</div>
+    </div>
+    <div class="statement-title">
+      <h2>M-Pesa Agent Statement</h2>
+      <p>Period: ${monthStr}</p>
+      <p>Generated: ${now.toLocaleString('en-KE')}</p>
+    </div>
+  </div>
+  <div class="summary-grid">
+    <div class="sum-box green"><div class="lbl">Total Deposits</div><div class="val">KSh ${totalDep.toLocaleString()}</div><div style="font-size:10px;color:#888;margin-top:4px">${deps.length} txns</div></div>
+    <div class="sum-box red"><div class="lbl">Total Withdrawals</div><div class="val">KSh ${totalWith.toLocaleString()}</div><div style="font-size:10px;color:#888;margin-top:4px">${withs.length} txns</div></div>
+    <div class="sum-box amber"><div class="lbl">Commission Earned</div><div class="val">KSh ${totalComm.toLocaleString()}</div><div style="font-size:10px;color:#888;margin-top:4px">${comms.length} entries</div></div>
+    <div class="sum-box blue"><div class="lbl">Current Float</div><div class="val">KSh ${totalFloat.toLocaleString()}</div><div style="font-size:10px;color:#888;margin-top:4px">available balance</div></div>
+  </div>
+  ${deps.length?`<div class="section-title">⬆️ Deposits (${deps.length})</div>
+  <table><thead><tr><th>Date</th><th>Time</th><th>Phone</th><th>Description</th><th>Amount</th><th>Commission</th></tr></thead><tbody>
+  ${deps.map(t=>`<tr><td>${t.date}</td><td>${t.time||'-'}</td><td>${t.phone||'-'}</td><td>${t.description||'-'}</td><td>KSh ${(t.amount||0).toLocaleString()}</td><td>${t.commission?'KSh '+t.commission:'-'}</td></tr>`).join('')}
+  </tbody></table>`:''}
+  ${withs.length?`<div class="section-title">⬇️ Withdrawals (${withs.length})</div>
+  <table><thead><tr><th>Date</th><th>Time</th><th>Phone</th><th>Description</th><th>Amount</th><th>Commission</th></tr></thead><tbody>
+  ${withs.map(t=>`<tr><td>${t.date}</td><td>${t.time||'-'}</td><td>${t.phone||'-'}</td><td>${t.description||'-'}</td><td>KSh ${(t.amount||0).toLocaleString()}</td><td>${t.commission?'KSh '+t.commission:'-'}</td></tr>`).join('')}
+  </tbody></table>`:''}
+  ${exps.length?`<div class="section-title">💸 M-Pesa Expenses (${exps.length})</div>
+  <table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th></tr></thead><tbody>
+  ${exps.map(t=>`<tr><td>${t.date}</td><td><span class="badge badge-red">${t.category||'Expense'}</span></td><td>${t.description||'-'}</td><td style="color:#dc2626;font-weight:600">KSh ${(t.amount||0).toLocaleString()}</td></tr>`).join('')}
+  </tbody></table>`:''}
+  <div class="net-section">
+    <h3>${netProfit>=0?'Net Profit: KSh '+netProfit.toLocaleString():'Net Loss: KSh '+Math.abs(netProfit).toLocaleString()}</h3>
+    <p>Commission Earned (KSh ${totalComm.toLocaleString()}) minus M-Pesa Expenses (KSh ${totalExp.toLocaleString()})</p>
+  </div>
+  <div class="footer"><span>GB ICT Solutions — Confidential M-Pesa Agent Statement</span><span>Generated by GB ICT Sales Tracker</span></div>
+  <br><button onclick="window.print()" style="background:#00b374;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px">🖨️ Print Statement</button>
+  </body></html>`);
+  win.document.close();
+}
+
+function exportFloatExcel(){
+  const wb=XLSX.utils.book_new();
+  const now=new Date(),mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const monthStr=now.toLocaleDateString('en-KE',{month:'long',year:'numeric'});
+  // Summary sheet
+  const deps=floatTxns.filter(t=>t.type==='dep'),withs=floatTxns.filter(t=>t.type==='with');
+  const comms=floatTxns.filter(t=>t.type==='comm'),exps=floatTxns.filter(t=>t.type==='mpexp');
+  const mDeps=deps.filter(t=>new Date(t.date)>=mStart),mWiths=withs.filter(t=>new Date(t.date)>=mStart);
+  const mComms=comms.filter(t=>new Date(t.date)>=mStart),mExps=exps.filter(t=>new Date(t.date)>=mStart);
+  const netProfit=sumArr(mComms,'amount')-sumArr(mExps,'amount');
+  const sumWS=XLSX.utils.aoa_to_sheet([
+    ['GB ICT Solutions — M-Pesa Float Statement'],['Month: '+monthStr],['Generated: '+now.toLocaleString('en-KE')],[],
+    ['MONTHLY SUMMARY'],['Metric','Amount','Count'],
+    ['Total Deposits','KSh '+sumArr(mDeps,'amount').toLocaleString(),mDeps.length],
+    ['Total Withdrawals','KSh '+sumArr(mWiths,'amount').toLocaleString(),mWiths.length],
+    ['Commission Earned','KSh '+sumArr(mComms,'amount').toLocaleString(),mComms.length],
+    ['M-Pesa Expenses','KSh '+sumArr(mExps,'amount').toLocaleString(),mExps.length],
+    ['Net Profit','KSh '+netProfit.toLocaleString(),''],
+    ['Current Float','KSh '+Math.max(sumArr(deps,'amount')-sumArr(withs,'amount'),0).toLocaleString(),'All time'],
+  ]);
+  sumWS['!cols']=[{wch:28},{wch:20},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,sumWS,'Summary');
+  // Transactions sheet
+  const header=['Date','Time','Type','Phone/Category','Description','Amount (KSh)','Commission (KSh)'];
+  const rows=floatTxns.map(t=>[t.date,t.time||'',t.type==='dep'?'Deposit':t.type==='with'?'Withdrawal':t.type==='comm'?'Commission':'M-Pesa Expense',t.type==='mpexp'?(t.category||''):( t.phone||''),t.description||'',t.amount||0,t.commission||0]);
+  const txnWS=XLSX.utils.aoa_to_sheet([header,...rows]);
+  txnWS['!cols']=[{wch:14},{wch:10},{wch:16},{wch:24},{wch:30},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,txnWS,'All Transactions');
+  // Expenses sheet
+  if(exps.length){
+    const expWS=XLSX.utils.aoa_to_sheet([['Date','Time','Category','Description','Amount (KSh)'],...exps.map(e=>[e.date,e.time||'',e.category||'',e.description||'',e.amount||0])]);
+    XLSX.utils.book_append_sheet(wb,expWS,'M-Pesa Expenses');
+  }
+  XLSX.writeFile(wb,'Float-Statement-'+now.getFullYear()+'-'+pad(now.getMonth()+1)+'.xlsx');
+  toast('📊 Float statement exported!');
+}
+
+// FEATURE 4: RECEIPT PRINTER
+function saveReceiptSettings(){const s={biz:document.getElementById('rcp-biz')?.value||'GB ICT Solutions',phone:document.getElementById('rcp-phone')?.value||'',location:document.getElementById('rcp-location')?.value||'Nairobi, Kenya',footer:document.getElementById('rcp-footer')?.value||'Thank you!',width:document.getElementById('rcp-width')?.value||'80mm',showTill:document.getElementById('rcp-show-till')?.value||'1'};receiptSettings={...receiptSettings,...s};saveLS('gb_receipt_settings',s);const m=document.getElementById('rcp-saved-msg');if(m){m.style.display='inline';setTimeout(()=>m.style.display='none',2000);}toast('Receipt settings saved!');}
+function renderReceiptTab(){const rs=loadLS('gb_receipt_settings',receiptSettings);Object.assign(receiptSettings,rs);['biz','phone','location','footer','width'].forEach(k=>{const el=document.getElementById('rcp-'+k);if(el)el.value=receiptSettings[k]||'';});if(document.getElementById('rcp-filter-date')&&!document.getElementById('rcp-filter-date').value)document.getElementById('rcp-filter-date').value=todayStr();}
+function loadReceiptSales(mode){const date=mode==='today'?todayStr():(document.getElementById('rcp-filter-date')?.value||todayStr());if(document.getElementById('rcp-filter-date'))document.getElementById('rcp-filter-date').value=date;const daySales=sales.filter(s=>s.date===date);const bySvc={};daySales.forEach(s=>{const k=s.service_name;if(!bySvc[k])bySvc[k]={name:(s.icon||'')+' '+s.service_name,qty:0,price:s.unit_price||0,total:0};bySvc[k].qty+=s.qty||0;bySvc[k].total+=s.total||0;});receiptItemsCache=Object.values(bySvc);const wrap=document.getElementById('rcp-items-wrap');if(!receiptItemsCache.length){wrap.innerHTML='<div style="color:var(--text3);font-size:.82rem">No sales on '+date+'</div>';document.getElementById('receipt-preview-wrap').innerHTML='';return;}wrap.innerHTML='<div style="font-size:.78rem;color:var(--text3);margin-bottom:8px">'+receiptItemsCache.length+' items loaded for '+date+'</div>';const cust=document.getElementById('rcp-cust-name')?.value||'',payment=document.getElementById('rcp-payment')?.value||'Cash';buildReceiptPreview(receiptItemsCache,cust,date,nowTime(),payment);}
+function buildReceiptPreview(items,custName,date,time,payment){const rs=loadLS('gb_receipt_settings',receiptSettings);const cfg=getMpesaSettings();const total=sumArr(items,'total');const dateObj=new Date(date+'T12:00:00');const dateStr=dateObj.toLocaleDateString('en-KE',{weekday:'short',day:'numeric',month:'short',year:'numeric'});const rcpNo='RCP'+Date.now().toString().slice(-6);const html='<div class="receipt-preview-box"><h2>'+(rs.biz||'GB ICT Solutions')+'</h2><div class="r-center">'+(rs.location||'Nairobi')+'</div><div class="r-center">Tel: '+(rs.phone||'')+'</div>'+(rs.showTill!=='0'&&cfg.till?'<div class="r-center">M-Pesa Till: '+cfg.till+'</div>':'')+'<hr class="r-divider"><div class="r-center" style="font-size:.65rem">Receipt: '+rcpNo+'</div><div class="r-center" style="font-size:.65rem">'+dateStr+' '+time+'</div>'+(custName?'<div class="r-center" style="font-size:.7rem;margin-top:4px">Customer: '+custName+'</div>':'')+'<hr class="r-divider"><table style="width:100%;font-size:.72rem">'+items.map(it=>'<tr><td>'+it.name+'</td><td style="text-align:right">'+it.qty+'x</td><td style="text-align:right">KSh '+(it.total||0).toLocaleString()+'</td></tr>').join('')+'</table><hr class="r-divider"><div class="r-total-row"><span>TOTAL</span><span>KSh '+total.toLocaleString()+'</span></div>'+(payment?'<div class="r-center" style="margin-top:5px;font-size:.72rem">Payment: '+payment+'</div>':'')+'<hr class="r-divider"><div class="r-footer">'+(rs.footer||'Thank you!')+'</div><div class="r-footer" style="margin-top:3px">Powered by GB ICT Sales Tracker</div></div>';document.getElementById('receipt-preview-wrap').innerHTML=html;}
+function doPrintReceipt(){const content=document.getElementById('receipt-preview-wrap');if(!content||!content.innerHTML.trim()){toast('Load sales first!','amber');return;}const rs=loadLS('gb_receipt_settings',receiptSettings);const pw=rs.width==='a4'?'210mm':rs.width==='58mm'?'58mm':'80mm';const win=window.open('','_blank','width=500,height=700');win.document.write('<!DOCTYPE html><html><head><title>Receipt</title><style>@page{size:'+pw+' auto;margin:5mm}body{font-family:"Courier New",monospace;font-size:11px;margin:0}h2{text-align:center;font-size:14px;margin:0 0 3px}.r-center{text-align:center;font-size:10px;margin:2px 0}.r-divider{border:none;border-top:1px dashed #aaa;margin:6px 0}table{width:100%;border-collapse:collapse}td{padding:2px 3px;font-size:11px}.r-total-row{display:flex;justify-content:space-between;font-weight:bold;font-size:13px;border-top:2px solid #000;padding-top:4px;margin-top:3px}.r-footer{text-align:center;font-size:9px;color:#555;margin-top:4px}</style></head><body>'+content.innerHTML+'</body></html>');win.document.close();win.focus();setTimeout(()=>{win.print();win.close();},300);toast('Sent to printer!');}
+function doSaveReceiptPDF(){const content=document.getElementById('receipt-preview-wrap');if(!content||!content.innerHTML.trim()){toast('Load sales first!','amber');return;}const{jsPDF}=window.jspdf;const doc=new jsPDF({format:'a6',unit:'mm'});const rs=loadLS('gb_receipt_settings',receiptSettings);doc.setFont('courier','bold');doc.setFontSize(13);doc.text(rs.biz||'GB ICT Solutions',52,12,{align:'center'});doc.setFont('courier','normal');doc.setFontSize(8);doc.text(rs.location||'Nairobi',52,17,{align:'center'});let y=24;doc.setLineDashPattern([1,1],0);doc.line(8,y,96,y);y+=5;doc.text('Date: '+new Date().toLocaleDateString('en-KE'),8,y);y+=4;doc.text('Receipt: RCP'+Date.now().toString().slice(-6),8,y);y+=5;doc.line(8,y,96,y);y+=5;receiptItemsCache.forEach(it=>{const name=(it.name||'').replace(/[^\x00-\x7F]/g,'');doc.text(name,8,y);doc.text('KSh '+it.total.toLocaleString(),96,y,{align:'right'});y+=5;if(y>120){doc.addPage();y=15;}});doc.line(8,y,96,y);y+=5;doc.setFont('courier','bold');doc.setFontSize(11);doc.text('TOTAL',8,y);doc.text('KSh '+sumArr(receiptItemsCache,'total').toLocaleString(),96,y,{align:'right'});y+=7;doc.setFont('courier','normal');doc.setFontSize(7);doc.text(rs.footer||'Thank you!',52,y,{align:'center'});doc.save('Receipt-'+Date.now()+'.pdf');toast('PDF saved!');}
+
+// ICON PICKER
+const ALL_ICONS=['🕹️','💻','🖥️','🖨️','📎','📋','📑','📝','✏️','📌','📁','📦','💾','💿','🖱️','⌨️','📷','📸','📞','☎️','📟','📠','📺','📻','📡','🔌','🔋','💡','🔦','🔒','🔓','🔑','🗝️','🔨','🔧','🔩','⚙️','🪛','📐','📏','🧮','💰','💵','💳','🪙','💸','💹','📈','📉','📊','🏦','🏪','🏬','🏛️','🏥','🏫','✉️','📨','📧','📩','📮','📣','📢','🔔','🎵','🎶','🎤','🎧','🌐','🗺️','🧭','🌍','🚀','✈️','🚗','🚕','🚙','🚌','🚑','🚒','🏠','🏡','🏢','🪑','🛏️','🚿','🚪','👤','👥','🧑','🧑‍💻','👨‍💼','👩‍💼','👮','🧑‍⚕️','🎓','📚','📖','📗','📘','📙','📔','📓','📒','📕','🗞️','📰','🎒','🎫','🎟️','🏆','🥇','🥈','🥉','🎖️','🎯','🎨','🎉','🎊','🎁','🌟','⭐','💫','✨','🔥','💧','🌊','☀️','❄️','🌈','🍕','🍔','🌮','🌯','🥗','🍿','☕','🍵','🧃','🥤','🎂','🍰','🧁','🍫','🍬','💊','💉','🩺','🩹','🔬','🔭','🧪','🧲','🧸','♟️','🎮','🪪','✉️','💼','🗂️','📂','🗃️','🏅','🧾','⏰','⌛','⏱️','📅','📆','🗓️'];
+let iconPickerTarget='',iconPickerSelected='';
+function openIconPicker(inputId){iconPickerTarget=inputId;iconPickerSelected='';document.getElementById('iconPickerModal').classList.add('open');document.getElementById('iconSearchInput').value='';renderIconGrid(ALL_ICONS);}
+function closeIconPicker(){document.getElementById('iconPickerModal').classList.remove('open');}
+function filterIcons(){const q=document.getElementById('iconSearchInput').value.toLowerCase();renderIconGrid(q?ALL_ICONS.filter(i=>i.includes(q)):ALL_ICONS);}
+function renderIconGrid(icons){document.getElementById('iconGrid').innerHTML=icons.map(icon=>'<div class="icon-cell '+(iconPickerSelected===icon?'selected':'')+'" onclick="selectIcon(\''+icon+'\')">'+icon+'</div>').join('');}
+function selectIcon(icon){iconPickerSelected=icon;renderIconGrid(ALL_ICONS);}
+function confirmIconPick(){if(!iconPickerSelected){toast('Select an icon first!','amber');return;}const el=document.getElementById(iconPickerTarget);if(el){el.value=iconPickerSelected;el.dispatchEvent(new Event('change'));}if(iconPickerTarget.startsWith('svc-icon-')){const id=iconPickerTarget.replace('svc-icon-','');updateServiceIcon(id,iconPickerSelected);}closeIconPicker();toast('Icon updated!');}
+document.getElementById('iconPickerModal').addEventListener('click',function(e){if(e.target===this)closeIconPicker();});
+
+// EXPORT
+let exportFormat='pdf';
+function openExportModal(ctx){const now=new Date();if(ctx==='report'){const mS=new Date(now.getFullYear(),now.getMonth(),1);document.getElementById('exp-from').value=mS.getFullYear()+'-'+pad(mS.getMonth()+1)+'-01';document.getElementById('exp-to').value=todayStr();}else if(ctx==='monthly'){document.getElementById('exp-from').value='';document.getElementById('exp-to').value='';}else{document.getElementById('exp-from').value=todayStr();document.getElementById('exp-to').value=todayStr();}selectFormat('pdf');document.getElementById('exportModal').classList.add('open');}
+function closeExportModal(){document.getElementById('exportModal').classList.remove('open');document.getElementById('exp-generating').classList.remove('show');}
+document.getElementById('exportModal').addEventListener('click',function(e){if(e.target===this)closeExportModal();});
+function selectFormat(fmt){exportFormat=fmt;document.getElementById('fmt-pdf').className='format-btn'+(fmt==='pdf'?' active-pdf':'');document.getElementById('fmt-excel').className='format-btn'+(fmt==='excel'?' active-excel':'');}
+function setExportRange(range){const now=new Date();let from,to=todayStr();if(range==='today'){from=todayStr();}else if(range==='week'){const d=new Date(now);d.setDate(d.getDate()-d.getDay());from=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}else if(range==='month'){from=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-01';}else{from='';to='';}document.getElementById('exp-from').value=from;document.getElementById('exp-to').value=to;}
+function getFilteredData(){const from=document.getElementById('exp-from').value,to=document.getElementById('exp-to').value;let fs=sales,fe=expenses;if(from){fs=fs.filter(s=>s.date>=from);fe=fe.filter(e=>e.date>=from);}if(to){fs=fs.filter(s=>s.date<=to);fe=fe.filter(e=>e.date<=to);}return{filteredSales:fs,filteredExp:fe,from,to};}
+async function runExport(){const gen=document.getElementById('exp-generating');gen.classList.add('show');document.getElementById('exp-download-btn').disabled=true;try{if(exportFormat==='pdf')await exportPDF();else await exportExcel();toast('Report downloaded!');closeExportModal();}catch(err){toast('Export failed: '+err.message,'red');}finally{gen.classList.remove('show');document.getElementById('exp-download-btn').disabled=false;}}
+async function exportPDF(){const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const dateRange=from&&to?from+' to '+to:from?'From '+from:to?'To '+to:'All Time';const totalRev=sumArr(filteredSales,'total'),totalExp=sumArr(filteredExp,'amount'),net=totalRev-totalExp,margin=totalRev?Math.round(net/totalRev*100):0;doc.setFillColor(0,229,160);doc.rect(0,0,210,28,'F');doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(biz,14,12);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.text('Sales & Financial Report',14,19);doc.text('Period: '+dateRange,14,25);doc.text('Generated: '+new Date().toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'}),105,25,{align:'right'});let y=36;if(document.getElementById('inc-summary').checked){doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SUMMARY',14,y);y+=5;doc.setDrawColor(0,229,160);doc.setLineWidth(.3);doc.line(14,y,196,y);y+=3;const data=[['Total Revenue','KSh '+totalRev.toLocaleString(),'Total Expenses','KSh '+totalExp.toLocaleString()],['Net Profit','KSh '+net.toLocaleString(),'Margin',margin+'%'],['Transactions',filteredSales.length.toString(),'Expense Entries',filteredExp.length.toString()]];doc.autoTable({startY:y,head:[['Metric','Value','Metric','Value']],body:data,theme:'grid',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8.5,cellPadding:3},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-sales').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('SALES TRANSACTIONS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const rows=filteredSales.sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty,'KSh '+(s.unit_price||0).toLocaleString(),'KSh '+(s.total||0).toLocaleString(),s.customer_name||'',s.note||'']);doc.autoTable({startY:y,head:[['Date','Time','Service','Qty','Unit','Total','Customer','Note']],body:rows.length?rows:[['No sales','','','','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[0,229,160],fontStyle:'bold',fontSize:7},styles:{fontSize:7,overflow:'ellipsize'},columnStyles:{5:{textColor:[0,180,120],fontStyle:'bold'}},margin:{left:14,right:14}});y=doc.lastAutoTable.finalY+10;}if(document.getElementById('inc-expenses').checked){if(y>210){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(0,229,160);doc.text('EXPENSE RECORDS',14,y);y+=5;doc.setDrawColor(0,229,160);doc.line(14,y,196,y);y+=3;const rows=filteredExp.sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'','KSh '+(e.amount||0).toLocaleString()]);doc.autoTable({startY:y,head:[['Date','Time','Category','Description','Amount']],body:rows.length?rows:[['No expenses','','','','']],theme:'striped',headStyles:{fillColor:[17,24,38],textColor:[244,63,94],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{4:{textColor:[220,40,60],fontStyle:'bold'}},margin:{left:14,right:14}});}const pc=doc.getNumberOfPages();for(let i=1;i<=pc;i++){doc.setPage(i);doc.setFontSize(7);doc.setTextColor(150);doc.text(biz+' Confidential',14,290);doc.text('Page '+i+' of '+pc,196,290,{align:'right'});}doc.save('GB-ICT-Report-'+(from||'all').replace(/-/g,'')+'-'+(to||'all').replace(/-/g,'')+'.pdf');}
+async function exportExcel(){const{filteredSales,filteredExp,from,to}=getFilteredData();const biz=waSettings.biz||'GB ICT Solutions';const wb=XLSX.utils.book_new();const dateRange=from&&to?from+' to '+to:from?'From '+from:to?'To '+to:'All Time';const tr=sumArr(filteredSales,'total'),te=sumArr(filteredExp,'amount'),net=tr-te,margin=tr?Math.round(net/tr*100):0;if(document.getElementById('inc-summary').checked){const ws=XLSX.utils.aoa_to_sheet([[biz+' Sales Report'],['Period: '+dateRange],['Generated: '+new Date().toLocaleString('en-KE')],[],['SUMMARY'],['Metric','Value'],['Total Revenue','KSh '+tr.toLocaleString()],['Total Expenses','KSh '+te.toLocaleString()],['Net Profit','KSh '+net.toLocaleString()],['Margin',margin+'%'],['Transactions',filteredSales.length],['Expense Entries',filteredExp.length]]);ws['!cols']=[{wch:28},{wch:22}];XLSX.utils.book_append_sheet(wb,ws,'Summary');}if(document.getElementById('inc-sales').checked){const header=['Date','Time','Service','Qty','Unit Price','Total','Customer','Note'];const rows=filteredSales.sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[s.date,s.time||'',s.service_name,s.qty||0,s.unit_price||0,s.total||0,s.customer_name||'',s.note||'']);const ws=XLSX.utils.aoa_to_sheet([header,...rows]);XLSX.utils.book_append_sheet(wb,ws,'Sales');}if(document.getElementById('inc-expenses').checked){const header=['Date','Time','Category','Description','Amount'];const rows=filteredExp.sort((a,b)=>a.date.localeCompare(b.date)).map(e=>[e.date,e.time||'',e.category,e.description||'',e.amount||0]);const ws=XLSX.utils.aoa_to_sheet([header,...rows]);XLSX.utils.book_append_sheet(wb,ws,'Expenses');}XLSX.writeFile(wb,'GB-ICT-Report-'+(from||'all').replace(/-/g,'')+'-'+(to||'all').replace(/-/g,'')+'.xlsx');}
+
+// AI
+let aiChatHistory=[],aiReportText='';
+function aiQuick(el){document.getElementById('aiInput').value=el.textContent.trim();aiSend();}
+function aiBuildContext(){const today=todayStr(),now=new Date(),wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());const ts=sales.filter(s=>s.date===today),ws=sales.filter(s=>new Date(s.date)>=wStart);const tr=sumArr(sales,'total'),texp=sumArr(expenses,'amount');const svcTotals={};sales.forEach(s=>{const n=s.service_name||'?';svcTotals[n]=(svcTotals[n]||0)+(s.total||0);});const top5=Object.entries(svcTotals).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]+': KSh '+e[1].toLocaleString()).join(', ');const lowStock=inventory.filter(i=>i.qty<=i.reorder_level);const totalFloat=sumArr(floatTxns.filter(t=>t.type==='dep'),'amount')-sumArr(floatTxns.filter(t=>t.type==='with'),'amount');const totalComm=sumArr(floatTxns.filter(t=>t.type==='comm'),'amount');const topCustomers=customers.sort((a,b)=>(b.visits||0)-(a.visits||0)).slice(0,3).map(c=>c.name+' ('+c.visits+' visits, KSh '+(c.totalSpend||0).toLocaleString()+')').join(', ');return 'SALES: '+sales.length+' records. Total Rev KSh '+tr.toLocaleString()+', Today KSh '+sumArr(ts,'total').toLocaleString()+' ('+ts.length+' txns), Week KSh '+sumArr(ws,'total').toLocaleString()+'\nTOP SERVICES: '+(top5||'none')+'\nEXPENSES: '+expenses.length+' records. Total KSh '+texp.toLocaleString()+', Net Profit KSh '+(tr-texp).toLocaleString()+', Margin '+(tr?Math.round((tr-texp)/tr*100):0)+'%\nINVENTORY: '+inventory.length+' items, '+lowStock.length+' low/out\nFLOAT: Balance KSh '+Math.max(totalFloat,0).toLocaleString()+', Commission KSh '+totalComm.toLocaleString()+'\nCUSTOMERS: '+customers.length+' total. Top: '+(topCustomers||'none')+'\nSERVICES: '+services.slice(0,10).map(s=>s.icon+s.name+' KSh '+s.price).join(', ');}
+async function callAI(prompt,maxTokens){maxTokens=maxTokens||1000;const provider=loadLS('gb_ai_provider','groq');const apiKey=loadLS('gb_ai_api_key','');if(!apiKey)throw new Error('No API key - set it in Settings first');if(provider==='anthropic')throw new Error('Anthropic blocked by CORS. Use Groq or Gemini.');let url,headers,body;if(provider==='groq'){url='https://api.groq.com/openai/v1/chat/completions';headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey};body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:maxTokens,messages:[{role:'system',content:'You are an expert business analyst AI for GB ICT Solutions, a cyber cafe and M-Pesa agency in Nairobi, Kenya. Owner: Henry. Currency: KSh. Analyze data, be specific with numbers.'},{role:'user',content:prompt},...aiChatHistory.slice(-6)]});}else if(provider==='gemini'){url='https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key='+apiKey;headers={'Content-Type':'application/json'};body=JSON.stringify({contents:[{role:'user',parts:[{text:'You are an AI analyst for GB ICT Solutions, Nairobi Kenya. KSh currency.\n\n'+prompt}]}]});}else{url='https://api.openai.com/v1/chat/completions';headers={'Content-Type':'application/json','Authorization':'Bearer '+apiKey};body=JSON.stringify({model:'gpt-3.5-turbo',max_tokens:maxTokens,messages:[{role:'system',content:'You are an expert AI analyst for GB ICT Solutions, cyber cafe and M-Pesa agency, Nairobi Kenya. Currency KSh.'},{role:'user',content:prompt}]});}const res=await fetch(url,{method:'POST',headers,body});if(res.status===429)throw new Error('Rate limit hit. Wait and retry, or switch AI provider in Settings.');const data=await res.json();if(!res.ok)throw new Error(data?.error?.message||'API error '+res.status);if(provider==='gemini')return data?.candidates?.[0]?.content?.parts?.[0]?.text||'No response';return data?.choices?.[0]?.message?.content||'No response';}
+async function aiSend(){const input=document.getElementById('aiInput');const text=input.value.trim();if(!text)return;input.value='';aiAppendMsg('user',text);aiChatHistory.push({role:'user',content:text});const typingId=aiShowTyping();try{const ctx=aiBuildContext();const reply=await callAI('Business Data:\n'+ctx+'\n\nQuestion: '+text);aiRemoveTyping(typingId);aiChatHistory.push({role:'assistant',content:reply});aiAppendMsg('bot',reply);}catch(e){aiRemoveTyping(typingId);aiAppendMsg('bot','Error: '+e.message);}}
+async function aiGenerateReport(){const type=document.getElementById('aiReportType').value;toast('Generating AI report...');try{const ctx=aiBuildContext();const prompt='Generate a comprehensive '+type+' business report for GB ICT Solutions (cyber cafe & M-Pesa agency, Nairobi, Kenya). Date: '+todayStr()+'.\n\nData:\n'+ctx+'\n\nInclude: Executive Summary, Sales Performance, Top Services, Inventory Status, Financial Overview, M-Pesa Float Analysis, Customer Loyalty insights, and Recommendations for Henry. Use KSh. Be specific.';const report=await callAI(prompt,2000);aiReportText=report;document.getElementById('aiReportEmpty').style.display='none';const el=document.getElementById('aiReportContent');el.style.display='block';el.innerHTML='<div class="ai-report-content">'+report.replace(/^#{1,3} (.+)$/gm,'<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div>';document.getElementById('aiReportActions').style.display='flex';toast('AI report generated!');}catch(e){toast('Error: '+e.message,'red');}}
+function aiAppendMsg(role,text){const msgs=document.getElementById('aiMsgs');const div=document.createElement('div');div.className='ai-msg '+role;div.innerHTML='<div class="ai-msg-avatar">'+(role==='bot'?'🤖':'👤')+'</div><div class="ai-bubble">'+text.replace(/\n/g,'<br>')+'</div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+function aiShowTyping(){const msgs=document.getElementById('aiMsgs');const id='ait_'+Date.now();const div=document.createElement('div');div.className='ai-msg bot';div.id=id;div.innerHTML='<div class="ai-msg-avatar">🤖</div><div class="ai-typing"><span></span><span></span><span></span></div>';msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return id;}
+function aiRemoveTyping(id){const el=document.getElementById(id);if(el)el.remove();}
+function aiExportPDF(){if(!aiReportText){toast('Generate a report first','amber');return;}const{jsPDF}=window.jspdf;const doc=new jsPDF();const today=new Date().toLocaleDateString();doc.setFillColor(5,8,15);doc.rect(0,0,210,28,'F');doc.setTextColor(0,229,160);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('GB ICT Solutions',14,13);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text('AI Sales Report · '+today,14,21);doc.setTextColor(30,30,30);doc.setFontSize(9);const lines=doc.splitTextToSize(aiReportText.replace(/[#*]/g,'').replace(/[^\x00-\x7F]/g,''),182);doc.text(lines,14,36);doc.save('GB_ICT_AI_Report_'+today.replace(/\//g,'-')+'.pdf');toast('PDF downloaded!');}
+function aiExportExcel(){const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet([['GB ICT Solutions AI Sales Report'],['Generated: '+new Date().toLocaleString()],[''],[aiReportText]]);XLSX.utils.book_append_sheet(wb,ws,'AI Report');XLSX.writeFile(wb,'GB_ICT_AI_Report_'+new Date().toISOString().split('T')[0]+'.xlsx');toast('Excel downloaded!');}
+
+// INIT
+async function init(){loadLocalData();loadTarget();await Promise.all([loadServices(),loadSales(),loadExpenses(),loadInventory()]);renderDashboard();subscribeRealtime();updateAIWelcome();}
+if(sessionStorage.getItem('gb_ict_unlocked')==='1'){
+  // Already unlocked - show app without going through login
+  document.addEventListener('DOMContentLoaded',function(){
+    try{
+      document.getElementById('loginOverlay').style.display='none';
+      document.getElementById('appRoot').style.display='block';
+      document.getElementById('logoutBtn').style.display='inline-flex';
+      init();
+    }catch(e){console.error('Auto-unlock error:',e);}
+  });
+}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+
+</script>
+</body>
+</html>
