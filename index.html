@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -450,14 +451,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
   .float-stats{grid-template-columns:repeat(2,1fr);}
   .icon-grid{grid-template-columns:repeat(6,1fr);}
 }
-
-/* Float tab extra cards */
-.float-card.fc-exp-mp::before{background:linear-gradient(90deg,var(--danger),#f97316);}
-.float-card.fc-net::before{background:linear-gradient(90deg,var(--purple),#7c3aed);}
-.float-type-tab.mpexp.active{background:var(--danger);color:#fff;}
-.float-bar-seg{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height .6s ease;}
-.float-bar-seg.dep{background:var(--accent);}
-.float-bar-seg.with{background:var(--danger);}
 
 </style>
 </head>
@@ -1415,43 +1408,52 @@ function renderFloatPnL(){
     box.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No M-Pesa transactions on '+date+'</p></div>';return;
   }
   const dateLabel=new Date(date+'T12:00:00').toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  box.innerHTML=`
-    <div style="margin-bottom:14px;font-size:.78rem;color:var(--text3);font-family:'JetBrains Mono',monospace">${dateLabel}</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">
-      <div style="background:var(--surface);border:1px solid rgba(0,229,160,.15);border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">⬆️ Deposits</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent)">KSh ${depAmt.toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayDeps.length} transaction${dayDeps.length!==1?'s':''}</div>
-      </div>
-      <div style="background:var(--surface);border:1px solid rgba(244,63,94,.15);border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">⬇️ Withdrawals</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--danger)">KSh ${withAmt.toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayWiths.length} transaction${dayWiths.length!==1?'s':''}</div>
-      </div>
-      <div style="background:var(--surface);border:1px solid rgba(245,158,11,.15);border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">💰 Commission</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--warn)">KSh ${commAmt.toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayComms.length} entr${dayComms.length!==1?'ies':'y'}</div>
-      </div>
-      <div style="background:var(--surface);border:1px solid rgba(244,63,94,.1);border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">💸 M-Pesa Expenses</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--danger)">KSh ${expAmt.toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${dayExps.length} entr${dayExps.length!==1?'ies':'y'}</div>
-      </div>
-      <div style="background:${netAmt>=0?'var(--accent-dim)':'var(--danger-dim)'};border:1px solid ${netAmt>=0?'rgba(0,229,160,.25)':'rgba(244,63,94,.25)'};border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">📈 Net Profit</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:${netAmt>=0?'var(--accent)':'var(--danger)'}">KSh ${netAmt.toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">Commission minus Expenses</div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
-        <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">📊 Total Turnover</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--blue)">KSh ${(depAmt+withAmt).toLocaleString()}</div>
-        <div style="font-size:.65rem;color:var(--text3);margin-top:4px">${txnCount} M-Pesa transaction${txnCount!==1?'s':''}</div>
-      </div>
-    </div>
-    ${dayExps.length?'<div style="margin-bottom:8px;font-size:.72rem;font-weight:700;color:var(--danger)">M-Pesa Expenses Breakdown:</div><div style="display:flex;flex-direction:column;gap:6px">'+dayExps.map(e=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--danger-dim);border-radius:var(--radius-sm);font-size:.8rem"><span style="color:var(--text2)">'+e.category+' — '+(e.description||'')+'</span><span style="font-family:'JetBrains Mono',monospace;color:var(--danger);font-weight:700">KSh '+(e.amount||0).toLocaleString()+'</span></div>').join('')+'</div>':''}
-  `;
+  const ff='JetBrains Mono';
+  const expRows=dayExps.map(e=>[
+    '<div style="display:flex;justify-content:space-between;align-items:center;',
+    'padding:8px 12px;background:var(--danger-dim);border-radius:var(--radius-sm);font-size:.8rem">',
+    '<span style="color:var(--text2)">'+e.category+' — '+(e.description||'')+'</span>',
+    '<span style="font-family:'+JSON.stringify(ff)+',monospace;color:var(--danger);font-weight:700">',
+    'KSh '+(e.amount||0).toLocaleString()+'</span></div>'
+  ].join('')).join('');
+  const expSection=dayExps.length
+    ? '<div style="margin-bottom:8px;font-size:.72rem;font-weight:700;color:var(--danger)">M-Pesa Expenses Breakdown:</div>'
+      +'<div style="display:flex;flex-direction:column;gap:6px">'+expRows+'</div>'
+    : '';
+  const nc=netAmt>=0?'rgba(0,229,160,.25)':'rgba(244,63,94,.25)';
+  const nb=netAmt>=0?'var(--accent-dim)':'var(--danger-dim)';
+  const nv=netAmt>=0?'var(--accent)':'var(--danger)';
+  box.innerHTML=[
+    '<div style="margin-bottom:14px;font-size:.78rem;color:var(--text3)">'+dateLabel+'</div>',
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px">',
+    '<div style="background:var(--surface);border:1px solid rgba(0,229,160,.15);border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">Deposits</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:var(--accent)">KSh '+depAmt.toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">'+dayDeps.length+' transactions</div></div>',
+    '<div style="background:var(--surface);border:1px solid rgba(244,63,94,.15);border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">Withdrawals</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:var(--danger)">KSh '+withAmt.toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">'+dayWiths.length+' transactions</div></div>',
+    '<div style="background:var(--surface);border:1px solid rgba(245,158,11,.15);border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">Commission</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:var(--warn)">KSh '+commAmt.toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">'+dayComms.length+' entries</div></div>',
+    '<div style="background:var(--surface);border:1px solid rgba(244,63,94,.1);border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">M-Pesa Expenses</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:var(--danger)">KSh '+expAmt.toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">'+dayExps.length+' entries</div></div>',
+    '<div style="background:'+nb+';border:1px solid '+nc+';border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">Net Profit</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:'+nv+'">KSh '+netAmt.toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">Commission minus Expenses</div></div>',
+    '<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">',
+    '<div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700">Total Turnover</div>',
+    '<div style="font-size:1.2rem;font-weight:700;color:var(--blue)">KSh '+(depAmt+withAmt).toLocaleString()+'</div>',
+    '<div style="font-size:.65rem;color:var(--text3);margin-top:4px">'+txnCount+' M-Pesa transactions</div></div>',
+    '</div>',expSection
+  ].join('');
 }
+
 
 function recordFloatTxn(){
   if(currentFloatType==='mpexp'){
@@ -1489,16 +1491,31 @@ function renderFloatLog(){
   const tbody=document.getElementById('float-log-tbody');
   if(!f.length){tbody.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-icon">📲</div><p>No transactions yet</p></div></td></tr>';return;}
   const tc={dep:{icon:'⬆️',label:'Deposit',badge:'badge-green'},with:{icon:'⬇️',label:'Withdrawal',badge:'badge-red'},comm:{icon:'💰',label:'Commission',badge:'badge-amber'},mpexp:{icon:'💸',label:'M-Pesa Exp',badge:'badge-red'}};
-  // Calculate running float
   const allDeps=floatTxns.filter(t=>t.type==='dep');
   const allWiths=floatTxns.filter(t=>t.type==='with');
   const startFloat=sumArr(allDeps,'amount')-sumArr(allWiths,'amount');
+  const ff='JetBrains Mono';
   tbody.innerHTML=f.map((t,i)=>{
     const c=tc[t.type]||tc.dep;
     const phoneOrCat=t.type==='mpexp'?(t.category||'M-Pesa Exp'):(t.phone||'-');
-    const runFloat=t.type==='dep'?startFloat-sumArr(f.slice(0,i).filter(x=>x.type==='dep'),'amount')+sumArr(f.slice(0,i).filter(x=>x.type==='with'),'amount'):
-                   t.type==='with'?startFloat-sumArr(f.slice(0,i).filter(x=>x.type==='dep'),'amount')+sumArr(f.slice(0,i).filter(x=>x.type==='with'),'amount'):null;
-    return '<tr><td style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text3)">'+t.date+'</td><td style="color:var(--text3)">'+( t.time||'-')+'</td><td><span class="badge '+c.badge+'">'+c.icon+' '+c.label+'</span></td><td style="font-size:.8rem;color:var(--text3)">'+phoneOrCat+'</td><td style="color:var(--text2);font-size:.82rem">'+(t.description||'-')+'</td><td><span class="badge '+c.badge+'">KSh '+(t.amount||0).toLocaleString()+'</span></td><td>'+(t.commission&&t.type!=='mpexp'?'<span class="badge badge-amber">KSh '+t.commission+'</span>':'-')+'</td><td style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:'+(runFloat!==null&&runFloat>=0?'var(--accent)':'var(--danger)')+'">'+( runFloat!==null?'KSh '+Math.abs(runFloat||0).toLocaleString():'-')+'</td><td><button class="btn btn-danger btn-xs" onclick="deleteFloatTxn(''+t.id+'')">Del</button></td></tr>';
+    const pd=sumArr(f.slice(0,i).filter(x=>x.type==='dep'),'amount');
+    const pw=sumArr(f.slice(0,i).filter(x=>x.type==='with'),'amount');
+    const rf=(t.type==='dep'||t.type==='with')?(startFloat-pd+pw):null;
+    const rc=rf!==null&&rf>=0?'var(--accent)':'var(--danger)';
+    const rv=rf!==null?('KSh '+Math.abs(rf||0).toLocaleString()):'-';
+    const cc=t.commission&&t.type!=='mpexp'?('<span class="badge badge-amber">KSh '+t.commission+'</span>'):'-';
+    const tid=t.id;
+    return '<tr>'
+      +'<td style="font-family:'+JSON.stringify(ff)+',monospace;font-size:.8rem;color:var(--text3)">'+t.date+'</td>'
+      +'<td style="color:var(--text3)">'+(t.time||'-')+'</td>'
+      +'<td><span class="badge '+c.badge+'">'+c.icon+' '+c.label+'</span></td>'
+      +'<td style="font-size:.8rem;color:var(--text3)">'+phoneOrCat+'</td>'
+      +'<td style="color:var(--text2);font-size:.82rem">'+(t.description||'-')+'</td>'
+      +'<td><span class="badge '+c.badge+'">KSh '+(t.amount||0).toLocaleString()+'</span></td>'
+      +'<td>'+cc+'</td>'
+      +'<td style="font-family:'+JSON.stringify(ff)+',monospace;font-size:.78rem;color:'+rc+'">'+rv+'</td>'
+      +'<td><button class="btn btn-danger btn-xs" onclick="deleteFloatTxn('+JSON.stringify(tid)+')">Del</button></td>'
+      +'</tr>';
   }).join('');
 }
 
