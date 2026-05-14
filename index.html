@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -452,6 +451,11 @@ tr:hover td{background:rgba(255,255,255,.015);}
   .icon-grid{grid-template-columns:repeat(6,1fr);}
 }
 
+/* M-Pesa Agent sub-tab overrides */
+#tab-mpesa .float-type-tabs{border-radius:var(--radius-sm);}
+#tab-mpesa .float-type-tab.active{color:#fff;}
+#tab-mpesa .float-type-tab.dep.active{background:var(--accent);color:#000;}
+
 </style>
 </head>
 <body>
@@ -565,11 +569,11 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <button onclick="switchTab('inventory',this)" id="nav-inventory">Inventory</button>
   <button onclick="switchTab('reconcile',this)">Cash Recon</button>
   <button onclick="switchTab('loyalty',this)">Loyalty</button>
-  <button onclick="switchTab('float',this)">Float</button>
   <button onclick="switchTab('receipt',this)">Receipt</button>
   <button onclick="switchTab('whatsapp',this)">WhatsApp</button>
   <button onclick="switchTab('settings',this)">Services</button>
   <button onclick="switchTab('ai',this)" style="background:linear-gradient(135deg,rgba(0,229,160,.15),rgba(56,189,248,.1));color:var(--accent);border:1px solid rgba(0,229,160,.25);">AI</button>
+  <button onclick="switchTab('mpesa',this)" style="background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(0,165,80,.1));color:#25D366;border:1px solid rgba(37,211,102,.25);">📱 M-Pesa Agent</button>
 </nav>
 <main>
 
@@ -805,81 +809,6 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
-<div class="tab" id="tab-float">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
-    <div class="stitle" style="margin-bottom:0">📲 M-Pesa Float Tracker</div>
-    <div class="btn-row">
-      <button class="btn btn-secondary btn-sm" onclick="printAgentStatement()" style="border-color:rgba(56,189,248,.3);color:var(--blue)">🖨️ Agent Statement</button>
-      <button class="btn btn-secondary btn-sm" onclick="exportFloatExcel()" style="border-color:rgba(34,197,94,.3);color:var(--green)">📊 Export</button>
-    </div>
-  </div>
-  <div class="float-stats">
-    <div class="float-card fc-mpesa"><div class="float-label">📱 M-Pesa Float</div><div class="float-val fv-mpesa" id="flt-float">KSh 0</div><div class="float-sub" id="flt-float-sub">Available float balance</div></div>
-    <div class="float-card fc-cash"><div class="float-label">💵 Cash in Drawer</div><div class="float-val fv-cash" id="flt-cash">KSh 0</div><div class="float-sub">After M-Pesa conversions</div></div>
-    <div class="float-card fc-dep"><div class="float-label">⬆️ Total Deposits</div><div class="float-val fv-dep" id="flt-dep">KSh 0</div><div class="float-sub" id="flt-dep-count">0 deposits</div></div>
-    <div class="float-card fc-with"><div class="float-label">⬇️ Total Withdrawals</div><div class="float-val fv-with" id="flt-with">KSh 0</div><div class="float-sub" id="flt-with-count">0 withdrawals</div></div>
-    <div class="float-card fc-comm"><div class="float-label">🏆 Commission (Month)</div><div class="float-val fv-comm" id="flt-comm">KSh 0</div><div class="float-sub" id="flt-comm-count">0 transactions</div></div>
-    <div class="float-card fc-exp-mp"><div class="float-label">💸 M-Pesa Expenses</div><div class="float-val" style="color:var(--danger)" id="flt-mpexp">KSh 0</div><div class="float-sub" id="flt-mpexp-count">airtime, bundles…</div></div>
-    <div class="float-card fc-net"><div class="float-label">📈 Net Profit (Month)</div><div class="float-val" id="flt-net">KSh 0</div><div class="float-sub">Commission minus Expenses</div></div>
-    <div class="float-card fc-total"><div class="float-label">💰 Total Asset Value</div><div class="float-val fv-total" id="flt-total">KSh 0</div><div class="float-sub">Float + Cash</div></div>
-  </div>
-  <div class="card" style="margin-bottom:20px;border-color:rgba(0,229,160,.15)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div class="stitle" style="margin-bottom:0">📊 Daily P&amp;L Summary</div>
-      <div class="fg" style="max-width:170px"><input type="date" id="float-pnl-date" onchange="renderFloatPnL()"></div>
-    </div>
-    <div id="float-pnl-content"><div class="empty"><div class="empty-icon">📊</div><p>Select a date above to see daily breakdown</p></div></div>
-  </div>
-  <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">📅 7-Day Activity</div>
-    <div class="float-mini-chart" id="float-mini-chart"></div>
-    <div class="chart-legend" style="margin-top:8px"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Deposits</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Withdrawals</div><div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Commission</div></div>
-  </div>
-  <div class="form-card">
-    <div class="stitle">➕ Record Transaction</div>
-    <div class="float-type-tabs">
-      <button class="float-type-tab dep active" id="ftab-dep" onclick="setFloatType('dep')">⬆️ Deposit</button>
-      <button class="float-type-tab with" id="ftab-with" onclick="setFloatType('with')">⬇️ Withdrawal</button>
-      <button class="float-type-tab comm" id="ftab-comm" onclick="setFloatType('comm')">💰 Commission</button>
-      <button class="float-type-tab mpexp" id="ftab-mpexp" onclick="setFloatType('mpexp')">💸 M-Pesa Expense</button>
-    </div>
-    <div id="float-txn-fields">
-      <div class="form-row">
-        <div class="fg"><label>Customer Phone</label><input type="tel" id="float-phone" placeholder="07XXXXXXXX"></div>
-        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-amount" placeholder="0" min="0" oninput="autoCalcCommission()"></div>
-        <div class="fg" id="float-comm-field"><label>Commission Earned (KSh)</label><input type="number" id="float-commission-earned" placeholder="Auto-calculated" min="0"></div>
-      </div>
-      <div class="form-row">
-        <div class="fg"><label>Description</label><input type="text" id="float-desc" placeholder="e.g. Withdrawal – customer paid cash"></div>
-        <div class="fg"><label>Date</label><input type="date" id="float-date"></div>
-      </div>
-    </div>
-    <div id="float-mpexp-fields" style="display:none">
-      <div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:var(--text3);line-height:1.7"><div style="color:var(--danger);font-weight:700;margin-bottom:4px">💸 M-Pesa Expense</div>Record costs paid through or deducted from your M-Pesa float: airtime, bundles, reversal losses, Safaricom fees, agent charges.</div>
-      <div class="form-row">
-        <div class="fg"><label>Expense Category</label><select id="float-exp-cat"><option value="Airtime Top-up">📱 Airtime Top-up</option><option value="Data Bundle">🌐 Data Bundle</option><option value="Float Top-up Fee">💳 Float Top-up Fee</option><option value="Till Charges">🏦 Till / Paybill Charges</option><option value="Agent Fee">💼 Agent Service Fee</option><option value="Safaricom Charge">📡 Safaricom Charge</option><option value="Mpesa Reversal">↩️ M-Pesa Reversal Loss</option><option value="Other M-Pesa Expense">📦 Other M-Pesa Expense</option></select></div>
-        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-exp-amount" placeholder="0" min="0"></div>
-        <div class="fg"><label>Date</label><input type="date" id="float-exp-date"></div>
-      </div>
-      <div class="fg" style="margin-bottom:14px"><label>Description / Note</label><input type="text" id="float-exp-desc" placeholder="e.g. Airtime KSh 500 for business line"></div>
-    </div>
-    <button class="btn btn-primary" id="float-record-btn" onclick="recordFloatTxn()">✅ Record Deposit</button>
-  </div>
-  <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">💡 Safaricom Commission Rate Guide</div>
-    <div id="float-comm-guide" style="font-size:.8rem;color:var(--text2);line-height:2.4;display:flex;flex-wrap:wrap;gap:0 24px"></div>
-    <div style="margin-top:10px;font-size:.72rem;color:var(--text3)">Rates are approximate. Actual commission may vary by Safaricom agent tier and promotions.</div>
-  </div>
-  <div class="stitle">📋 Transaction Log</div>
-  <div class="filter-row">
-    <select id="float-filter-type"><option value="">All Types</option><option value="dep">⬆️ Deposits</option><option value="with">⬇️ Withdrawals</option><option value="comm">💰 Commission</option><option value="mpexp">💸 M-Pesa Expenses</option></select>
-    <input type="date" id="float-filter-date">
-    <button class="btn btn-secondary" onclick="renderFloatLog()">🔍 Filter</button>
-    <button class="btn btn-secondary" onclick="clearFloatFilter()">✕ Clear</button>
-  </div>
-  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Phone / Category</th><th>Description</th><th>Amount</th><th>Commission</th><th>Running Float</th><th></th></tr></thead><tbody id="float-log-tbody"></tbody></table></div>
-</div>
-
 <div class="tab" id="tab-receipt">
   <div class="stitle">Receipt Printer</div>
   <div class="form-card">
@@ -1044,6 +973,240 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
+<div class="tab" id="tab-mpesa">
+  <!-- TOP BALANCE BAR -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px">
+    <div class="float-card fc-mpesa"><div class="float-label">📱 E-Float</div><div class="float-val fv-mpesa" id="mp-fc-float">KSh 0</div><div class="float-sub" id="mp-fc-float-sub">Available</div></div>
+    <div class="float-card fc-cash"><div class="float-label">💵 Cash in Hand</div><div class="float-val fv-cash" id="mp-fc-cash">KSh 0</div></div>
+    <div class="float-card fc-comm"><div class="float-label">💰 Today Commission</div><div class="float-val fv-comm" id="mp-fc-comm">KSh 0</div></div>
+    <div class="float-card fc-exp-mp"><div class="float-label">💸 Today Expenses</div><div class="float-val" style="color:var(--danger)" id="mp-fc-exp">KSh 0</div></div>
+    <div class="float-card fc-total"><div class="float-label">💼 Total Assets</div><div class="float-val fv-total" id="mp-fc-total">KSh 0</div></div>
+  </div>
+
+  <!-- WARNINGS -->
+  <div id="mp-warnings"></div>
+
+  <!-- SUB TABS -->
+  <div class="float-type-tabs" style="margin-bottom:18px;border-radius:var(--radius-sm);overflow:hidden;display:flex;border:1px solid var(--border)">
+    <button class="float-type-tab dep active" id="mpsub-txn" onclick="mpSubTab('txn',this)">💳 New Txn</button>
+    <button class="float-type-tab" id="mpsub-records" onclick="mpSubTab('records',this)">📋 Records</button>
+    <button class="float-type-tab" id="mpsub-daybook" onclick="mpSubTab('daybook',this)">📒 Day Book</button>
+    <button class="float-type-tab comm" id="mpsub-float" onclick="mpSubTab('float',this)">🔄 Float</button>
+    <button class="float-type-tab" id="mpsub-comm" onclick="mpSubTab('comm',this)" style="background:none">💰 Commission</button>
+    <button class="float-type-tab mpexp" id="mpsub-exp" onclick="mpSubTab('exp',this)">💸 Expenses</button>
+    <button class="float-type-tab" id="mpsub-reports" onclick="mpSubTab('reports',this)" style="background:none">📈 Reports</button>
+  </div>
+
+  <!-- SUB: NEW TRANSACTION -->
+  <div id="mpsub-txn-content">
+    <div class="form-card">
+      <div class="stitle">Select Transaction Type</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div class="svc-btn" id="mp-type-deposit" onclick="mpSelectType('deposit')" style="border-color:rgba(0,229,160,.4);background:var(--accent-dim)"><div class="svc-icon">📥</div><div class="svc-name">DEPOSIT</div><div class="svc-price">Cash in → Float out</div></div>
+        <div class="svc-btn" id="mp-type-withdrawal" onclick="mpSelectType('withdrawal')"><div class="svc-icon">📤</div><div class="svc-name">WITHDRAWAL</div><div class="svc-price">Float in → Cash out</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px">
+        <div class="svc-btn" id="mp-type-send" onclick="mpSelectType('send')"><div class="svc-icon">➡️</div><div class="svc-name" style="font-size:.75rem">Send Money</div></div>
+        <div class="svc-btn" id="mp-type-airtime" onclick="mpSelectType('airtime')"><div class="svc-icon">📱</div><div class="svc-name" style="font-size:.75rem">Airtime/Data</div></div>
+        <div class="svc-btn" id="mp-type-paybill" onclick="mpSelectType('paybill')"><div class="svc-icon">🏦</div><div class="svc-name" style="font-size:.75rem">Paybill/Till</div></div>
+        <div class="svc-btn" id="mp-type-topup" onclick="mpSelectType('topup')"><div class="svc-icon">🔄</div><div class="svc-name" style="font-size:.75rem">Float Top-up</div></div>
+        <div class="svc-btn" id="mp-type-expense" onclick="mpSelectType('expense')"><div class="svc-icon">💸</div><div class="svc-name" style="font-size:.75rem">Expense</div></div>
+      </div>
+      <div class="stitle" id="mp-txn-title">📥 Deposit — Cash in, Float out</div>
+      <div class="form-row">
+        <div class="fg"><label>Amount (KSh)</label><input type="number" id="mp-amount" min="1" placeholder="Enter amount" oninput="mpUpdatePreview()"></div>
+        <div class="fg" id="mp-phone-field"><label>Customer Phone</label><input type="tel" id="mp-phone" placeholder="07XXXXXXXX"></div>
+      </div>
+      <div class="form-row" id="mp-cust-row">
+        <div class="fg"><label>Customer Name</label><input type="text" id="mp-customer" placeholder="Optional"></div>
+        <div class="fg"><label>M-Pesa Reference</label><input type="text" id="mp-ref" placeholder="e.g. QAB1234XYZ"></div>
+      </div>
+      <!-- Expense fields -->
+      <div id="mp-exp-fields" style="display:none">
+        <div style="background:var(--purple-dim);border:1px solid rgba(167,139,250,.2);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;font-size:.78rem;color:var(--text3)">
+          <div style="color:var(--purple);font-weight:700;margin-bottom:4px">💸 M-Pesa Expense</div>
+          Record costs deducted from float or cash: airtime, bundles, bank charges, etc.
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Expense Category</label>
+            <select id="mp-exp-cat">
+              <option value="General">💸 General</option><option value="Airtime">📞 Airtime</option>
+              <option value="Transport">🚗 Transport</option><option value="Food">🍽️ Food/Lunch</option>
+              <option value="Rent">🏠 Rent</option><option value="Utilities">💡 Utilities</option>
+              <option value="Staff">👤 Staff</option><option value="Supplies">🛒 Supplies</option>
+              <option value="Bank Charges">🏦 Bank Charges</option><option value="Other">📝 Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Deduct From</label>
+            <select id="mp-exp-deduct"><option value="float">📱 E-Float</option><option value="cash">💵 Cash in Hand</option></select>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:12px"><label>Description</label><input type="text" id="mp-exp-desc" placeholder="e.g. Morning airtime top-up"></div>
+      </div>
+      <!-- Commission Preview -->
+      <div id="mp-comm-box" style="background:var(--accent-dim);border:1.5px solid rgba(0,229,160,.3);border-radius:var(--radius-sm);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div><div style="font-size:.8rem;color:var(--accent);font-weight:600" id="mp-comm-label">💰 Your Commission</div><div style="font-size:.7rem;color:var(--text3);margin-top:2px" id="mp-comm-band">Enter amount to calculate</div></div>
+        <div style="text-align:right"><div style="font-family:'JetBrains Mono',monospace;font-size:1.7rem;color:var(--accent);font-weight:700" id="mp-comm-val">KSh 0</div><div style="font-size:.68rem;color:var(--text3)" id="mp-comm-note"></div></div>
+      </div>
+      <div id="mp-impact-row" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap"></div>
+      <div id="mp-inline-warn" style="display:none;background:var(--danger-dim);border:1px solid rgba(244,63,94,.3);border-radius:var(--radius-sm);padding:8px 12px;font-size:.82rem;color:var(--danger);margin-bottom:10px"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="mp-submit-btn" onclick="mpSubmitTxn()" style="flex:1;justify-content:center;padding:12px;font-size:1rem">✔ Record Transaction</button>
+        <button class="btn btn-secondary" onclick="mpResetForm()">↺ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB: RECORDS -->
+  <div id="mpsub-records-content" style="display:none">
+    <div class="filter-row">
+      <input type="date" id="mp-rec-date">
+      <select id="mp-rec-type">
+        <option value="">All Types</option><option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option>
+        <option value="send">Send Money</option><option value="airtime">Airtime</option>
+        <option value="paybill">Paybill</option><option value="topup">Float Top-up</option><option value="expense">Expenses</option>
+      </select>
+      <button class="btn btn-secondary" onclick="mpLoadRecords()">🔍 Filter</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('mp-rec-date').value='';document.getElementById('mp-rec-type').value='';mpLoadRecords()">✕ Clear</button>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Customer</th><th>Phone</th><th>Amount</th><th>Commission</th><th>Float Effect</th><th></th></tr></thead><tbody id="mp-rec-tbody"></tbody></table></div>
+  </div>
+
+  <!-- SUB: DAY BOOK -->
+  <div id="mpsub-daybook-content" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <div class="stitle" style="margin-bottom:0">📒 Day Book</div>
+      <div id="mp-day-btns" class="btn-row"></div>
+    </div>
+    <div id="mp-day-banner" style="margin-bottom:14px"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+      <div class="card" style="border-top:3px solid var(--accent)"><div class="stitle" style="font-size:.85rem">🌅 Opening Balance</div><div id="mp-open-display"><div class="empty"><div class="empty-icon">🌅</div>No day opened</div></div></div>
+      <div class="card" style="border-top:3px solid var(--danger)"><div class="stitle" style="font-size:.85rem">🌇 Closing Balance</div><div id="mp-close-display"><div class="empty"><div class="empty-icon">🌇</div>Day not closed</div></div></div>
+    </div>
+    <div class="stitle">📝 Daily Note</div>
+    <div class="card" style="margin-bottom:16px;border-top:3px solid var(--warn)">
+      <textarea id="mp-note-input" placeholder="Write your daily notes..." rows="4" style="margin-bottom:10px" oninput="mpNoteUnsaved=true"></textarea>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div style="font-size:.72rem;color:var(--text3)" id="mp-note-status">Type to begin...</div>
+        <div class="btn-row">
+          <button class="btn btn-amber btn-sm" onclick="mpSaveNote()">💾 Save Note</button>
+          <button class="btn btn-secondary btn-sm" onclick="mpClearNote()">🗑 Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px"><div class="stitle" style="font-size:.85rem">📊 Today's Summary</div><div id="mp-day-summary"></div></div>
+    <div class="stitle">Past Days History</div>
+    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Open Float</th><th>Open Cash</th><th>Close Float</th><th>Close Cash</th><th>Deposits</th><th>Withdrawals</th><th>Commission</th><th>Net Change</th><th>Note</th></tr></thead><tbody id="mp-day-hist"></tbody></table></div>
+  </div>
+
+  <!-- SUB: FLOAT MANAGEMENT -->
+  <div id="mpsub-float-content" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <div class="stitle" style="font-size:.9rem">📱 Float Status</div>
+          <div style="text-align:center;padding:8px 0 14px">
+            <div class="stat-label">E-FLOAT BALANCE</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:700;color:var(--accent)" id="mp-float-page-bal">KSh 0</div>
+            <div class="inv-progress" style="margin:10px 0"><div class="inv-progress-fill ok" id="mp-float-meter" style="width:0%"></div></div>
+            <div style="font-size:.72rem;color:var(--text3)" id="mp-float-pct">Set target in Settings</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;justify-content:space-between">
+            <div><div class="stat-label">CASH IN HAND</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;color:var(--warn)" id="mp-cash-page-bal">KSh 0</div></div>
+            <div style="text-align:right"><div class="stat-label">TOTAL ASSETS</div><div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem" id="mp-total-page-bal">KSh 0</div></div>
+          </div>
+        </div>
+        <div class="form-card">
+          <div class="stitle" style="font-size:.9rem">🔄 Float Top-Up</div>
+          <div class="form-row">
+            <div class="fg"><label>Amount (KSh)</label><input type="number" id="mp-topup-amt" placeholder="Amount" min="1"></div>
+            <div class="fg"><label>Method</label><select id="mp-topup-method"><option>Bank to M-Pesa</option><option>Agent Super</option><option>Cash deposit</option><option>Other</option></select></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>Reference</label><input type="text" id="mp-topup-ref" placeholder="Transaction ref"></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="mpDoTopUp()">+ Add Float</button>
+        </div>
+      </div>
+      <div>
+        <div class="form-card" style="margin-bottom:14px">
+          <div class="stitle" style="font-size:.9rem">🔧 Set Actual Balances</div>
+          <p style="font-size:.8rem;color:var(--text3);margin-bottom:12px">Count your float & cash and enter actual amounts to correct discrepancies.</p>
+          <div class="fg" style="margin-bottom:10px"><label>Set E-Float (KSh)</label><input type="number" id="mp-set-float" placeholder="Actual float amount"></div>
+          <div class="fg" style="margin-bottom:12px"><label>Set Cash in Hand (KSh)</label><input type="number" id="mp-set-cash" placeholder="Actual cash amount"></div>
+          <button class="btn btn-amber" style="width:100%;justify-content:center" onclick="mpSetBalances()">💾 Update Balances</button>
+        </div>
+        <div class="card"><div class="stitle" style="font-size:.9rem">📋 Top-up History</div><div id="mp-topup-hist"><div class="empty"><div class="empty-icon">🔄</div>No top-up history</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB: COMMISSION -->
+  <div id="mpsub-comm-content" style="display:none">
+    <div class="stats-row" id="mp-comm-stats"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card">
+        <div class="stitle" style="font-size:.9rem">💰 Safaricom Commission Bands</div>
+        <div class="table-wrap" style="border:none;margin:0">
+          <table><thead><tr><th>Amount Band (KSh)</th><th style="color:var(--accent)">Deposit</th><th style="color:var(--danger)">Withdrawal</th></tr></thead>
+          <tbody id="mp-bands-tbody"></tbody></table>
+        </div>
+      </div>
+      <div class="card"><div class="stitle" style="font-size:.9rem">📊 Commission by Type</div><div id="mp-comm-by-type"></div></div>
+    </div>
+  </div>
+
+  <!-- SUB: EXPENSES -->
+  <div id="mpsub-exp-content" style="display:none">
+    <div class="stats-row" id="mp-exp-stats"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+      <div class="card"><div class="stitle" style="font-size:.9rem">📊 By Category</div><div id="mp-exp-by-cat"></div></div>
+      <div class="card"><div class="stitle" style="font-size:.9rem">📅 Last 7 Days</div><div id="mp-exp-chart" style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:8px 0;"></div></div>
+    </div>
+    <div class="stitle">Expense Records</div>
+    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Category</th><th>Description</th><th>Amount</th><th>Deducted From</th><th></th></tr></thead><tbody id="mp-exp-tbody"></tbody></table></div>
+  </div>
+
+  <!-- SUB: REPORTS -->
+  <div id="mpsub-reports-content" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <div class="stitle" style="margin-bottom:0">📈 Reports</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary btn-sm" onclick="mpSetRange('today')">Today</button>
+        <button class="btn btn-secondary btn-sm" onclick="mpSetRange('week')">Week</button>
+        <button class="btn btn-secondary btn-sm" onclick="mpSetRange('month')">Month</button>
+        <button class="btn btn-secondary btn-sm" onclick="mpSetRange('all')">All Time</button>
+      </div>
+    </div>
+    <div class="stats-row" id="mp-rep-stats"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card"><div class="stitle" style="font-size:.9rem">📊 Breakdown by Type</div><div id="mp-rep-breakdown"></div></div>
+      <div class="card"><div class="stitle" style="font-size:.9rem">📅 Commission — Last 7 Days</div><div id="mp-rep-chart" style="display:flex;align-items:flex-end;gap:6px;height:120px;padding:8px 0;"></div></div>
+    </div>
+  </div>
+
+  <!-- OPEN/CLOSE DAY MODALS (inline) -->
+  <div id="mp-open-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:420px;box-shadow:0 40px 100px rgba(0,0,0,.7)">
+      <div class="stitle">🌅 Open Today's Day</div>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:14px">Enter your actual float and cash at the START of business today.</p>
+      <div class="fg" style="margin-bottom:10px"><label>Opening E-Float (KSh)</label><input type="number" id="mp-open-float" placeholder="e.g. 45000" min="0"></div>
+      <div class="fg" style="margin-bottom:10px"><label>Opening Cash in Hand (KSh)</label><input type="number" id="mp-open-cash" placeholder="e.g. 12000" min="0"></div>
+      <div class="fg" style="margin-bottom:14px"><label>Note (optional)</label><input type="text" id="mp-open-note" placeholder="e.g. After morning top-up"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="document.getElementById('mp-open-modal').style.display='none'">Cancel</button><button class="btn btn-primary" onclick="mpConfirmOpenDay()">🌅 Open Day</button></div>
+    </div>
+  </div>
+  <div id="mp-close-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:420px;box-shadow:0 40px 100px rgba(0,0,0,.7)">
+      <div class="stitle">🌇 Close Today's Day</div>
+      <p style="font-size:.82rem;color:var(--text3);margin-bottom:14px">Count your float and cash, then enter actual amounts.</p>
+      <div class="fg" style="margin-bottom:10px"><label>Closing E-Float (KSh)</label><input type="number" id="mp-close-float" placeholder="Count your float" min="0"></div>
+      <div class="fg" style="margin-bottom:10px"><label>Closing Cash in Hand (KSh)</label><input type="number" id="mp-close-cash" placeholder="Count your cash" min="0"></div>
+      <div class="fg" style="margin-bottom:10px"><label>Note (optional)</label><input type="text" id="mp-close-note" placeholder="e.g. All balanced"></div>
+      <div id="mp-close-preview" style="background:var(--surface);border-radius:var(--radius-sm);padding:12px;font-size:.82rem;margin-bottom:14px"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="document.getElementById('mp-close-modal').style.display='none'">Cancel</button><button class="btn btn-danger" onclick="mpConfirmCloseDay()">🌇 Close Day</button></div>
+    </div>
+  </div>
+</div>
+
 </main>
 <div id="toast"></div>
 </div>
@@ -1128,7 +1291,7 @@ function switchTab(t,btn){
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(e=>e.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');if(btn)btn.classList.add('active');
-  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,float:renderFloatTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();}};
+  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();},mpesa:()=>{if(!window._mpesaInited){window._mpesaInited=true;initMpesaTab();}else{mpUpdateBalBar();}mpSubTab(mpCurrentSubTab,document.getElementById('mpsub-'+mpCurrentSubTab));}};
   if(fn[t])fn[t]();
 }
 
@@ -1699,6 +1862,357 @@ if(sessionStorage.getItem('gb_ict_unlocked')==='1'){
   });
 }
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+
+// ============================================================
+// M-PESA AGENT MODULE
+// ============================================================
+const MP_COMM_BANDS=[
+  {min:1,max:100,dep:0,wdw:0,label:'1 – 100'},
+  {min:101,max:500,dep:6,wdw:6,label:'101 – 500'},
+  {min:501,max:1000,dep:11,wdw:11,label:'501 – 1,000'},
+  {min:1001,max:1500,dep:12,wdw:12,label:'1,001 – 1,500'},
+  {min:1501,max:2500,dep:12,wdw:29,label:'1,501 – 2,500'},
+  {min:2501,max:3500,dep:12,wdw:29,label:'2,501 – 3,500'},
+  {min:3501,max:5000,dep:12,wdw:29,label:'3,501 – 5,000'},
+  {min:5001,max:7500,dep:12,wdw:29,label:'5,001 – 7,500'},
+  {min:7501,max:10000,dep:12,wdw:29,label:'7,501 – 10,000'},
+  {min:10001,max:15000,dep:12,wdw:29,label:'10,001 – 15,000'},
+  {min:15001,max:20000,dep:12,wdw:67,label:'15,001 – 20,000'},
+  {min:20001,max:35000,dep:12,wdw:67,label:'20,001 – 35,000'},
+  {min:35001,max:50000,dep:12,wdw:67,label:'35,001 – 50,000'},
+  {min:50001,max:150000,dep:12,wdw:67,label:'50,001 – 150,000'},
+];
+const MP_TXN_LABELS={deposit:'Deposit',withdrawal:'Withdrawal',send:'Send Money',airtime:'Airtime/Data',paybill:'Paybill/Till',topup:'Float Top-up',expense:'Expense'};
+const MP_TXN_ICONS={deposit:'📥',withdrawal:'📤',send:'➡️',airtime:'📱',paybill:'🏦',topup:'🔄',expense:'💸'};
+const MP_EXP_ICONS={General:'💸',Airtime:'📞',Transport:'🚗',Food:'🍽️',Rent:'🏠',Utilities:'💡',Staff:'👤',Supplies:'🛒','Bank Charges':'🏦',Other:'📝'};
+
+// State (separate from GB ICT sales tracker state)
+let mpFloat=0,mpCash=0,mpTodayDay=null;
+let mpTxns=[],mpDays=[];
+let mpDailyNotes={};
+let mpSettings={agentName:'GB ICT Solutions',agentNo:'',tillNo:'4009152',floatTarget:50000};
+let mpCurType='deposit',mpCurRange='today';
+let mpTopupLog=[];
+let mpNoteUnsaved=false;
+let mpCurrentSubTab='txn';
+
+const MP_KSH=v=>'KSh '+(Number(v||0).toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2}));
+
+function mpTodayStr(){return todayStr();}
+function mpTodayTxns(){return mpTxns.filter(t=>t.date===mpTodayStr());}
+function mpTodayExpenses(){return mpTxns.filter(t=>t.type==='expense'&&t.date===mpTodayStr());}
+function mpInRange(t,r){const d=new Date(t.date),now=new Date();if(r==='today')return t.date===mpTodayStr();if(r==='week')return now-d<7*86400000;if(r==='month')return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();return true;}
+
+function mpGetComm(amount,type){const band=MP_COMM_BANDS.find(b=>amount>=b.min&&amount<=b.max);if(!band)return 0;if(type==='deposit')return band.dep;if(type==='withdrawal')return band.wdw;return 0;}
+
+function mpLoadLocal(){
+  try{
+    const s=localStorage.getItem('mp_agent_settings');if(s)mpSettings={...mpSettings,...JSON.parse(s)};
+    const tl=localStorage.getItem('mp_topup_log');if(tl)mpTopupLog=JSON.parse(tl);
+    const nl=localStorage.getItem('mp_daily_notes');if(nl)mpDailyNotes=JSON.parse(nl);
+  }catch(e){}
+}
+
+async function mpLoadState(){
+  try{
+    const{data,error}=await sb.from('mpesa_state').select('*').eq('id','shared').single();
+    if(error&&error.code!=='PGRST116')throw error;
+    if(data){mpFloat=data.float_bal||0;mpCash=data.cash_bal||0;const td=data.today_day;mpTodayDay=td?(typeof td==='string'?JSON.parse(td):td):null;if(mpTodayDay&&mpTodayDay.date!==mpTodayStr())mpTodayDay=null;}
+  }catch(e){const fb=localStorage.getItem('mp_state_fb');if(fb){try{const d=JSON.parse(fb);mpFloat=d.float_bal||0;mpCash=d.cash_bal||0;}catch(e2){}}}
+}
+
+async function mpSaveState(){
+  try{await sb.from('mpesa_state').upsert({id:'shared',float_bal:mpFloat,cash_bal:mpCash,today_day:mpTodayDay,updated_at:new Date().toISOString()},{onConflict:'id'});}
+  catch(e){localStorage.setItem('mp_state_fb',JSON.stringify({float_bal:mpFloat,cash_bal:mpCash,today_day:mpTodayDay}));}
+  localStorage.setItem('mp_topup_log',JSON.stringify(mpTopupLog));
+}
+
+async function mpLoadTxns(){
+  try{const{data,error}=await sb.from('mpesa_transactions').select('*').order('id',{ascending:false});if(error)throw error;mpTxns=data||[];}catch(e){mpTxns=[];}
+}
+
+async function mpLoadDays(){
+  try{const{data}=await sb.from('mpesa_days').select('*').order('id',{ascending:false});mpDays=data||[];mpDays.forEach(d=>{if(d.daily_note&&d.daily_note.trim())mpDailyNotes[d.date]=mpDailyNotes[d.date]||d.daily_note;});}catch(e){}
+}
+
+function mpUpdateBalBar(){
+  const todayComm=mpTodayTxns().filter(t=>t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);
+  const todayExp=mpTodayExpenses().reduce((s,t)=>s+(t.amount||0),0);
+  const target=mpSettings.floatTarget||50000;const pct=Math.min(100,(mpFloat/target)*100);
+  document.getElementById('mp-fc-float').textContent=MP_KSH(mpFloat);
+  document.getElementById('mp-fc-float-sub').textContent=pct.toFixed(0)+'% of target';
+  document.getElementById('mp-fc-cash').textContent=MP_KSH(mpCash);
+  document.getElementById('mp-fc-comm').textContent=MP_KSH(todayComm);
+  document.getElementById('mp-fc-exp').textContent=MP_KSH(todayExp);
+  document.getElementById('mp-fc-total').textContent=MP_KSH(mpFloat+mpCash);
+  const warn=document.getElementById('mp-warnings');const warnings=[];
+  if(mpFloat<=0)warnings.push('<div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.3);border-radius:var(--radius-sm);padding:10px 14px;font-size:.83rem;color:var(--danger);margin-bottom:10px;font-weight:600">🚨 ZERO FLOAT — Cannot process deposits! Top up immediately.</div>');
+  else if(pct<15)warnings.push('<div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.3);border-radius:var(--radius-sm);padding:10px 14px;font-size:.83rem;color:var(--danger);margin-bottom:10px">⚠️ CRITICAL LOW FLOAT — Only '+MP_KSH(mpFloat)+' left.</div>');
+  else if(pct<30)warnings.push('<div style="background:var(--warn-dim);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:10px 14px;font-size:.83rem;color:var(--warn);margin-bottom:10px">⚠ Low float — '+MP_KSH(mpFloat)+' remaining.</div>');
+  warn.innerHTML=warnings.join('');
+}
+
+function mpSubTab(name,btn){
+  mpCurrentSubTab=name;
+  ['txn','records','daybook','float','comm','exp','reports'].forEach(t=>{
+    const c=document.getElementById('mpsub-'+t+'-content');if(c)c.style.display='none';
+    const b=document.getElementById('mpsub-'+t);if(b){b.classList.remove('active','dep','with','comm','mpexp');b.style.background='';}
+  });
+  const content=document.getElementById('mpsub-'+name+'-content');if(content)content.style.display='block';
+  if(btn){btn.classList.add('active');if(name==='txn')btn.classList.add('dep');else if(name==='float')btn.classList.add('comm');else if(name==='exp')btn.classList.add('mpexp');}
+  const renders={txn:()=>{mpUpdateBalBar();mpRenderTransact();},records:mpLoadRecords,daybook:mpRenderDayBook,float:mpRenderFloat,comm:mpRenderCommission,exp:mpRenderExpenses,reports:mpRenderReports};
+  renders[name]?.();
+}
+
+function mpRenderTransact(){mpUpdateBalBar();}
+
+function mpSelectType(type){
+  mpCurType=type;
+  ['deposit','withdrawal','send','airtime','paybill','topup','expense'].forEach(t=>{
+    const el=document.getElementById('mp-type-'+t);if(!el)return;
+    el.classList.remove('in-cart');el.style.borderColor='';el.style.background='';
+  });
+  const btn=document.getElementById('mp-type-'+type);
+  if(btn){btn.classList.add('in-cart');btn.style.borderColor='rgba(0,229,160,.4)';btn.style.background='var(--accent-dim)';}
+  if(type==='withdrawal'){btn.style.borderColor='rgba(244,63,94,.4)';btn.style.background='var(--danger-dim)';}
+  if(type==='expense'){btn.style.borderColor='rgba(167,139,250,.4)';btn.style.background='var(--purple-dim)';}
+  const titles={deposit:'📥 Deposit — Cash in, Float out',withdrawal:'📤 Withdrawal — Float in, Cash out',send:'➡️ Send Money (P2P)',airtime:'📱 Airtime / Data Bundle',paybill:'🏦 Paybill / Till Payment',topup:'🔄 Float Top-Up',expense:'💸 Record Expense'};
+  document.getElementById('mp-txn-title').textContent=titles[type];
+  const expFields=document.getElementById('mp-exp-fields');
+  const phoneField=document.getElementById('mp-phone-field');
+  const custRow=document.getElementById('mp-cust-row');
+  const commBox=document.getElementById('mp-comm-box');
+  const submitBtn=document.getElementById('mp-submit-btn');
+  if(type==='expense'){
+    expFields.style.display='block';phoneField.style.display='none';custRow.style.display='none';
+    commBox.style.background='var(--purple-dim)';commBox.style.borderColor='rgba(167,139,250,.3)';
+    document.getElementById('mp-comm-label').textContent='💸 Expense Impact';
+    document.getElementById('mp-comm-label').style.color='var(--purple)';
+    document.getElementById('mp-comm-val').style.color='var(--purple)';
+    submitBtn.className='btn btn-danger';submitBtn.style='flex:1;justify-content:center;padding:12px;font-size:1rem;background:var(--purple)';submitBtn.textContent='💸 Record Expense';
+  }else{
+    expFields.style.display='none';phoneField.style.display='';custRow.style.display='';
+    commBox.style.background='var(--accent-dim)';commBox.style.borderColor='rgba(0,229,160,.3)';
+    document.getElementById('mp-comm-label').textContent='💰 Your Commission';
+    document.getElementById('mp-comm-label').style.color='var(--accent)';
+    document.getElementById('mp-comm-val').style.color='var(--accent)';
+    submitBtn.className='btn btn-primary';submitBtn.style='flex:1;justify-content:center;padding:12px;font-size:1rem;';submitBtn.textContent='✔ Record Transaction';
+  }
+  mpUpdatePreview();
+}
+
+function mpUpdatePreview(){
+  const amt=parseFloat(document.getElementById('mp-amount').value)||0;
+  const commVal=document.getElementById('mp-comm-val');
+  const commBand=document.getElementById('mp-comm-band');
+  const commNote=document.getElementById('mp-comm-note');
+  const impactRow=document.getElementById('mp-impact-row');
+  const warn=document.getElementById('mp-inline-warn');
+  if(mpCurType==='expense'){
+    const from=document.getElementById('mp-exp-deduct').value;
+    const bal=from==='float'?mpFloat:mpCash;
+    commVal.textContent=MP_KSH(amt);commBand.textContent='Deduct from '+(from==='float'?'E-Float':'Cash in Hand');
+    commNote.textContent=amt>0?'Balance after: '+MP_KSH(bal-amt):'';
+    if(amt>0&&amt>bal){warn.textContent='⚠ Not enough '+(from==='float'?'float':'cash')+'!';warn.style.display='block';}else{warn.style.display='none';}
+    impactRow.innerHTML=amt>0?'<span style="background:var(--purple-dim);border:1px solid rgba(167,139,250,.3);border-radius:var(--radius-sm);padding:6px 12px;font-size:.78rem;color:var(--purple)">'+(from==='float'?'📱':'💵')+' '+(from==='float'?'Float':'Cash')+': -'+MP_KSH(amt)+'</span>':'';
+    return;
+  }
+  const comm=mpGetComm(amt,mpCurType);
+  commVal.textContent=MP_KSH(comm);
+  const band=MP_COMM_BANDS.find(b=>amt>=b.min&&amt<=b.max);
+  commBand.textContent=band?('Band: KSh '+band.label):'Enter amount to see band';
+  const todayComm=mpTodayTxns().filter(t=>t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);
+  commNote.textContent=comm>0?'Today total after: '+MP_KSH(todayComm+comm):'';
+  const needsFloat=['deposit','send','airtime','paybill'];
+  if(amt>0&&needsFloat.includes(mpCurType)&&amt>mpFloat){warn.textContent='⚠ Only '+MP_KSH(mpFloat)+' float available!';warn.style.display='block';}
+  else if(amt>0&&mpCurType==='withdrawal'&&amt>mpCash){warn.textContent='⚠ Only '+MP_KSH(mpCash)+' cash available!';warn.style.display='block';}
+  else{warn.style.display='none';}
+  const impacts={deposit:[{c:'var(--accent)',i:'💵',l:'Cash In',v:'+'+MP_KSH(amt)},{c:'var(--danger)',i:'📱',l:'Float Out',v:'-'+MP_KSH(amt)},{c:'var(--warn)',i:'💰',l:'Commission',v:MP_KSH(comm)+' earned'}],withdrawal:[{c:'var(--danger)',i:'💵',l:'Cash Out',v:'-'+MP_KSH(amt)},{c:'var(--accent)',i:'📱',l:'Float In',v:'+'+MP_KSH(amt)},{c:'var(--warn)',i:'💰',l:'Commission',v:MP_KSH(comm)+' earned'}],send:[{c:'var(--danger)',i:'📱',l:'Float Out',v:'-'+MP_KSH(amt)},{c:'var(--warn)',i:'💰',l:'Commission',v:MP_KSH(comm)+' earned'}],airtime:[{c:'var(--danger)',i:'📱',l:'Float Out',v:'-'+MP_KSH(amt)}],paybill:[{c:'var(--danger)',i:'📱',l:'Float Out',v:'-'+MP_KSH(amt)},{c:'var(--warn)',i:'💰',l:'Commission',v:MP_KSH(comm)+' earned'}],topup:[{c:'var(--accent)',i:'📱',l:'Float In',v:'+'+MP_KSH(amt)},{c:'var(--danger)',i:'💵',l:'Cash Out',v:'-'+MP_KSH(amt)}]};
+  impactRow.innerHTML=(impacts[mpCurType]||[]).map(im=>'<span style="background:rgba(0,0,0,.1);border:1px solid '+im.c+';border-radius:var(--radius-sm);padding:6px 12px;font-size:.78rem;color:'+im.c+'">'+im.i+' '+im.l+': '+im.v+'</span>').join('');
+}
+
+async function mpSubmitTxn(){
+  const amt=parseFloat(document.getElementById('mp-amount').value)||0;
+  if(amt<=0){toast('Enter a valid amount','amber');return;}
+  if(mpCurType==='expense'){await mpRecordExpense(amt,document.getElementById('mp-exp-cat').value,document.getElementById('mp-exp-deduct').value,document.getElementById('mp-exp-desc').value.trim());mpResetForm();return;}
+  const phone=document.getElementById('mp-phone').value.trim();const customer=document.getElementById('mp-customer').value.trim();const ref=document.getElementById('mp-ref').value.trim();
+  const comm=mpGetComm(amt,mpCurType);
+  switch(mpCurType){case 'deposit':mpFloat-=amt;mpCash+=amt;break;case 'withdrawal':mpFloat+=amt;mpCash-=amt;break;case 'send':mpFloat-=amt;break;case 'airtime':mpFloat-=amt;break;case 'paybill':mpFloat-=amt;break;case 'topup':mpFloat+=amt;mpCash-=amt;break;}
+  if(mpFloat<0)toast('⚠ Float went negative! Top up needed.','amber');
+  if(mpCash<0)toast('⚠ Cash went negative!','amber');
+  await mpSaveState();
+  const rec={id:Date.now(),date:mpTodayStr(),time:nowTime(),type:mpCurType,amount:amt,phone:phone||null,customer_name:customer||null,reference:ref||null,commission:comm,float_after:mpFloat,cash_after:mpCash,expense_category:null,expense_deduct_from:null};
+  try{const{data,error}=await sb.from('mpesa_transactions').insert(rec).select().single();if(error)throw error;mpTxns=[data,...mpTxns];setOnline();toast(MP_TXN_LABELS[mpCurType]+' ✓  Commission: '+MP_KSH(comm));}
+  catch(e){mpTxns=[rec,...mpTxns];setOffline();toast('Saved locally ('+e.message+')','amber');}
+  mpResetForm();mpUpdateBalBar();
+}
+
+async function mpRecordExpense(amt,cat,from,desc){
+  const bal=from==='float'?mpFloat:mpCash;
+  if(amt>bal){if(!confirm('Only '+MP_KSH(bal)+' '+from+' available. Record anyway?'))return;}
+  if(from==='float')mpFloat-=amt;else mpCash-=amt;
+  await mpSaveState();
+  const rec={id:Date.now(),date:mpTodayStr(),time:nowTime(),type:'expense',amount:amt,phone:null,customer_name:desc||cat,reference:desc||null,commission:0,float_after:mpFloat,cash_after:mpCash,expense_category:cat,expense_deduct_from:from};
+  try{const{data,error}=await sb.from('mpesa_transactions').insert(rec).select().single();if(error)throw error;mpTxns=[data,...mpTxns];setOnline();toast('💸 Expense: '+MP_KSH(amt)+' — '+cat,'amber');}
+  catch(e){mpTxns=[rec,...mpTxns];setOffline();toast('💸 Expense saved locally','amber');}
+  mpUpdateBalBar();
+}
+
+function mpResetForm(){
+  ['mp-amount','mp-phone','mp-customer','mp-ref','mp-exp-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('mp-comm-val').textContent='KSh 0';
+  document.getElementById('mp-comm-band').textContent='Enter amount to calculate';
+  document.getElementById('mp-impact-row').innerHTML='';
+  document.getElementById('mp-inline-warn').style.display='none';
+}
+
+async function mpLoadRecords(){
+  const tbody=document.getElementById('mp-rec-tbody');
+  tbody.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-icon">⏳</div>Loading...</div></td></tr>';
+  try{
+    let q=sb.from('mpesa_transactions').select('*').order('id',{ascending:false});
+    const df=document.getElementById('mp-rec-date').value;const tf=document.getElementById('mp-rec-type').value;
+    if(df)q=q.eq('date',df);if(tf)q=q.eq('type',tf);
+    const{data,error}=await q;if(error)throw error;
+    tbody.innerHTML=data.length?data.map(t=>'<tr><td>'+t.date+'</td><td style="color:var(--text3);font-size:.75rem">'+t.time+'</td><td><span class="badge '+(t.type==='deposit'?'badge-green':t.type==='withdrawal'?'badge-red':t.type==='expense'?'badge-purple':'badge-amber')+'">'+MP_TXN_ICONS[t.type]+' '+MP_TXN_LABELS[t.type]+'</span>'+(t.type==='expense'&&t.expense_category?'<br><span style="font-size:.68rem;color:var(--purple)">'+(MP_EXP_ICONS[t.expense_category]||'')+ ' '+t.expense_category+'</span>':'')+'</td><td>'+(t.type==='expense'?(t.reference||t.customer_name||'—'):t.customer_name||'—')+'</td><td style="font-size:.78rem;color:var(--text3)">'+(t.phone||'—')+'</td><td style="font-family:\'JetBrains Mono\',monospace;font-weight:700">'+(t.type==='expense'?'-':'')+MP_KSH(t.amount)+'</td><td style="color:var(--accent);font-family:\'JetBrains Mono\',monospace">'+(t.type==='expense'?'—':MP_KSH(t.commission||0))+'</td><td>'+(t.type==='deposit'?'<span style="color:var(--danger)">Float -'+MP_KSH(t.amount)+'</span>':t.type==='withdrawal'?'<span style="color:var(--accent)">Float +'+MP_KSH(t.amount)+'</span>':t.type==='expense'?'<span style="color:var(--purple)">'+(t.expense_deduct_from||'float')+' -'+MP_KSH(t.amount)+'</span>':'<span style="color:var(--text3)">—</span>')+'</td><td><button class="btn btn-danger btn-xs" onclick="mpDeleteTxn('+t.id+')">Del</button></td></tr>').join(''):'<tr><td colspan="9"><div class="empty"><div class="empty-icon">📋</div>No records found</div></td></tr>';
+  }catch(e){tbody.innerHTML='<tr><td colspan="9"><div class="empty"><div class="empty-icon">⚠️</div>Could not load</div></td></tr>';}
+}
+
+async function mpDeleteTxn(id){if(!confirm('Delete?'))return;try{await sb.from('mpesa_transactions').delete().eq('id',id);mpTxns=mpTxns.filter(t=>t.id!==id);mpLoadRecords();mpUpdateBalBar();toast('Deleted','amber');}catch(e){toast('Error','red');}}
+
+// DAY BOOK
+function mpRenderDayBook(){
+  const isOpen=mpTodayDay&&mpTodayDay.date===mpTodayStr();
+  const today=mpTodayTxns().filter(t=>t.type!=='expense');const todayExp=mpTodayExpenses();
+  document.getElementById('mp-day-btns').innerHTML=isOpen
+    ?'<button class="btn btn-danger btn-sm" onclick="mpPrepClose();document.getElementById(\'mp-close-modal\').style.display=\'flex\'">🌇 Close Day</button>'
+    :'<button class="btn btn-primary" onclick="document.getElementById(\'mp-open-modal\').style.display=\'flex\'">🌅 Open Day</button>';
+  document.getElementById('mp-day-banner').innerHTML=isOpen
+    ?'<div style="background:var(--accent-dim);border:1px solid rgba(0,229,160,.2);border-radius:var(--radius-sm);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div style="font-size:.88rem;font-weight:600;color:var(--accent)">✅ Day is OPEN — '+mpTodayStr()+'</div><div style="font-size:.75rem;color:var(--text3)">Opened at '+mpTodayDay.openTime+' · '+today.length+' txns · '+todayExp.length+' expenses</div></div>'
+    :'<div style="background:var(--warn-dim);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:10px 14px;font-size:.83rem;color:var(--warn)">⚠ Day not opened yet. Click <strong>Open Day</strong> to set opening balances.</div>';
+  document.getElementById('mp-open-display').innerHTML=isOpen
+    ?'<div style="display:flex;justify-content:space-between;padding:10px;background:var(--surface);border-radius:var(--radius-sm);margin-bottom:8px"><div><div class="stat-label">E-FLOAT</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1.4rem;color:var(--accent)">'+MP_KSH(mpTodayDay.openFloat)+'</div></div><div style="text-align:right"><div class="stat-label">CASH</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1.4rem;color:var(--warn)">'+MP_KSH(mpTodayDay.openCash)+'</div></div></div><div style="font-size:.72rem;color:var(--text3)">⏰ '+mpTodayDay.openTime+(mpTodayDay.openNote?' · '+mpTodayDay.openNote:'')+'</div>'
+    :'<div class="empty"><div class="empty-icon">🌅</div>No day opened</div>';
+  const todayRec=mpDays.find(d=>d.date===mpTodayStr());
+  document.getElementById('mp-close-display').innerHTML=(todayRec&&todayRec.close_float!=null)
+    ?'<div style="display:flex;justify-content:space-between;padding:10px;background:var(--surface);border-radius:var(--radius-sm)"><div><div class="stat-label">E-FLOAT</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1.4rem;color:var(--danger)">'+MP_KSH(todayRec.close_float)+'</div></div><div style="text-align:right"><div class="stat-label">CASH</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1.4rem;color:var(--warn)">'+MP_KSH(todayRec.close_cash)+'</div></div></div>'
+    :'<div class="empty"><div class="empty-icon">🌇</div>Day not closed</div>';
+  const savedNote=mpDailyNotes[mpTodayStr()]||'';
+  document.getElementById('mp-note-input').value=savedNote;
+  document.getElementById('mp-note-status').textContent=savedNote?'Last saved note loaded':'Type to begin...';
+  if(today.length>0||isOpen){
+    const deps=today.filter(t=>t.type==='deposit'),wdws=today.filter(t=>t.type==='withdrawal');
+    const comm=today.reduce((s,t)=>s+(t.commission||0),0);const expVol=todayExp.reduce((s,t)=>s+(t.amount||0),0);
+    const openTotal=isOpen?mpTodayDay.openFloat+mpTodayDay.openCash:0;const curTotal=mpFloat+mpCash;const nc=isOpen?curTotal-openTotal:0;
+    document.getElementById('mp-day-summary').innerHTML='<div class="stats-row"><div class="stat glow-green"><div class="stat-label">Deposits</div><div class="stat-val g">'+deps.length+'</div><div class="stat-sub">'+MP_KSH(deps.reduce((s,t)=>s+(t.amount||0),0))+'</div></div><div class="stat danger"><div class="stat-label">Withdrawals</div><div class="stat-val r">'+wdws.length+'</div><div class="stat-sub">'+MP_KSH(wdws.reduce((s,t)=>s+(t.amount||0),0))+'</div></div><div class="stat"><div class="stat-label">Commission</div><div class="stat-val g">'+MP_KSH(comm)+'</div></div><div class="stat purple"><div class="stat-label">Expenses</div><div class="stat-val p">'+MP_KSH(expVol)+'</div></div><div class="stat '+(nc>=0?'glow-green':'danger')+'"><div class="stat-label">Net Change</div><div class="stat-val '+(nc>=0?'g':'r')+'">'+(nc>=0?'+':'')+MP_KSH(nc)+'</div></div></div>';
+  }else{document.getElementById('mp-day-summary').innerHTML='<div class="empty"><div class="empty-icon">📊</div>Open the day to start tracking</div>';}
+  const past=mpDays.filter(d=>d.date!==mpTodayStr());
+  document.getElementById('mp-day-hist').innerHTML=past.length?past.map(d=>{const nc=(d.close_float+d.close_cash)-(d.open_float+d.open_cash);const note=mpDailyNotes[d.date]||d.daily_note||'';return '<tr><td style="font-weight:700">'+d.date+'</td><td style="color:var(--accent)">'+MP_KSH(d.open_float)+'</td><td style="color:var(--warn)">'+MP_KSH(d.open_cash)+'</td><td style="color:var(--danger)">'+(d.close_float!=null?MP_KSH(d.close_float):'—')+'</td><td style="color:var(--warn)">'+(d.close_cash!=null?MP_KSH(d.close_cash):'—')+'</td><td>'+MP_KSH(d.dep_vol||0)+'<br><span style="font-size:.65rem;color:var(--text3)">'+(d.dep_count||0)+' txns</span></td><td>'+MP_KSH(d.wdw_vol||0)+'<br><span style="font-size:.65rem;color:var(--text3)">'+(d.wdw_count||0)+' txns</span></td><td style="color:var(--accent);font-weight:700">'+MP_KSH(d.commission||0)+'</td><td style="font-weight:700;color:'+(nc>=0?'var(--accent)':'var(--danger)')+'">'+(nc>=0?'+':'')+MP_KSH(nc)+'</td><td style="font-size:.72rem;color:var(--text3)">'+(note?note.substring(0,60)+(note.length>60?'...':''):'—')+'</td></tr>';}).join(''):'<tr><td colspan="10"><div class="empty"><div class="empty-icon">📅</div>No past days</div></td></tr>';
+}
+
+function mpSaveNote(){const text=document.getElementById('mp-note-input').value.trim();mpDailyNotes[mpTodayStr()]=text;localStorage.setItem('mp_daily_notes',JSON.stringify(mpDailyNotes));mpNoteUnsaved=false;document.getElementById('mp-note-status').textContent='✅ Saved at '+nowTime();toast('Note saved!','amber');}
+function mpClearNote(){if(!confirm('Clear note?'))return;document.getElementById('mp-note-input').value='';mpDailyNotes[mpTodayStr()]='';localStorage.setItem('mp_daily_notes',JSON.stringify(mpDailyNotes));document.getElementById('mp-note-status').textContent='Note cleared';toast('Note cleared','amber');}
+
+async function mpConfirmOpenDay(){
+  const of2=parseFloat(document.getElementById('mp-open-float').value);const oc=parseFloat(document.getElementById('mp-open-cash').value);
+  if(isNaN(of2)||isNaN(oc)){toast('Enter both values','amber');return;}
+  mpTodayDay={date:mpTodayStr(),openFloat:of2,openCash:oc,openNote:document.getElementById('mp-open-note').value,openTime:nowTime()};
+  mpFloat=of2;mpCash=oc;await mpSaveState();
+  document.getElementById('mp-open-modal').style.display='none';
+  ['mp-open-float','mp-open-cash','mp-open-note'].forEach(id=>document.getElementById(id).value='');
+  mpUpdateBalBar();mpRenderDayBook();toast('Day opened! Float: '+MP_KSH(of2)+' | Cash: '+MP_KSH(oc));
+}
+
+function mpPrepClose(){
+  document.getElementById('mp-close-float').value=mpFloat;document.getElementById('mp-close-cash').value=mpCash;
+  const today=mpTodayTxns().filter(t=>t.type!=='expense');const comm=today.reduce((s,t)=>s+(t.commission||0),0);const expVol=mpTodayExpenses().reduce((s,t)=>s+(t.amount||0),0);
+  document.getElementById('mp-close-preview').innerHTML='<div style="font-size:.75rem;color:var(--text3);margin-bottom:8px;font-weight:600">Expected from tracking:</div><div style="display:flex;gap:16px;flex-wrap:wrap"><div><div class="stat-label">Float</div><div style="color:var(--accent);font-weight:700">'+MP_KSH(mpFloat)+'</div></div><div><div class="stat-label">Cash</div><div style="color:var(--warn);font-weight:700">'+MP_KSH(mpCash)+'</div></div><div><div class="stat-label">Commission</div><div style="color:var(--accent);font-weight:700">'+MP_KSH(comm)+'</div></div><div><div class="stat-label">Expenses</div><div style="color:var(--purple);font-weight:700">'+MP_KSH(expVol)+'</div></div></div><div style="font-size:.7rem;color:var(--text3);margin-top:8px">Count actual amounts and enter above.</div>';
+}
+
+async function mpConfirmCloseDay(){
+  const cf=parseFloat(document.getElementById('mp-close-float').value);const cc=parseFloat(document.getElementById('mp-close-cash').value);
+  if(isNaN(cf)||isNaN(cc)){toast('Enter both values','amber');return;}
+  const today=mpTodayTxns().filter(t=>t.type!=='expense');
+  const deps=today.filter(t=>t.type==='deposit'),wdws=today.filter(t=>t.type==='withdrawal');
+  const comm=today.reduce((s,t)=>s+(t.commission||0),0);const expVol=mpTodayExpenses().reduce((s,t)=>s+(t.amount||0),0);
+  const rec={id:Date.now(),date:mpTodayStr(),open_float:mpTodayDay?.openFloat||0,open_cash:mpTodayDay?.openCash||0,open_time:mpTodayDay?.openTime||'',open_note:mpTodayDay?.openNote||'',close_float:cf,close_cash:cc,close_time:nowTime(),close_note:document.getElementById('mp-close-note').value,dep_count:deps.length,dep_vol:deps.reduce((s,t)=>s+(t.amount||0),0),wdw_count:wdws.length,wdw_vol:wdws.reduce((s,t)=>s+(t.amount||0),0),commission:comm,txn_count:today.length,daily_note:mpDailyNotes[mpTodayStr()]||'',expense_vol:expVol};
+  try{const{data,error}=await sb.from('mpesa_days').upsert(rec,{onConflict:'date'}).select().single();if(error)throw error;const idx=mpDays.findIndex(d=>d.date===mpTodayStr());if(idx>=0)mpDays[idx]=data;else mpDays.unshift(data);}catch(e){mpDays.unshift(rec);}
+  mpFloat=cf;mpCash=cc;mpTodayDay=null;await mpSaveState();
+  document.getElementById('mp-close-modal').style.display='none';
+  mpUpdateBalBar();mpRenderDayBook();toast('Day closed ✅ Commission: '+MP_KSH(comm));
+}
+
+function mpRenderFloat(){
+  const target=mpSettings.floatTarget||50000;const pct=Math.min(100,(mpFloat/target)*100);
+  document.getElementById('mp-float-page-bal').textContent=MP_KSH(mpFloat);
+  document.getElementById('mp-cash-page-bal').textContent=MP_KSH(mpCash);
+  document.getElementById('mp-total-page-bal').textContent=MP_KSH(mpFloat+mpCash);
+  const meter=document.getElementById('mp-float-meter');meter.style.width=pct+'%';meter.className='inv-progress-fill '+(pct<20?'low':pct<40?'warn':'ok');
+  document.getElementById('mp-float-pct').textContent=pct.toFixed(0)+'% of '+MP_KSH(target)+' target'+(pct<20?' ⚠ LOW':'');
+  document.getElementById('mp-topup-hist').innerHTML=mpTopupLog.length?mpTopupLog.slice(0,10).map(l=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:.84rem;font-weight:600;color:var(--accent)">+'+MP_KSH(l.amount)+'</div><div style="font-size:.7rem;color:var(--text3)">'+l.method+(l.ref?' · '+l.ref:'')+'</div></div><div style="font-size:.7rem;color:var(--text3);text-align:right">'+l.date+'</div></div>').join(''):'<div class="empty"><div class="empty-icon">🔄</div>No top-up history</div>';
+}
+
+async function mpDoTopUp(){
+  const amt=parseFloat(document.getElementById('mp-topup-amt').value)||0;if(amt<=0){toast('Enter amount','amber');return;}
+  const method=document.getElementById('mp-topup-method').value;const ref=document.getElementById('mp-topup-ref').value.trim();
+  mpFloat+=amt;mpCash-=amt;mpTopupLog.unshift({amount:amt,method,ref,date:mpTodayStr(),time:nowTime()});
+  await mpSaveState();
+  const rec={id:Date.now(),date:mpTodayStr(),time:nowTime(),type:'topup',amount:amt,phone:null,customer_name:'Float Top-up',reference:ref||null,commission:0,float_after:mpFloat,cash_after:mpCash,expense_category:null,expense_deduct_from:null};
+  try{const{data,error}=await sb.from('mpesa_transactions').insert(rec).select().single();if(error)throw error;mpTxns=[data,...mpTxns];}catch(e){mpTxns=[rec,...mpTxns];}
+  mpRenderFloat();mpUpdateBalBar();document.getElementById('mp-topup-amt').value='';document.getElementById('mp-topup-ref').value='';toast('Float topped up: +'+MP_KSH(amt));
+}
+
+async function mpSetBalances(){
+  const f=parseFloat(document.getElementById('mp-set-float').value);const c=parseFloat(document.getElementById('mp-set-cash').value);
+  if(!isNaN(f))mpFloat=f;if(!isNaN(c))mpCash=c;await mpSaveState();mpRenderFloat();mpUpdateBalBar();toast('Balances updated!');
+}
+
+function mpRenderCommission(){
+  const todayComm=mpTodayTxns().filter(t=>t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);
+  const monthComm=mpTxns.filter(t=>mpInRange(t,'month')&&t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);
+  const totalComm=mpTxns.filter(t=>t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);
+  const nonExp=mpTxns.filter(t=>t.type!=='expense');
+  document.getElementById('mp-comm-stats').innerHTML=[{l:'Today',v:MP_KSH(todayComm),c:'g'},{l:'This Month',v:MP_KSH(monthComm),c:'b',a:'blue'},{l:'All Time',v:MP_KSH(totalComm),c:'g'},{l:'Avg per Txn',v:MP_KSH(nonExp.length?totalComm/nonExp.length:0),c:'a',a:'warn'}].map(s=>'<div class="stat '+(s.a||'')+'"><div class="stat-label">'+s.l+'</div><div class="stat-val '+s.c+'">'+s.v+'</div></div>').join('');
+  document.getElementById('mp-bands-tbody').innerHTML=MP_COMM_BANDS.map(b=>'<tr><td>'+b.label+'</td><td style="color:var(--accent);font-family:\'JetBrains Mono\',monospace">'+(b.dep>0?'KSh '+b.dep:'Free')+'</td><td style="color:var(--danger);font-family:\'JetBrains Mono\',monospace">'+(b.wdw>0?'KSh '+b.wdw:'Free')+'</td></tr>').join('');
+  const byType={};mpTxns.filter(t=>t.type!=='expense').forEach(t=>{if(!byType[t.type])byType[t.type]={c:0,comm:0};byType[t.type].c++;byType[t.type].comm+=t.commission||0;});
+  const maxC=Math.max(...Object.values(byType).map(v=>v.comm),1);
+  document.getElementById('mp-comm-by-type').innerHTML=Object.entries(byType).sort((a,b)=>b[1].comm-a[1].comm).map(([type,d])=>'<div class="report-bar"><div class="bar-label">'+MP_TXN_ICONS[type]+' '+MP_TXN_LABELS[type]+'</div><div class="bar-track"><div class="bar-fill" style="width:'+(d.comm/maxC*100).toFixed(1)+'%"></div></div><div class="bar-amount">'+MP_KSH(d.comm)+'</div></div>').join('')||'<div class="empty"><div class="empty-icon">💰</div>No data yet</div>';
+}
+
+function mpRenderExpenses(){
+  const allExp=mpTxns.filter(t=>t.type==='expense');const todayExp=allExp.filter(t=>t.date===mpTodayStr());const monthExp=allExp.filter(t=>mpInRange(t,'month'));
+  document.getElementById('mp-exp-stats').innerHTML=[{l:'Today',v:MP_KSH(todayExp.reduce((s,t)=>s+(t.amount||0),0)),c:'r',a:'danger'},{l:'This Month',v:MP_KSH(monthExp.reduce((s,t)=>s+(t.amount||0),0)),c:'p',a:'purple'},{l:'All Time',v:MP_KSH(allExp.reduce((s,t)=>s+(t.amount||0),0)),c:'r',a:'danger'}].map(s=>'<div class="stat '+(s.a||'')+'"><div class="stat-label">'+s.l+'</div><div class="stat-val '+s.c+'">'+s.v+'</div></div>').join('');
+  const byCat={};allExp.forEach(t=>{const cat=t.expense_category||'General';if(!byCat[cat])byCat[cat]={c:0,total:0};byCat[cat].c++;byCat[cat].total+=t.amount||0;});
+  const maxCat=Math.max(...Object.values(byCat).map(v=>v.total),1);
+  document.getElementById('mp-exp-by-cat').innerHTML=Object.entries(byCat).sort((a,b)=>b[1].total-a[1].total).map(([cat,d])=>'<div class="report-bar"><div class="bar-label">'+(MP_EXP_ICONS[cat]||'💸')+' '+cat+' <span style="color:var(--text3);font-size:.68rem">('+d.c+')</span></div><div class="bar-track"><div class="bar-fill expense" style="width:'+(d.total/maxCat*100).toFixed(1)+'%"></div></div><div class="bar-amount expense">'+MP_KSH(d.total)+'</div></div>').join('')||'<div class="empty"><div class="empty-icon">💸</div>No expenses yet</div>';
+  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());days7.push({lbl:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],date:ds});}
+  const maxD=Math.max(...days7.map(d=>allExp.filter(t=>t.date===d.date).reduce((s,t)=>s+(t.amount||0),0)),1);
+  document.getElementById('mp-exp-chart').innerHTML=days7.map(d=>{const val=allExp.filter(t=>t.date===d.date).reduce((s,t)=>s+(t.amount||0),0);const h=Math.max(3,(val/maxD*90)).toFixed(1);return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="font-size:.55rem;color:var(--purple)">'+( val?Math.round(val):''  )+'</div><div style="width:100%;background:linear-gradient(180deg,#7c3aed,var(--purple));border-radius:3px 3px 0 0;height:'+h+'%;min-height:2px"></div><div style="font-size:.58rem;color:var(--text3)">'+d.lbl+'</div></div>';}).join('');
+  document.getElementById('mp-exp-tbody').innerHTML=allExp.map(t=>'<tr><td>'+t.date+'</td><td style="color:var(--text3);font-size:.75rem">'+t.time+'</td><td><span class="badge badge-purple">'+(MP_EXP_ICONS[t.expense_category]||'💸')+' '+(t.expense_category||'General')+'</span></td><td style="font-size:.82rem">'+(t.reference||t.customer_name||'—')+'</td><td style="color:var(--danger);font-family:\'JetBrains Mono\',monospace;font-weight:700">-'+MP_KSH(t.amount)+'</td><td><span class="badge '+(t.expense_deduct_from==='float'?'badge-blue':'badge-amber')+'">'+(t.expense_deduct_from==='float'?'📱 Float':'💵 Cash')+'</span></td><td><button class="btn btn-danger btn-xs" onclick="mpDeleteTxn('+t.id+')">Del</button></td></tr>').join('')||'<tr><td colspan="7"><div class="empty"><div class="empty-icon">💸</div>No expenses</div></td></tr>';
+}
+
+function mpSetRange(r){mpCurRange=r;mpRenderReports();}
+function mpRenderReports(){
+  const recs=mpTxns.filter(t=>mpInRange(t,mpCurRange)&&t.type!=='expense');const exps=mpTxns.filter(t=>mpInRange(t,mpCurRange)&&t.type==='expense');
+  const vol=recs.reduce((s,t)=>s+(t.amount||0),0);const comm=recs.reduce((s,t)=>s+(t.commission||0),0);const expVol=exps.reduce((s,t)=>s+(t.amount||0),0);
+  document.getElementById('mp-rep-stats').innerHTML=[{l:'Total Volume',v:MP_KSH(vol),c:'b',a:'blue'},{l:'Commission Earned',v:MP_KSH(comm),c:'g'},{l:'Total Expenses',v:MP_KSH(expVol),c:'r',a:'danger'},{l:'Net (Comm-Exp)',v:MP_KSH(comm-expVol),c:comm>=expVol?'g':'r',a:comm>=expVol?'':'danger'}].map(s=>'<div class="stat '+(s.a||'')+'"><div class="stat-label">'+s.l+'</div><div class="stat-val '+s.c+'">'+s.v+'</div></div>').join('');
+  const byType={};recs.forEach(t=>{if(!byType[t.type])byType[t.type]={c:0,vol:0,comm:0};byType[t.type].c++;byType[t.type].vol+=t.amount||0;byType[t.type].comm+=t.commission||0;});
+  const maxV=Math.max(...Object.values(byType).map(v=>v.vol),1);
+  document.getElementById('mp-rep-breakdown').innerHTML=Object.entries(byType).sort((a,b)=>b[1].vol-a[1].vol).map(([type,d])=>'<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px"><span>'+MP_TXN_ICONS[type]+' '+MP_TXN_LABELS[type]+' <span style="color:var(--text3)">('+d.c+' txns)</span></span><span style="color:var(--accent)">'+MP_KSH(d.comm)+' comm</span></div><div class="bar-track" style="height:8px"><div class="bar-fill" style="width:'+(d.vol/maxV*100).toFixed(1)+'%"></div></div><div style="font-size:.7rem;color:var(--text3);margin-top:3px">Vol: '+MP_KSH(d.vol)+'</div></div>').join('')||'<div class="empty"><div class="empty-icon">📊</div>No data</div>';
+  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());days7.push({lbl:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],date:ds});}
+  const maxD=Math.max(...days7.map(d=>mpTxns.filter(t=>t.date===d.date&&t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0)),1);
+  document.getElementById('mp-rep-chart').innerHTML=days7.map(d=>{const val=mpTxns.filter(t=>t.date===d.date&&t.type!=='expense').reduce((s,t)=>s+(t.commission||0),0);const h=Math.max(3,(val/maxD*100)).toFixed(1);return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="font-size:.55rem;color:var(--accent)">'+( val?Math.round(val):'' )+'</div><div style="width:100%;background:linear-gradient(180deg,#009970,var(--accent));border-radius:3px 3px 0 0;height:'+h+'%;min-height:2px"></div><div style="font-size:.58rem;color:var(--text3)">'+d.lbl+'</div></div>';}).join('');
+}
+
+// Tab init
+async function initMpesaTab(){
+  mpLoadLocal();
+  await mpLoadState();
+  await mpLoadTxns();
+  await mpLoadDays();
+  mpUpdateBalBar();
+  mpSelectType('deposit');
+}
 
 </script>
 </body>
