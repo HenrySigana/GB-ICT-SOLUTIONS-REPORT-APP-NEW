@@ -451,14 +451,88 @@ tr:hover td{background:rgba(255,255,255,.015);}
   .icon-grid{grid-template-columns:repeat(6,1fr);}
 }
 
-/* M-Pesa Agent sub-tab overrides */
-#tab-mpesa .float-type-tabs{border-radius:var(--radius-sm);}
-#tab-mpesa .float-type-tab.active{color:#fff;}
-#tab-mpesa .float-type-tab.dep.active{background:var(--accent);color:#000;}
+/* ============================================================
+   THEME SYSTEM (Dark / Light)
+   ============================================================ */
+body.light-theme{
+  --bg:#f0f4f8;--surface:#ffffff;--card:#ffffff;--card2:#f8fafc;
+  --border:#d1dce8;--border2:#c4d2e0;--accent:#00b374;
+  --accent-dim:rgba(0,179,116,.1);--blue:#0284c7;--blue-dim:rgba(2,132,199,.1);
+  --warn:#d97706;--warn-dim:rgba(217,119,6,.1);--danger:#dc2626;
+  --danger-dim:rgba(220,38,38,.1);--purple:#7c3aed;--purple-dim:rgba(124,58,237,.1);
+  --green:#16a34a;--green-dim:rgba(22,163,74,.1);
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+}
+body.light-theme::before,body.light-theme::after{display:none;}
+body.light-theme header{background:linear-gradient(to right,#e2f4ec,#f0faf4,#e8f5ef);}
+body.light-theme nav{background:#f8fafc;}
+body.light-theme .pin-key{background:#f1f5f9;border-color:#cbd5e1;color:#0f172a;}
+body.light-theme #loginOverlay{background:#f0f4f8;}
+body.light-theme #loginOverlay::after{background-image:linear-gradient(rgba(0,179,116,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,179,116,.06) 1px,transparent 1px);}
+body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20px 60px rgba(0,0,0,.12);}
+
+/* Theme toggle button */
+.theme-toggle{background:none;border:1px solid var(--border2);border-radius:20px;padding:4px 12px;color:var(--text3);cursor:pointer;font-size:.78rem;font-family:'Space Grotesk',sans-serif;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ============================================================
+   DAILY P&L CARD
+   ============================================================ */
+.pnl-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border2);border-radius:var(--radius-lg);padding:22px;margin-bottom:24px;position:relative;overflow:hidden;}
+.pnl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--blue),var(--purple));}
+.pnl-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.pnl-date{font-size:.7rem;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;}
+.pnl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.pnl-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+.pnl-box-label{font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:8px;font-weight:700;}
+.pnl-box-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;}
+.pnl-box.rev .pnl-box-val{color:var(--accent);}
+.pnl-box.exp .pnl-box-val{color:var(--danger);}
+.pnl-box.net .pnl-box-val{color:var(--purple);}
+.pnl-breakdown{display:flex;flex-direction:column;gap:6px;}
+.pnl-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:6px;font-size:.8rem;}
+.pnl-row-label{color:var(--text3);}
+.pnl-row-val{font-family:'JetBrains Mono',monospace;font-weight:700;}
+
+/* ============================================================
+   SERVICE TARGETS
+   ============================================================ */
+.target-svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px;}
+.target-svc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.target-svc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.target-svc-name{font-size:.9rem;font-weight:700;color:var(--text);}
+.target-svc-pct{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;}
+.target-svc-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:8px;}
+.target-svc-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.22,1,.36,1);}
+.target-svc-meta{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text3);}
+
+/* ============================================================
+   BREAK-EVEN CALCULATOR
+   ============================================================ */
+.bec-result{background:linear-gradient(135deg,var(--accent-dim),var(--blue-dim));border:1px solid rgba(0,229,160,.2);border-radius:var(--radius);padding:20px;margin-top:14px;}
+.bec-headline{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:14px;}
+.bec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+.bec-box{background:rgba(255,255,255,.05);border-radius:var(--radius-sm);padding:12px;text-align:center;}
+.bec-box-label{font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:6px;font-weight:700;}
+.bec-box-val{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent);}
+.bec-cost-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.bec-cost-row input[type=text]{flex:2;}
+.bec-cost-row input[type=number]{flex:1;}
+
+/* ============================================================
+   MONTHLY REPORT PDF BUTTON
+   ============================================================ */
+.monthly-report-btn{background:linear-gradient(135deg,var(--purple),#7c3aed);color:#fff;border:none;padding:10px 22px;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+.monthly-report-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 8px 20px rgba(124,58,237,.3);}
+
+/* Offline banner */
+.offline-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:9997;background:var(--danger);color:#fff;text-align:center;padding:6px;font-size:.8rem;font-weight:700;letter-spacing:.5px;}
+.offline-banner.show{display:block;}
 
 </style>
 </head>
 <body>
+<div class="offline-banner" id="offlineBanner">📡 You are offline — changes saved locally and will sync when reconnected</div>
 
 <div id="loginOverlay">
   <div class="login-box" id="loginBox">
@@ -556,6 +630,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
   <div style="display:flex;align-items:center;gap:16px">
     <div class="htime"><div class="hdate" id="hDate"></div><div class="htimeval" id="hTime"></div></div>
+    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">☀️ Light</button>
     <button id="logoutBtn" onclick="doLogout()">Lock</button>
   </div>
 </header>
@@ -573,6 +648,7 @@ tr:hover td{background:rgba(255,255,255,.015);}
   <button onclick="switchTab('whatsapp',this)">WhatsApp</button>
   <button onclick="switchTab('settings',this)">Services</button>
   <button onclick="switchTab('ai',this)" style="background:linear-gradient(135deg,rgba(0,229,160,.15),rgba(56,189,248,.1));color:var(--accent);border:1px solid rgba(0,229,160,.25);">AI</button>
+  <button onclick="switchTab('pnl',this)" style="background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(124,58,237,.1));color:var(--purple);border:1px solid rgba(167,139,250,.25);">📊 P&amp;L</button>
   <button onclick="switchTab('mpesa',this)" style="background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(0,165,80,.1));color:#25D366;border:1px solid rgba(37,211,102,.25);">📱 M-Pesa Agent</button>
 </nav>
 <main>
@@ -973,6 +1049,86 @@ tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 </div>
 
+
+<!-- OFFLINE BANNER -->
+<div class="offline-banner" id="offlineBanner">📡 You are offline — changes saved locally and will sync when reconnected</div>
+
+<div class="tab" id="tab-pnl">
+  <div class="pnl-card" id="pnl-main-card">
+    <div class="pnl-title">📊 Daily P&amp;L — <span id="pnl-date-label"></span></div>
+    <div class="pnl-date" id="pnl-time-label"></div>
+    <div class="pnl-grid">
+      <div class="pnl-box rev"><div class="pnl-box-label">💰 Revenue</div><div class="pnl-box-val" id="pnl-rev">KSh 0</div></div>
+      <div class="pnl-box exp"><div class="pnl-box-label">💸 Expenses</div><div class="pnl-box-val" id="pnl-exp">KSh 0</div></div>
+      <div class="pnl-box net"><div class="pnl-box-label">📈 Net Profit</div><div class="pnl-box-val" id="pnl-net">KSh 0</div></div>
+    </div>
+    <div class="pnl-breakdown" id="pnl-breakdown"></div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-whatsapp" onclick="sendPnLWhatsApp()">📲 Send P&amp;L to WhatsApp</button>
+      <button class="btn btn-secondary btn-sm" onclick="renderPnL()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- 7-day P&L chart -->
+  <div class="stitle">📅 7-Day P&amp;L Trend</div>
+  <div class="card" style="margin-bottom:24px">
+    <div class="chart-legend" style="margin-bottom:12px">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Revenue</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Expenses</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Net Profit</div>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:6px;height:140px" id="pnl-chart"></div>
+  </div>
+
+  <!-- Service Targets -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+    <div class="stitle" style="margin-bottom:0">🎯 Service Monthly Targets</div>
+    <button class="btn btn-secondary btn-sm" onclick="openTargetsModal()">⚙️ Set Targets</button>
+  </div>
+  <div class="target-svc-grid" id="target-svc-grid"></div>
+
+  <!-- Break-Even Calculator -->
+  <div class="stitle">🧮 Break-Even Calculator</div>
+  <div class="form-card">
+    <div style="font-size:.82rem;color:var(--text3);margin-bottom:16px;line-height:1.7">Enter your monthly fixed costs. The calculator will tell you how much revenue you need each day to cover them and start making profit.</div>
+    <div id="bec-costs-list"></div>
+    <button class="btn btn-secondary btn-sm" onclick="becAddRow()" style="margin-bottom:14px">+ Add Cost Item</button>
+    <div class="form-row">
+      <div class="fg"><label>Avg Daily Revenue (KSh)</label><input type="number" id="bec-daily-rev" placeholder="e.g. 3500" oninput="calcBreakEven()"></div>
+      <div class="fg"><label>Working Days per Month</label><input type="number" id="bec-days" placeholder="26" value="26" oninput="calcBreakEven()"></div>
+    </div>
+    <div id="bec-result" style="display:none" class="bec-result">
+      <div class="bec-headline">📊 Break-Even Analysis</div>
+      <div class="bec-grid" id="bec-grid"></div>
+      <div id="bec-verdict" style="margin-top:14px;font-size:.85rem;line-height:1.7;color:var(--text2)"></div>
+    </div>
+  </div>
+
+  <!-- Monthly Business Report -->
+  <div class="stitle">📄 Monthly Business Report</div>
+  <div class="form-card">
+    <div style="font-size:.82rem;color:var(--text3);margin-bottom:16px;line-height:1.7">Generate a professional PDF business report for the current month — revenue trends, top services, best days. Ready to show to a bank or investor.</div>
+    <div class="form-row">
+      <div class="fg"><label>Month</label><input type="month" id="monthly-report-month"></div>
+      <div class="fg"><label>Business Name</label><input type="text" id="monthly-report-biz" placeholder="GB ICT Solutions"></div>
+    </div>
+    <button class="monthly-report-btn" onclick="generateMonthlyReportPDF()">📄 Generate Monthly Report PDF</button>
+  </div>
+</div>
+
+<!-- Service Targets Modal -->
+<div id="targetsModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.7)">
+    <div class="stitle">🎯 Set Monthly Service Targets</div>
+    <p style="font-size:.8rem;color:var(--text3);margin-bottom:16px">Set a monthly revenue target for each service. The P&amp;L tab will show a progress bar for each.</p>
+    <div id="targets-modal-list"></div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-primary" onclick="saveServiceTargets()">💾 Save Targets</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('targetsModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="tab" id="tab-mpesa">
   <!-- TOP BALANCE BAR -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px">
@@ -1291,7 +1447,7 @@ function switchTab(t,btn){
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(e=>e.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');if(btn)btn.classList.add('active');
-  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();},mpesa:()=>{if(!window._mpesaInited){window._mpesaInited=true;initMpesaTab();}else{mpUpdateBalBar();}mpSubTab(mpCurrentSubTab,document.getElementById('mpsub-'+mpCurrentSubTab));}};
+  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();},pnl:()=>{renderPnL();initPnL();},mpesa:()=>{if(!window._mpesaInited){window._mpesaInited=true;initMpesaTab();}else{mpUpdateBalBar();}mpSubTab(mpCurrentSubTab,document.getElementById('mpsub-'+mpCurrentSubTab));}};
   if(fn[t])fn[t]();
 }
 
@@ -2212,6 +2368,298 @@ async function initMpesaTab(){
   await mpLoadDays();
   mpUpdateBalBar();
   mpSelectType('deposit');
+}
+
+// ============================================================
+// THEME TOGGLE
+// ============================================================
+function initTheme(){
+  const saved=localStorage.getItem('gb_theme')||'dark';
+  if(saved==='light')document.body.classList.add('light-theme');
+  updateThemeBtn();
+}
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light-theme');
+  localStorage.setItem('gb_theme',isLight?'light':'dark');
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  const btn=document.getElementById('themeToggleBtn');
+  if(!btn)return;
+  const isLight=document.body.classList.contains('light-theme');
+  btn.textContent=isLight?'🌙 Dark':'☀️ Light';
+}
+initTheme();
+
+// ============================================================
+// OFFLINE DETECTION
+// ============================================================
+function handleOnline(){document.getElementById('offlineBanner').classList.remove('show');setOnline();}
+function handleOffline(){document.getElementById('offlineBanner').classList.add('show');setOffline();}
+window.addEventListener('online',handleOnline);
+window.addEventListener('offline',handleOffline);
+if(!navigator.onLine)handleOffline();
+
+// ============================================================
+// SERVICE WORKER (Full Offline PWA)
+// ============================================================
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+// ============================================================
+// DAILY P&L
+// ============================================================
+function renderPnL(){
+  const today=todayStr();
+  const todaySales=sales.filter(s=>s.date===today);
+  const todayExp=expenses.filter(e=>e.date===today);
+  const rev=sumArr(todaySales,'total');
+  const exp=sumArr(todayExp,'amount');
+  const net=rev-exp;
+  const now=new Date();
+
+  document.getElementById('pnl-date-label').textContent=
+    now.toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('pnl-time-label').textContent=
+    'Last updated: '+now.toLocaleTimeString('en-KE');
+
+  document.getElementById('pnl-rev').textContent=fmtKsh(rev);
+  document.getElementById('pnl-exp').textContent=fmtKsh(exp);
+  const netEl=document.getElementById('pnl-net');
+  netEl.textContent=fmtKsh(net);
+  netEl.style.color=net>=0?'var(--accent)':'var(--danger)';
+
+  // Breakdown by service
+  const bySvc={};todaySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});
+  const topSvcs=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).slice(0,6);
+  const byCat={};todayExp.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0,icon:e.icon||'📦'};byCat[e.category].total+=e.amount||0;});
+
+  document.getElementById('pnl-breakdown').innerHTML=
+    topSvcs.map(([n,d])=>'<div class="pnl-row"><span class="pnl-row-label">'+d.icon+' '+n+'</span><span class="pnl-row-val" style="color:var(--accent)">+'+fmtKsh(d.total)+'</span></div>').join('')+
+    Object.entries(byCat).map(([n,d])=>'<div class="pnl-row"><span class="pnl-row-label">'+d.icon+' '+n+'</span><span class="pnl-row-val" style="color:var(--danger)">-'+fmtKsh(d.total)+'</span></div>').join('')+
+    '<div class="pnl-row" style="border-top:1px solid var(--border2);margin-top:6px;padding-top:10px"><span class="pnl-row-label" style="font-weight:700;color:var(--text)">Net Profit / Loss</span><span class="pnl-row-val" style="color:'+(net>=0?'var(--accent)':'var(--danger)')+'">'+fmtKsh(net)+'</span></div>'+
+    '<div class="pnl-row"><span class="pnl-row-label" style="color:var(--text3)">Profit Margin</span><span class="pnl-row-val" style="color:var(--text2)">'+(rev?Math.round(net/rev*100):0)+'%</span></div>'+
+    '<div class="pnl-row"><span class="pnl-row-label" style="color:var(--text3)">Transactions</span><span class="pnl-row-val" style="color:var(--text2)">'+todaySales.length+'</span></div>';
+
+  // 7-day chart
+  const days7=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+    const r=sumArr(sales.filter(s=>s.date===ds),'total');
+    const e=sumArr(expenses.filter(ex=>ex.date===ds),'amount');
+    days7.push({lbl:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],ds,r,e,n:r-e,isToday:ds===today});
+  }
+  const maxV=Math.max(...days7.map(d=>Math.max(d.r,d.e,Math.abs(d.n))),1);
+  document.getElementById('pnl-chart').innerHTML=days7.map(d=>{
+    const rh=Math.max((d.r/maxV)*120,d.r>0?4:0).toFixed(1);
+    const eh=Math.max((d.e/maxV)*120,d.e>0?4:0).toFixed(1);
+    const nh=Math.max((Math.abs(d.n)/maxV)*120,Math.abs(d.n)>0?4:0).toFixed(1);
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">'
+      +'<div style="display:flex;gap:2px;align-items:flex-end;height:120px">'
+      +'<div style="width:8px;background:linear-gradient(180deg,#009970,var(--accent));border-radius:3px 3px 0 0;height:'+rh+'px;min-height:'+(d.r>0?'4':'0')+'px" title="Rev: '+fmtKsh(d.r)+'"></div>'
+      +'<div style="width:8px;background:linear-gradient(180deg,#dc2626,var(--danger));border-radius:3px 3px 0 0;height:'+eh+'px;min-height:'+(d.e>0?'4':'0')+'px" title="Exp: '+fmtKsh(d.e)+'"></div>'
+      +'<div style="width:8px;background:linear-gradient(180deg,#7c3aed,var(--purple));border-radius:3px 3px 0 0;height:'+nh+'px;min-height:'+(Math.abs(d.n)>0?'4':'0')+'px" title="Net: '+fmtKsh(d.n)+'"></div>'
+      +'</div>'
+      +'<div style="font-size:.58rem;color:'+(d.isToday?'var(--accent)':'var(--text3)')+';font-weight:'+(d.isToday?'700':'400')+'">'+d.lbl+'</div>'
+      +'</div>';
+  }).join('');
+
+  renderServiceTargets();
+}
+
+function sendPnLWhatsApp(){
+  const num=waSettings.number;
+  if(!num){toast('Set WhatsApp number in Settings first','amber');return;}
+  const today=todayStr();
+  const todaySales=sales.filter(s=>s.date===today);
+  const todayExp=expenses.filter(e=>e.date===today);
+  const rev=sumArr(todaySales,'total');
+  const exp=sumArr(todayExp,'amount');
+  const net=rev-exp;
+  const now=new Date();
+  const dateLabel=now.toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const bySvc={};todaySales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,icon:s.icon||''};bySvc[s.service_name].total+=s.total||0;});
+  const svcLines=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total).map(([n,d])=>'  '+d.icon+' '+n+': KSh '+d.total.toLocaleString()).join('\n');
+  const byCat={};todayExp.forEach(e=>{if(!byCat[e.category])byCat[e.category]={total:0};byCat[e.category].total+=e.amount||0;});
+  const expLines=Object.entries(byCat).map(([n,d])=>'  📌 '+n+': KSh '+d.total.toLocaleString()).join('\n');
+  const margin=rev?Math.round(net/rev*100):0;
+  const msg='📊 *DAILY P&L REPORT*\n'
+    +'🏪 '+(waSettings.biz||'GB ICT Solutions')+'\n'
+    +'📅 '+dateLabel+'\n'
+    +'─'.repeat(28)+'\n\n'
+    +'💰 *REVENUE: KSh '+rev.toLocaleString()+'*\n'+(svcLines||'  No sales')+'\n\n'
+    +'💸 *EXPENSES: KSh '+exp.toLocaleString()+'*\n'+(expLines||'  No expenses')+'\n\n'
+    +(net>=0?'✅':'⚠️')+' *NET PROFIT: KSh '+net.toLocaleString()+'*\n'
+    +'📈 Margin: '+margin+'% | Transactions: '+todaySales.length+'\n'
+    +'─'.repeat(28)+'\n'
+    +'_Sent by GB ICT Sales Tracker_';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+  toast('📲 Opening WhatsApp...','whatsapp');
+}
+
+// ============================================================
+// SERVICE TARGETS
+// ============================================================
+let serviceTargets=loadLS('gb_svc_targets',{});
+
+function openTargetsModal(){
+  const list=document.getElementById('targets-modal-list');
+  list.innerHTML=services.map(s=>'<div class="form-row" style="margin-bottom:8px"><div class="fg" style="max-width:200px"><label>'+s.icon+' '+s.name+'</label></div><div class="fg"><label>Monthly Target (KSh)</label><input type="number" id="tgt-'+s.id+'" value="'+(serviceTargets[s.id]||'')+'" placeholder="0" min="0"></div></div>').join('');
+  document.getElementById('targetsModal').style.display='flex';
+}
+
+function saveServiceTargets(){
+  services.forEach(s=>{
+    const val=parseFloat(document.getElementById('tgt-'+s.id)?.value)||0;
+    if(val>0)serviceTargets[s.id]=val;else delete serviceTargets[s.id];
+  });
+  saveLS('gb_svc_targets',serviceTargets);
+  document.getElementById('targetsModal').style.display='none';
+  toast('🎯 Targets saved!');
+  renderServiceTargets();
+}
+
+function renderServiceTargets(){
+  const grid=document.getElementById('target-svc-grid');
+  if(!grid)return;
+  const now=new Date();
+  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const svcsWithTargets=services.filter(s=>serviceTargets[s.id]>0);
+  if(!svcsWithTargets.length){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🎯</div><p>No targets set yet. Click "Set Targets" to begin.</p></div>';
+    return;
+  }
+  grid.innerHTML=svcsWithTargets.map(s=>{
+    const target=serviceTargets[s.id]||0;
+    const actual=sumArr(sales.filter(x=>x.service_id===s.id&&new Date(x.date)>=mStart),'total');
+    const pct=target>0?Math.min(Math.round(actual/target*100),100):0;
+    const remaining=Math.max(target-actual,0);
+    const color=pct>=100?'var(--accent)':pct>=60?'var(--blue)':pct>=30?'var(--warn)':'var(--danger)';
+    return '<div class="target-svc-card">'
+      +'<div class="target-svc-header"><div class="target-svc-name">'+s.icon+' '+s.name+'</div><div class="target-svc-pct" style="color:'+color+'">'+pct+'%</div></div>'
+      +'<div class="target-svc-track"><div class="target-svc-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+      +'<div class="target-svc-meta"><span>KSh '+actual.toLocaleString()+' earned</span><span>Target: KSh '+target.toLocaleString()+'</span></div>'
+      +(remaining>0?'<div style="font-size:.68rem;color:var(--text3);margin-top:5px">KSh '+remaining.toLocaleString()+' to go this month</div>':'<div style="font-size:.68rem;color:var(--accent);margin-top:5px;font-weight:700">🏆 Target reached!</div>')
+      +'</div>';
+  }).join('');
+}
+
+// ============================================================
+// BREAK-EVEN CALCULATOR
+// ============================================================
+let becRows=loadLS('gb_bec_costs',[{name:'Rent',amount:''},{name:'Electricity',amount:''},{name:'Internet',amount:''},{name:'Salary',amount:''}]);
+
+function becRenderRows(){
+  document.getElementById('bec-costs-list').innerHTML=becRows.map((r,i)=>'<div class="bec-cost-row"><input type="text" placeholder="Cost item (e.g. Rent)" value="'+r.name+'" oninput="becRows['+i+'].name=this.value;calcBreakEven()"><input type="number" placeholder="KSh/month" value="'+r.amount+'" oninput="becRows['+i+'].amount=this.value;calcBreakEven()"><button class="btn btn-danger btn-xs" onclick="becRemoveRow('+i+')">✕</button></div>').join('');
+}
+
+function becAddRow(){becRows.push({name:'',amount:''});becRenderRows();calcBreakEven();}
+function becRemoveRow(i){becRows.splice(i,1);becRenderRows();calcBreakEven();}
+
+function calcBreakEven(){
+  saveLS('gb_bec_costs',becRows);
+  const totalFixed=becRows.reduce((s,r)=>s+(parseFloat(r.amount)||0),0);
+  const dailyRev=parseFloat(document.getElementById('bec-daily-rev')?.value)||0;
+  const workDays=parseFloat(document.getElementById('bec-days')?.value)||26;
+  const resultEl=document.getElementById('bec-result');
+  if(totalFixed<=0){resultEl.style.display='none';return;}
+  resultEl.style.display='block';
+  const dailyFixed=totalFixed/workDays;
+  const monthlyRev=dailyRev*workDays;
+  const monthlyProfit=monthlyRev-totalFixed;
+  const dailyProfit=dailyRev-dailyFixed;
+  const breakEvenDaily=totalFixed/workDays;
+  const surplusOrShort=dailyRev-breakEvenDaily;
+  const color=surplusOrShort>=0?'var(--accent)':'var(--danger)';
+  document.getElementById('bec-grid').innerHTML=[
+    {l:'Monthly Fixed Costs',v:'KSh '+Math.round(totalFixed).toLocaleString(),c:'var(--danger)'},
+    {l:'Break-Even Daily Revenue',v:'KSh '+Math.round(breakEvenDaily).toLocaleString(),c:'var(--warn)'},
+    {l:'Your Daily Revenue',v:dailyRev>0?'KSh '+Math.round(dailyRev).toLocaleString():'Not set',c:'var(--text2)'},
+    {l:surplusOrShort>=0?'Daily Surplus':'Daily Shortfall',v:'KSh '+Math.abs(Math.round(surplusOrShort)).toLocaleString(),c:color},
+    {l:'Monthly Revenue',v:dailyRev>0?'KSh '+Math.round(monthlyRev).toLocaleString():'Not set',c:'var(--text2)'},
+    {l:'Monthly Net Profit',v:dailyRev>0?'KSh '+Math.round(monthlyProfit).toLocaleString():'Not set',c:monthlyProfit>=0?'var(--accent)':'var(--danger)'},
+  ].map(b=>'<div class="bec-box"><div class="bec-box-label">'+b.l+'</div><div class="bec-box-val" style="color:'+b.c+'">'+b.v+'</div></div>').join('');
+  let verdict='';
+  if(dailyRev>0){
+    if(surplusOrShort>=0){
+      verdict='✅ <strong>You are profitable!</strong> Your daily revenue of KSh '+Math.round(dailyRev).toLocaleString()+' exceeds your break-even point of KSh '+Math.round(breakEvenDaily).toLocaleString()+' by KSh '+Math.round(surplusOrShort).toLocaleString()+'. Monthly profit: KSh '+Math.round(monthlyProfit).toLocaleString()+'.';
+    }else{
+      verdict='⚠️ <strong>Below break-even.</strong> You need KSh '+Math.round(breakEvenDaily).toLocaleString()+'/day to cover costs but averaging KSh '+Math.round(dailyRev).toLocaleString()+'. You need KSh '+Math.round(Math.abs(surplusOrShort)).toLocaleString()+' more per day to break even.';
+    }
+  }else{
+    verdict='💡 Enter your average daily revenue above to see if you are above or below break-even.';
+  }
+  document.getElementById('bec-verdict').innerHTML=verdict;
+}
+
+// ============================================================
+// MONTHLY BUSINESS REPORT PDF
+// ============================================================
+async function generateMonthlyReportPDF(){
+  const monthInput=document.getElementById('monthly-report-month').value;
+  const bizName=document.getElementById('monthly-report-biz').value||waSettings.biz||'GB ICT Solutions';
+  if(!monthInput){toast('Select a month first','amber');return;}
+  const [yr,mo]=monthInput.split('-').map(Number);
+  const mStart=new Date(yr,mo-1,1);const mEnd=new Date(yr,mo,0);
+  const mSales=sales.filter(s=>{const d=new Date(s.date);return d>=mStart&&d<=mEnd;});
+  const mExp=expenses.filter(e=>{const d=new Date(e.date);return d>=mStart&&d<=mEnd;});
+  const rev=sumArr(mSales,'total');const exp=sumArr(mExp,'amount');const net=rev-exp;const margin=rev?Math.round(net/rev*100):0;
+  const monthLabel=mStart.toLocaleDateString('en-KE',{month:'long',year:'numeric'});
+  toast('📄 Generating PDF...','blue');
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  // Header
+  doc.setFillColor(0,179,116);doc.rect(0,0,210,36,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text(bizName,14,14);
+  doc.setFontSize(11);doc.setFont('helvetica','normal');doc.text('Monthly Business Report — '+monthLabel,14,22);
+  doc.setFontSize(8);doc.text('Generated: '+new Date().toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'}),14,30);
+  doc.text('Nairobi, Kenya',196,30,{align:'right'});
+  // Summary boxes
+  let y=44;
+  doc.setTextColor(30,30,30);
+  const boxes=[['Total Revenue','KSh '+rev.toLocaleString(),[0,179,116]],['Total Expenses','KSh '+exp.toLocaleString(),[220,38,38]],['Net Profit','KSh '+net.toLocaleString(),net>=0?[0,179,116]:[220,38,38]],['Profit Margin',margin+'%',margin>=30?[0,179,116]:[220,38,38]]];
+  boxes.forEach((b,i)=>{
+    const x=14+(i%2)*98;const yy=y+Math.floor(i/2)*22;
+    doc.setFillColor(...b[2]);doc.rect(x,yy,90,18,'F');
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text(b[0],x+4,yy+6);
+    doc.setFontSize(13);doc.text(b[1],x+4,yy+14);
+  });
+  y+=50;
+  // Top services
+  const bySvc={};mSales.forEach(s=>{if(!bySvc[s.service_name])bySvc[s.service_name]={total:0,txns:0};bySvc[s.service_name].total+=s.total||0;bySvc[s.service_name].txns++;});
+  const sortedSvc=Object.entries(bySvc).sort((a,b)=>b[1].total-a[1].total);
+  doc.setTextColor(0,179,116);doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('TOP SERVICES',14,y);
+  doc.setDrawColor(0,179,116);doc.setLineWidth(.3);doc.line(14,y+2,196,y+2);y+=8;
+  if(sortedSvc.length){
+    doc.autoTable({startY:y,head:[['Service','Transactions','Revenue','% of Total']],body:sortedSvc.slice(0,10).map(([n,d])=>[n,d.txns,'KSh '+d.total.toLocaleString(),rev?(d.total/rev*100).toFixed(1)+'%':'0%']),theme:'striped',headStyles:{fillColor:[13,31,20],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8.5},columnStyles:{2:{textColor:[0,179,116],fontStyle:'bold'}},margin:{left:14,right:14}});
+    y=doc.lastAutoTable.finalY+10;
+  }
+  // Daily breakdown
+  if(y>220){doc.addPage();y=20;}
+  const byDate={};mSales.forEach(s=>{if(!byDate[s.date])byDate[s.date]={rev:0,txns:0};byDate[s.date].rev+=s.total||0;byDate[s.date].txns++;});
+  const byDateExp={};mExp.forEach(e=>{if(!byDateExp[e.date])byDateExp[e.date]=0;byDateExp[e.date]+=e.amount||0;});
+  doc.setTextColor(0,179,116);doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('DAILY BREAKDOWN',14,y);
+  doc.setDrawColor(0,179,116);doc.line(14,y+2,196,y+2);y+=8;
+  const dailyRows=Object.entries(byDate).sort((a,b)=>a[0].localeCompare(b[0])).map(([date,d])=>{const exp2=byDateExp[date]||0;const net2=d.rev-exp2;return[date,d.txns,'KSh '+d.rev.toLocaleString(),'KSh '+exp2.toLocaleString(),'KSh '+net2.toLocaleString()];});
+  if(dailyRows.length){doc.autoTable({startY:y,head:[['Date','Txns','Revenue','Expenses','Net']],body:dailyRows,theme:'striped',headStyles:{fillColor:[13,31,20],textColor:[0,229,160],fontStyle:'bold',fontSize:8},styles:{fontSize:8},columnStyles:{4:{fontStyle:'bold'}},margin:{left:14,right:14}});}
+  // Footer
+  const pc=doc.getNumberOfPages();
+  for(let i=1;i<=pc;i++){doc.setPage(i);doc.setFontSize(7);doc.setTextColor(150);doc.text(bizName+' — Monthly Business Report — '+monthLabel,14,290);doc.text('Page '+i+' of '+pc,196,290,{align:'right'});}
+  doc.save(bizName.replace(/\s/g,'_')+'_Report_'+monthInput+'.pdf');
+  toast('📄 Monthly report downloaded!');
+}
+
+function initPnL(){
+  // Set current month as default for report
+  const now=new Date();
+  const el=document.getElementById('monthly-report-month');
+  if(el)el.value=now.getFullYear()+'-'+pad(now.getMonth()+1);
+  becRenderRows();
+  calcBreakEven();
 }
 
 </script>
