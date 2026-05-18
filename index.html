@@ -529,6 +529,74 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
 .offline-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:9997;background:var(--danger);color:#fff;text-align:center;padding:6px;font-size:.8rem;font-weight:700;letter-spacing:.5px;}
 .offline-banner.show{display:block;}
 
+/* ============================================================
+   INVOICE GENERATOR
+   ============================================================ */
+.inv-preview{background:#fff;color:#111;border-radius:var(--radius);padding:32px;max-width:680px;box-shadow:0 4px 30px rgba(0,0,0,.3);font-family:'Segoe UI',Arial,sans-serif;font-size:13px;line-height:1.6;}
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #00b374;padding-bottom:16px;margin-bottom:20px;}
+.inv-biz-name{font-size:22px;font-weight:800;color:#00b374;margin-bottom:3px;}
+.inv-biz-meta{font-size:11px;color:#666;}
+.inv-badge{background:#00b374;color:#fff;font-size:22px;font-weight:800;padding:8px 18px;border-radius:8px;letter-spacing:2px;}
+.inv-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.inv-meta-box{background:#f8fafc;border-radius:8px;padding:12px;}
+.inv-meta-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:4px;font-weight:700;}
+.inv-meta-val{font-size:13px;font-weight:600;color:#111;}
+.inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+.inv-table th{background:#f1f5f9;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#555;font-weight:700;}
+.inv-table td{padding:10px 12px;border-bottom:1px solid #f0f0f0;font-size:13px;}
+.inv-totals{text-align:right;margin-bottom:20px;}
+.inv-total-row{display:flex;justify-content:flex-end;gap:40px;padding:6px 0;}
+.inv-total-label{font-size:12px;color:#666;}
+.inv-total-val{font-size:13px;font-weight:700;min-width:100px;text-align:right;}
+.inv-grand{border-top:2px solid #00b374;padding-top:10px;margin-top:6px;}
+.inv-grand .inv-total-label{font-size:14px;font-weight:700;color:#111;}
+.inv-grand .inv-total-val{font-size:18px;color:#00b374;font-weight:800;}
+.inv-footer{text-align:center;font-size:11px;color:#888;border-top:1px solid #eee;padding-top:12px;}
+.inv-status-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;}
+.inv-status-paid{background:#d1fae5;color:#065f46;}
+.inv-status-unpaid{background:#fee2e2;color:#991b1b;}
+.inv-status-pending{background:#fef3c7;color:#92400e;}
+
+/* ============================================================
+   SMART INSIGHTS
+   ============================================================ */
+.insight-feed{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.insight-item{display:flex;align-items:flex-start;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:all .2s;}
+.insight-item:hover{border-color:var(--border2);transform:translateY(-1px);}
+.insight-item.positive{border-left:4px solid var(--accent);}
+.insight-item.warning{border-left:4px solid var(--warn);}
+.insight-item.negative{border-left:4px solid var(--danger);}
+.insight-item.info{border-left:4px solid var(--blue);}
+.insight-icon{font-size:1.6rem;flex-shrink:0;}
+.insight-body{}
+.insight-title{font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:3px;}
+.insight-desc{font-size:.78rem;color:var(--text3);line-height:1.6;}
+.insight-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.65rem;font-weight:700;margin-top:6px;}
+
+/* ============================================================
+   QR CODE PORTAL
+   ============================================================ */
+.qr-portal-card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;text-align:center;max-width:400px;margin:0 auto 24px;}
+.qr-box{background:#fff;border-radius:var(--radius);padding:16px;margin:16px auto;width:220px;height:220px;display:flex;align-items:center;justify-content:center;}
+.portal-preview{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:380px;margin:0 auto;}
+
+/* ============================================================
+   RECEIPT ARCHIVE
+   ============================================================ */
+.receipt-archive-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:all .2s;cursor:pointer;}
+.receipt-archive-card:hover{border-color:var(--accent);transform:translateY(-1px);}
+.receipt-archive-icon{font-size:1.5rem;flex-shrink:0;}
+.receipt-archive-info{flex:1;}
+.receipt-archive-id{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent);font-weight:700;}
+.receipt-archive-meta{font-size:.72rem;color:var(--text3);margin-top:2px;}
+.receipt-archive-amt{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:var(--text);}
+
+/* ============================================================
+   SESSION TIMEOUT
+   ============================================================ */
+.session-warning{display:none;position:fixed;bottom:80px;right:20px;z-index:9990;background:var(--warn);color:#000;padding:12px 18px;border-radius:var(--radius);font-size:.85rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.4);animation:pulse 1s infinite;}
+.session-warning.show{display:block;}
+
 </style>
 </head>
 <body>
@@ -644,11 +712,17 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
   <button onclick="switchTab('inventory',this)" id="nav-inventory">Inventory</button>
   <button onclick="switchTab('reconcile',this)">Cash Recon</button>
   <button onclick="switchTab('loyalty',this)">Loyalty</button>
+  <button onclick="switchTab('float',this)">Float</button>
   <button onclick="switchTab('receipt',this)">Receipt</button>
   <button onclick="switchTab('whatsapp',this)">WhatsApp</button>
   <button onclick="switchTab('settings',this)">Services</button>
   <button onclick="switchTab('ai',this)" style="background:linear-gradient(135deg,rgba(0,229,160,.15),rgba(56,189,248,.1));color:var(--accent);border:1px solid rgba(0,229,160,.25);">AI</button>
   <button onclick="switchTab('pnl',this)" style="background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(124,58,237,.1));color:var(--purple);border:1px solid rgba(167,139,250,.25);">📊 P&amp;L</button>
+  <button onclick="switchTab('invoice',this)" style="background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(14,165,233,.1));color:var(--blue);border:1px solid rgba(56,189,248,.25);">🧾 Invoice</button>
+  <button onclick="switchTab('insights',this)" style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(217,119,6,.1));color:var(--warn);border:1px solid rgba(245,158,11,.25);">💡 Insights</button>
+  <button onclick="switchTab('qr',this)" style="background:linear-gradient(135deg,rgba(37,211,102,.1),rgba(0,165,80,.1));color:#25D366;border:1px solid rgba(37,211,102,.25);">📱 QR Portal</button>
+  <button onclick="switchTab('archive',this)" style="background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(124,58,237,.1));color:var(--purple);border:1px solid rgba(167,139,250,.25);">🗂️ Receipts</button>
+  <button onclick="switchTab('backup',this)" style="background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(22,163,74,.1));color:var(--green);border:1px solid rgba(34,197,94,.25);">💾 Backup</button>
   <button onclick="switchTab('mpesa',this)" style="background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(0,165,80,.1));color:#25D366;border:1px solid rgba(37,211,102,.25);">📱 M-Pesa Agent</button>
 </nav>
 <main>
@@ -885,6 +959,81 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
   </div>
 </div>
 
+<div class="tab" id="tab-float">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+    <div class="stitle" style="margin-bottom:0">📲 M-Pesa Float Tracker</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="printAgentStatement()" style="border-color:rgba(56,189,248,.3);color:var(--blue)">🖨️ Agent Statement</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportFloatExcel()" style="border-color:rgba(34,197,94,.3);color:var(--green)">📊 Export</button>
+    </div>
+  </div>
+  <div class="float-stats">
+    <div class="float-card fc-mpesa"><div class="float-label">📱 M-Pesa Float</div><div class="float-val fv-mpesa" id="flt-float">KSh 0</div><div class="float-sub" id="flt-float-sub">Available float balance</div></div>
+    <div class="float-card fc-cash"><div class="float-label">💵 Cash in Drawer</div><div class="float-val fv-cash" id="flt-cash">KSh 0</div><div class="float-sub">After M-Pesa conversions</div></div>
+    <div class="float-card fc-dep"><div class="float-label">⬆️ Total Deposits</div><div class="float-val fv-dep" id="flt-dep">KSh 0</div><div class="float-sub" id="flt-dep-count">0 deposits</div></div>
+    <div class="float-card fc-with"><div class="float-label">⬇️ Total Withdrawals</div><div class="float-val fv-with" id="flt-with">KSh 0</div><div class="float-sub" id="flt-with-count">0 withdrawals</div></div>
+    <div class="float-card fc-comm"><div class="float-label">🏆 Commission (Month)</div><div class="float-val fv-comm" id="flt-comm">KSh 0</div><div class="float-sub" id="flt-comm-count">0 transactions</div></div>
+    <div class="float-card fc-exp-mp"><div class="float-label">💸 M-Pesa Expenses</div><div class="float-val" style="color:var(--danger)" id="flt-mpexp">KSh 0</div><div class="float-sub" id="flt-mpexp-count">airtime, bundles…</div></div>
+    <div class="float-card fc-net"><div class="float-label">📈 Net Profit (Month)</div><div class="float-val" id="flt-net">KSh 0</div><div class="float-sub">Commission minus Expenses</div></div>
+    <div class="float-card fc-total"><div class="float-label">💰 Total Asset Value</div><div class="float-val fv-total" id="flt-total">KSh 0</div><div class="float-sub">Float + Cash</div></div>
+  </div>
+  <div class="card" style="margin-bottom:20px;border-color:rgba(0,229,160,.15)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div class="stitle" style="margin-bottom:0">📊 Daily P&amp;L Summary</div>
+      <div class="fg" style="max-width:170px"><input type="date" id="float-pnl-date" onchange="renderFloatPnL()"></div>
+    </div>
+    <div id="float-pnl-content"><div class="empty"><div class="empty-icon">📊</div><p>Select a date above to see daily breakdown</p></div></div>
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="stitle" style="margin-bottom:12px">📅 7-Day Activity</div>
+    <div class="float-mini-chart" id="float-mini-chart"></div>
+    <div class="chart-legend" style="margin-top:8px"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Deposits</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Withdrawals</div><div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Commission</div></div>
+  </div>
+  <div class="form-card">
+    <div class="stitle">➕ Record Transaction</div>
+    <div class="float-type-tabs">
+      <button class="float-type-tab dep active" id="ftab-dep" onclick="setFloatType('dep')">⬆️ Deposit</button>
+      <button class="float-type-tab with" id="ftab-with" onclick="setFloatType('with')">⬇️ Withdrawal</button>
+      <button class="float-type-tab comm" id="ftab-comm" onclick="setFloatType('comm')">💰 Commission</button>
+      <button class="float-type-tab mpexp" id="ftab-mpexp" onclick="setFloatType('mpexp')">💸 M-Pesa Expense</button>
+    </div>
+    <div id="float-txn-fields">
+      <div class="form-row">
+        <div class="fg"><label>Customer Phone</label><input type="tel" id="float-phone" placeholder="07XXXXXXXX"></div>
+        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-amount" placeholder="0" min="0" oninput="autoCalcCommission()"></div>
+        <div class="fg" id="float-comm-field"><label>Commission Earned (KSh)</label><input type="number" id="float-commission-earned" placeholder="Auto-calculated" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Description</label><input type="text" id="float-desc" placeholder="e.g. Withdrawal – customer paid cash"></div>
+        <div class="fg"><label>Date</label><input type="date" id="float-date"></div>
+      </div>
+    </div>
+    <div id="float-mpexp-fields" style="display:none">
+      <div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:var(--text3);line-height:1.7"><div style="color:var(--danger);font-weight:700;margin-bottom:4px">💸 M-Pesa Expense</div>Record costs paid through or deducted from your M-Pesa float: airtime, bundles, reversal losses, Safaricom fees, agent charges.</div>
+      <div class="form-row">
+        <div class="fg"><label>Expense Category</label><select id="float-exp-cat"><option value="Airtime Top-up">📱 Airtime Top-up</option><option value="Data Bundle">🌐 Data Bundle</option><option value="Float Top-up Fee">💳 Float Top-up Fee</option><option value="Till Charges">🏦 Till / Paybill Charges</option><option value="Agent Fee">💼 Agent Service Fee</option><option value="Safaricom Charge">📡 Safaricom Charge</option><option value="Mpesa Reversal">↩️ M-Pesa Reversal Loss</option><option value="Other M-Pesa Expense">📦 Other M-Pesa Expense</option></select></div>
+        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-exp-amount" placeholder="0" min="0"></div>
+        <div class="fg"><label>Date</label><input type="date" id="float-exp-date"></div>
+      </div>
+      <div class="fg" style="margin-bottom:14px"><label>Description / Note</label><input type="text" id="float-exp-desc" placeholder="e.g. Airtime KSh 500 for business line"></div>
+    </div>
+    <button class="btn btn-primary" id="float-record-btn" onclick="recordFloatTxn()">✅ Record Deposit</button>
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="stitle" style="margin-bottom:12px">💡 Safaricom Commission Rate Guide</div>
+    <div id="float-comm-guide" style="font-size:.8rem;color:var(--text2);line-height:2.4;display:flex;flex-wrap:wrap;gap:0 24px"></div>
+    <div style="margin-top:10px;font-size:.72rem;color:var(--text3)">Rates are approximate. Actual commission may vary by Safaricom agent tier and promotions.</div>
+  </div>
+  <div class="stitle">📋 Transaction Log</div>
+  <div class="filter-row">
+    <select id="float-filter-type"><option value="">All Types</option><option value="dep">⬆️ Deposits</option><option value="with">⬇️ Withdrawals</option><option value="comm">💰 Commission</option><option value="mpexp">💸 M-Pesa Expenses</option></select>
+    <input type="date" id="float-filter-date">
+    <button class="btn btn-secondary" onclick="renderFloatLog()">🔍 Filter</button>
+    <button class="btn btn-secondary" onclick="clearFloatFilter()">✕ Clear</button>
+  </div>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Phone / Category</th><th>Description</th><th>Amount</th><th>Commission</th><th>Running Float</th><th></th></tr></thead><tbody id="float-log-tbody"></tbody></table></div>
+</div>
+
 <div class="tab" id="tab-receipt">
   <div class="stitle">Receipt Printer</div>
   <div class="form-card">
@@ -999,6 +1148,7 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
     <div class="stitle">Security</div>
     <div style="background:var(--accent-dim);border:1px solid rgba(0,229,160,.15);border-radius:var(--radius-sm);padding:14px;font-size:.82rem;color:var(--text3);line-height:1.8"><div style="color:var(--accent);font-weight:700;margin-bottom:4px">Login Features</div><div>PIN-protected on every load. Auto-lock after 3 failed attempts. Manual lock via header button.</div></div>
     <div style="margin-top:12px"><button class="btn btn-secondary btn-sm" onclick="doLogout()">Lock App Now</button></div>
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px"><div class="stitle" style="font-size:.85rem">⏰ Session Timeout</div><div class="form-row"><div class="fg"><label>Auto-lock after (minutes)</label><input type="number" id="session-timeout-input" min="1" max="120" placeholder="15" style="max-width:100px"></div></div><button class="btn btn-secondary btn-sm" onclick="saveSessionTimeoutSetting()">Save Timeout</button><div style="font-size:.72rem;color:var(--text3);margin-top:6px">Set to 0 to disable auto-lock.</div></div>
   </div>
 </div>
 
@@ -1128,6 +1278,211 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
     </div>
   </div>
 </div>
+
+
+<!-- ============================================================
+     INVOICE GENERATOR TAB
+     ============================================================ -->
+<div class="tab" id="tab-invoice">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+    <div class="stitle" style="margin-bottom:0">🧾 Invoice Generator</div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="generateInvoicePDF()">📄 Download PDF</button>
+      <button class="btn btn-whatsapp btn-sm" onclick="sendInvoiceWhatsApp()">📲 Send WhatsApp</button>
+      <button class="btn btn-secondary btn-sm" onclick="printInvoice()">🖨️ Print</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start">
+    <!-- Form -->
+    <div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">Customer Details</div>
+        <div class="fg" style="margin-bottom:10px"><label>Customer Name</label><input type="text" id="inv-cust-name" placeholder="e.g. John Kamau" oninput="buildInvoicePreview()"></div>
+        <div class="fg" style="margin-bottom:10px"><label>Phone / Email</label><input type="text" id="inv-cust-phone" placeholder="e.g. 0712345678" oninput="buildInvoicePreview()"></div>
+        <div class="fg" style="margin-bottom:10px"><label>Invoice Number</label><input type="text" id="inv-number" oninput="buildInvoicePreview()"></div>
+        <div class="form-row">
+          <div class="fg"><label>Date</label><input type="date" id="inv-date" oninput="buildInvoicePreview()"></div>
+          <div class="fg"><label>Due Date</label><input type="date" id="inv-due" oninput="buildInvoicePreview()"></div>
+        </div>
+        <div class="fg" style="margin-bottom:10px"><label>Status</label>
+          <select id="inv-status" onchange="buildInvoicePreview()">
+            <option value="paid">✅ Paid</option>
+            <option value="unpaid">❌ Unpaid</option>
+            <option value="pending">⏳ Pending</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:10px"><label>Payment Method</label>
+          <select id="inv-payment" onchange="buildInvoicePreview()">
+            <option>Cash</option><option>M-Pesa</option><option>Bank Transfer</option><option>Credit</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>Notes</label><textarea id="inv-notes" rows="2" placeholder="Any additional notes..." oninput="buildInvoicePreview()"></textarea></div>
+      </div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">Line Items</div>
+        <div id="inv-items-list"></div>
+        <button class="btn btn-secondary btn-sm" onclick="invAddItem()" style="margin-bottom:10px;width:100%;justify-content:center">+ Add Item</button>
+        <div style="background:var(--accent-dim);border:1px solid rgba(0,229,160,.2);border-radius:var(--radius-sm);padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.82rem;color:var(--text3)">Total</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent)" id="inv-total-display">KSh 0</span>
+        </div>
+      </div>
+      <!-- Load from today's sales -->
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">Load from Sales</div>
+        <div class="form-row">
+          <div class="fg"><label>Date</label><input type="date" id="inv-load-date"></div>
+          <div class="fg"><label>Customer</label><input type="text" id="inv-load-cust" placeholder="Filter by name" list="inv-cust-datalist"><datalist id="inv-cust-datalist"></datalist></div>
+        </div>
+        <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center" onclick="invLoadFromSales()">📋 Load Sales as Invoice Items</button>
+      </div>
+    </div>
+    <!-- Preview -->
+    <div>
+      <div class="stitle" style="font-size:.85rem">Preview</div>
+      <div id="inv-preview-wrap">
+        <div class="inv-preview" id="inv-preview"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SMART INSIGHTS TAB
+     ============================================================ -->
+<div class="tab" id="tab-insights">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+    <div class="stitle" style="margin-bottom:0">💡 Smart Business Insights</div>
+    <button class="btn btn-secondary btn-sm" onclick="generateInsights()">🔄 Refresh Insights</button>
+  </div>
+  <div id="insights-loading" style="display:none" class="empty"><div class="spinner"></div><p style="margin-top:10px">Analysing your business data...</p></div>
+  <div id="insights-feed" class="insight-feed"></div>
+  <!-- Hourly heatmap -->
+  <div class="stitle">⏰ Busiest Hours</div>
+  <div class="card" style="margin-bottom:24px">
+    <div style="font-size:.72rem;color:var(--text3);margin-bottom:12px">Revenue by hour of day (all time)</div>
+    <div style="display:flex;align-items:flex-end;gap:3px;height:80px" id="hourly-chart"></div>
+    <div style="display:flex;gap:0;margin-top:6px" id="hourly-labels"></div>
+  </div>
+  <!-- Day of week performance -->
+  <div class="stitle">📅 Day of Week Performance</div>
+  <div class="card" style="margin-bottom:24px" id="dow-chart-card"></div>
+</div>
+
+<!-- ============================================================
+     QR CODE PORTAL TAB
+     ============================================================ -->
+<div class="tab" id="tab-qr">
+  <div class="stitle">📱 Customer Portal QR Code</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+    <div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">Portal Settings</div>
+        <div class="fg" style="margin-bottom:10px"><label>Business Name</label><input type="text" id="qr-biz-name" placeholder="GB ICT Solutions" oninput="updateQrPortal()"></div>
+        <div class="fg" style="margin-bottom:10px"><label>WhatsApp Number</label><input type="text" id="qr-wa-num" placeholder="254712345678" oninput="updateQrPortal()"></div>
+        <div class="fg" style="margin-bottom:10px"><label>Location / Tagline</label><input type="text" id="qr-location" placeholder="e.g. Nairobi CBD, Opp. GPO" oninput="updateQrPortal()"></div>
+        <div class="fg" style="margin-bottom:14px"><label>Welcome Message</label><textarea id="qr-welcome" rows="2" placeholder="Welcome! Scan to see our services and prices." oninput="updateQrPortal()"></textarea></div>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center" onclick="downloadQrCode()">⬇️ Download QR Code</button>
+      </div>
+    </div>
+    <div>
+      <div class="stitle" style="font-size:.85rem">QR Code Preview</div>
+      <div class="qr-portal-card">
+        <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:4px" id="qr-biz-display">GB ICT Solutions</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-bottom:14px" id="qr-loc-display">Nairobi, Kenya</div>
+        <div class="qr-box" id="qr-box">
+          <div style="font-size:.8rem;color:#999;text-align:center">QR code appears here<br>after you fill the form</div>
+        </div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:8px">Customers scan this to see your services & contact you</div>
+      </div>
+      <div class="stitle" style="font-size:.85rem">Portal Preview</div>
+      <div class="portal-preview" id="portal-preview">
+        <div style="text-align:center;color:var(--text3);font-size:.82rem">Fill the form to preview portal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     RECEIPT ARCHIVE TAB
+     ============================================================ -->
+<div class="tab" id="tab-archive">
+  <div class="stitle">🗂️ Receipt Archive</div>
+  <div class="filter-row">
+    <input type="text" id="arch-search" placeholder="Search by customer name..." oninput="renderReceiptArchive()" style="max-width:280px">
+    <input type="date" id="arch-date" onchange="renderReceiptArchive()">
+    <button class="btn btn-secondary" onclick="document.getElementById('arch-search').value='';document.getElementById('arch-date').value='';renderReceiptArchive()">✕ Clear</button>
+  </div>
+  <div class="stats-row" style="margin-bottom:16px">
+    <div class="stat glow-green"><div class="stat-label">Total Receipts</div><div class="stat-val g" id="arch-total-count">0</div></div>
+    <div class="stat blue"><div class="stat-label">Unique Customers</div><div class="stat-val b" id="arch-cust-count">0</div></div>
+    <div class="stat"><div class="stat-label">Total Value</div><div class="stat-val" id="arch-total-val">KSh 0</div></div>
+  </div>
+  <div id="receipt-archive-list"></div>
+  <!-- Receipt detail modal -->
+  <div id="arch-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto">
+      <div id="arch-modal-content"></div>
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-amber btn-sm" onclick="archPrintReceipt()">🖨️ Print</button>
+        <button class="btn btn-whatsapp btn-sm" onclick="archSendWhatsApp()">📲 WhatsApp</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('arch-modal').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     BACKUP TAB
+     ============================================================ -->
+<div class="tab" id="tab-backup">
+  <div class="stitle">💾 Data Backup</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">📤 Export Backup</div>
+        <p style="font-size:.82rem;color:var(--text3);margin-bottom:16px;line-height:1.7">Download a complete backup of all your data as an Excel workbook. Includes all sales, expenses, inventory, customers, and settings.</p>
+        <div class="fg" style="margin-bottom:14px"><label>Date Range</label>
+          <select id="backup-range">
+            <option value="all">All Time (Full Backup)</option>
+            <option value="month">This Month Only</option>
+            <option value="year">This Year Only</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;margin-bottom:10px" onclick="doFullBackup()">📊 Download Excel Backup</button>
+        <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center" onclick="doJsonBackup()">📦 Download JSON Backup</button>
+      </div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">⚙️ Auto-Backup Reminder</div>
+        <div class="form-row">
+          <div class="fg"><label>Remind Every</label>
+            <select id="backup-freq" onchange="saveBackupSettings()">
+              <option value="7">Every Sunday</option>
+              <option value="14">Every 2 Weeks</option>
+              <option value="30">Monthly</option>
+              <option value="0">Off</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size:.78rem;color:var(--text3);margin-top:8px" id="backup-next-reminder">Loading...</div>
+      </div>
+    </div>
+    <div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">📋 Backup History</div>
+        <div id="backup-history-list"><div class="empty"><div class="empty-icon">💾</div><p>No backups yet</p></div></div>
+      </div>
+      <div class="form-card">
+        <div class="stitle" style="font-size:.85rem">📊 Data Summary</div>
+        <div id="backup-data-summary"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Session warning toast -->
+<div class="session-warning" id="sessionWarning">⚠️ App will lock in <span id="sessionCountdown">60</span>s due to inactivity. <button onclick="resetSessionTimer()" style="background:#000;color:var(--warn);border:none;padding:2px 8px;border-radius:4px;cursor:pointer;font-weight:700;margin-left:8px">Stay Active</button></div>
+
 
 <div class="tab" id="tab-mpesa">
   <!-- TOP BALANCE BAR -->
@@ -1390,6 +1745,8 @@ function startLockout(){isLockedOut=true;document.getElementById('pinKeypad').st
 function unlockApp(){sessionStorage.setItem('gb_ict_unlocked','1');const ov=document.getElementById('loginOverlay');ov.style.transition='opacity .4s ease';ov.style.opacity='0';setTimeout(()=>{ov.style.display='none';document.getElementById('appRoot').style.display='block';document.getElementById('logoutBtn').style.display='inline-flex';init();},400);}
 function doLogout(){sessionStorage.removeItem('gb_ict_unlocked');pinBuffer='';failedAttempts=0;isLockedOut=false;for(let i=0;i<4;i++){const d=document.getElementById('dot'+i);d.classList.remove('filled','error');}for(let i=0;i<3;i++)document.getElementById('pip'+i).className='attempt-pip';document.getElementById('loginError').classList.remove('show');document.getElementById('appRoot').style.display='none';document.getElementById('logoutBtn').style.display='none';const ov=document.getElementById('loginOverlay');ov.style.display='flex';ov.style.opacity='1';updateDots();}
 document.addEventListener('keydown',e=>{if(document.getElementById('loginOverlay').style.display==='none')return;if(e.key>='0'&&e.key<='9')pinPress(e.key);if(e.key==='Backspace'||e.key==='Delete')pinDelete();});
+// Auto-lock and session timeout
+initSessionTimeout();
 if(sessionStorage.getItem('gb_ict_unlocked')==='1'){document.getElementById('loginOverlay').style.display='none';document.getElementById('appRoot').style.display='block';document.getElementById('logoutBtn').style.display='inline-flex';}
 
 // CONFIG
@@ -1447,7 +1804,7 @@ function switchTab(t,btn){
   document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(e=>e.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');if(btn)btn.classList.add('active');
-  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();},pnl:()=>{renderPnL();initPnL();},mpesa:()=>{if(!window._mpesaInited){window._mpesaInited=true;initMpesaTab();}else{mpUpdateBalBar();}mpSubTab(mpCurrentSubTab,document.getElementById('mpsub-'+mpCurrentSubTab));}};
+  const fn={dashboard:renderDashboard,sale:renderSaleTab,expenses:()=>{if(!document.getElementById('exp-date').value)document.getElementById('exp-date').value=todayStr();renderExpenses();renderExpenseStats();},history:renderHistory,report:renderReport,monthly:renderMonthly,inventory:renderInventory,reconcile:renderReconcileTab,loyalty:renderLoyaltyTab,receipt:renderReceiptTab,whatsapp:renderWATab,settings:()=>{renderSettings();loadTarget();},pnl:()=>{renderPnL();initPnL();},invoice:()=>{invInit();},insights:()=>{generateInsights();},qr:()=>{updateQrPortal();},archive:()=>{renderReceiptArchive();},backup:()=>{loadBackupSettings();},mpesa:()=>{if(!window._mpesaInited){window._mpesaInited=true;initMpesaTab();}else{mpUpdateBalBar();}mpSubTab(mpCurrentSubTab,document.getElementById('mpsub-'+mpCurrentSubTab));}};
   if(fn[t])fn[t]();
 }
 
@@ -2660,6 +3017,518 @@ function initPnL(){
   if(el)el.value=now.getFullYear()+'-'+pad(now.getMonth()+1);
   becRenderRows();
   calcBreakEven();
+}
+
+// ============================================================
+// INVOICE GENERATOR
+// ============================================================
+let invItems=[{desc:'',qty:1,price:0}];
+let currentArchiveReceipt=null;
+
+function invInit(){
+  const now=new Date();
+  const d=document.getElementById('inv-date');
+  const due=document.getElementById('inv-due');
+  if(d&&!d.value)d.value=todayStr();
+  if(due&&!due.value){const dd=new Date(now);dd.setDate(dd.getDate()+7);due.value=dd.getFullYear()+'-'+pad(dd.getMonth()+1)+'-'+pad(dd.getDate());}
+  const num=document.getElementById('inv-number');
+  if(num&&!num.value)num.value='INV-'+Date.now().toString().slice(-6);
+  // populate customer datalist
+  const dl=document.getElementById('inv-cust-datalist');
+  if(dl)dl.innerHTML=customers.map(c=>'<option value="'+c.name+'">').join('');
+  const ldl=document.getElementById('inv-cust-datalist');
+  if(ldl)ldl.innerHTML=customers.map(c=>'<option value="'+c.name+'">').join('');
+  invRenderItems();
+  buildInvoicePreview();
+}
+
+function invRenderItems(){
+  const list=document.getElementById('inv-items-list');
+  if(!list)return;
+  list.innerHTML=invItems.map((it,i)=>'<div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">'
+    +'<input type="text" placeholder="Description" value="'+it.desc+'" oninput="invItems['+i+'].desc=this.value;buildInvoicePreview()" style="flex:3">'
+    +'<input type="number" placeholder="Qty" value="'+it.qty+'" min="1" oninput="invItems['+i+'].qty=parseFloat(this.value)||1;buildInvoicePreview()" style="width:60px;flex:none">'
+    +'<input type="number" placeholder="Price" value="'+it.price+'" min="0" oninput="invItems['+i+'].price=parseFloat(this.value)||0;buildInvoicePreview()" style="width:90px;flex:none">'
+    +'<button class="btn btn-danger btn-xs" onclick="invItems.splice('+i+',1);invRenderItems();buildInvoicePreview()">✕</button>'
+    +'</div>').join('');
+  const total=invItems.reduce((s,it)=>s+(it.qty*(it.price||0)),0);
+  const td=document.getElementById('inv-total-display');
+  if(td)td.textContent=fmtKsh(total);
+}
+
+function invAddItem(){invItems.push({desc:'',qty:1,price:0});invRenderItems();}
+
+function invLoadFromSales(){
+  const date=document.getElementById('inv-load-date').value||todayStr();
+  const cust=(document.getElementById('inv-load-cust').value||'').trim().toLowerCase();
+  let filtered=sales.filter(s=>s.date===date);
+  if(cust)filtered=filtered.filter(s=>(s.customer_name||'').toLowerCase().includes(cust));
+  if(!filtered.length){toast('No sales found for that date/customer','amber');return;}
+  // Group by service
+  const grouped={};filtered.forEach(s=>{const k=s.service_name;if(!grouped[k])grouped[k]={desc:(s.icon||'')+' '+s.service_name,qty:0,price:s.unit_price||0};grouped[k].qty+=s.qty||1;});
+  invItems=Object.values(grouped);
+  // Auto-fill customer
+  if(filtered[0].customer_name&&document.getElementById('inv-cust-name'))
+    document.getElementById('inv-cust-name').value=filtered[0].customer_name;
+  invRenderItems();buildInvoicePreview();
+  toast('✅ Loaded '+filtered.length+' sales as invoice items');
+}
+
+function buildInvoicePreview(){
+  const custName=document.getElementById('inv-cust-name')?.value||'Customer';
+  const custPhone=document.getElementById('inv-cust-phone')?.value||'';
+  const invNum=document.getElementById('inv-number')?.value||'INV-000000';
+  const invDate=document.getElementById('inv-date')?.value||todayStr();
+  const invDue=document.getElementById('inv-due')?.value||'';
+  const status=document.getElementById('inv-status')?.value||'paid';
+  const payment=document.getElementById('inv-payment')?.value||'Cash';
+  const notes=document.getElementById('inv-notes')?.value||'';
+  const rs=loadLS('gb_receipt_settings',receiptSettings);
+  const bizName=rs.biz||waSettings.biz||'GB ICT Solutions';
+  const bizPhone=rs.phone||'0781 275 517';
+  const bizLoc=rs.location||'Nairobi, Kenya';
+  const cfg=getMpesaSettings();
+  const subtotal=invItems.reduce((s,it)=>s+(it.qty*(it.price||0)),0);
+  const statusMap={paid:'✅ PAID',unpaid:'❌ UNPAID',pending:'⏳ PENDING'};
+  const statusClass={paid:'inv-status-paid',unpaid:'inv-status-unpaid',pending:'inv-status-pending'};
+  const dateLabel=new Date(invDate+'T12:00:00').toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'});
+  const dueLabel=invDue?new Date(invDue+'T12:00:00').toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'}):'On receipt';
+  const wrap=document.getElementById('inv-preview');
+  if(!wrap)return;
+  wrap.innerHTML='<div class="inv-preview" id="inv-preview-inner">'
+    +'<div class="inv-header">'
+    +'<div><div class="inv-biz-name">'+bizName+'</div>'
+    +'<div class="inv-biz-meta">📍 '+bizLoc+'<br>📞 '+bizPhone+(cfg.till?'<br>M-Pesa Till: '+cfg.till:'')+'</div></div>'
+    +'<div><div class="inv-badge">INVOICE</div><div style="font-size:11px;color:#888;margin-top:6px;text-align:right">#'+invNum+'</div>'
+    +'<div style="margin-top:6px"><span class="inv-status-badge '+statusClass[status]+'">'+statusMap[status]+'</span></div></div>'
+    +'</div>'
+    +'<div class="inv-meta-grid">'
+    +'<div class="inv-meta-box"><div class="inv-meta-label">Bill To</div><div class="inv-meta-val">'+custName+'</div>'+(custPhone?'<div style="font-size:11px;color:#666;margin-top:2px">'+custPhone+'</div>':'')+'</div>'
+    +'<div class="inv-meta-box"><div class="inv-meta-label">Invoice Date</div><div class="inv-meta-val">'+dateLabel+'</div>'
+    +'<div style="margin-top:8px"><div class="inv-meta-label">Due Date</div><div class="inv-meta-val">'+dueLabel+'</div></div></div>'
+    +'</div>'
+    +'<table class="inv-table"><thead><tr><th>#</th><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead><tbody>'
+    +invItems.filter(it=>it.desc).map((it,i)=>'<tr><td style="color:#888">'+(i+1)+'</td><td>'+it.desc+'</td><td>'+it.qty+'</td><td>KSh '+(it.price||0).toLocaleString()+'</td><td style="font-weight:600">KSh '+((it.qty*(it.price||0)).toLocaleString())+'</td></tr>').join('')
+    +'</tbody></table>'
+    +'<div class="inv-totals">'
+    +'<div class="inv-total-row"><span class="inv-total-label">Subtotal</span><span class="inv-total-val">KSh '+subtotal.toLocaleString()+'</span></div>'
+    +'<div class="inv-total-row inv-grand"><span class="inv-total-label">TOTAL DUE</span><span class="inv-total-val">KSh '+subtotal.toLocaleString()+'</span></div>'
+    +'</div>'
+    +'<div style="margin-bottom:14px;font-size:12px"><strong>Payment Method:</strong> '+payment+'</div>'
+    +(notes?'<div style="background:#f8fafc;border-radius:6px;padding:10px;font-size:11px;color:#666;margin-bottom:14px"><strong>Notes:</strong> '+notes+'</div>':'')
+    +'<div class="inv-footer">Thank you for your business! · '+bizName+' · '+bizPhone+'</div>'
+    +'</div>';
+}
+
+function generateInvoicePDF(){
+  const inner=document.getElementById('inv-preview-inner');
+  if(!inner||!invItems.filter(it=>it.desc).length){toast('Add at least one item first','amber');return;}
+  const{jsPDF}=window.jspdf;
+  const custName=document.getElementById('inv-cust-name')?.value||'Customer';
+  const invNum=document.getElementById('inv-number')?.value||'INV-000000';
+  const rs=loadLS('gb_receipt_settings',receiptSettings);
+  const bizName=rs.biz||waSettings.biz||'GB ICT Solutions';
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  doc.setFillColor(0,179,116);doc.rect(0,0,210,32,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text(bizName,14,14);
+  doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text(rs.location||'Nairobi, Kenya',14,22);doc.text(rs.phone||'',14,28);
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('INVOICE',196,18,{align:'right'});
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.text('#'+invNum,196,26,{align:'right'});
+  let y=40;
+  doc.setTextColor(30,30,30);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('BILL TO:',14,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text(custName,14,y+6);
+  const invDate=document.getElementById('inv-date')?.value||todayStr();
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  doc.text('Date: '+new Date(invDate+'T12:00:00').toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'}),130,y);
+  const status=document.getElementById('inv-status')?.value||'paid';
+  const statusMap={paid:'✅ PAID',unpaid:'❌ UNPAID',pending:'⏳ PENDING'};
+  doc.text('Status: '+statusMap[status],130,y+6);
+  y+=20;
+  const subtotal=invItems.reduce((s,it)=>s+(it.qty*(it.price||0)),0);
+  const rows=invItems.filter(it=>it.desc).map((it,i)=>[(i+1).toString(),it.desc,it.qty.toString(),'KSh '+(it.price||0).toLocaleString(),'KSh '+(it.qty*(it.price||0)).toLocaleString()]);
+  doc.autoTable({startY:y,head:[['#','Description','Qty','Unit Price','Total']],body:rows,theme:'striped',headStyles:{fillColor:[0,179,116],textColor:[255,255,255],fontStyle:'bold',fontSize:9},styles:{fontSize:9.5},columnStyles:{4:{fontStyle:'bold',textColor:[0,130,80]}},margin:{left:14,right:14}});
+  y=doc.lastAutoTable.finalY+10;
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(0,130,80);doc.text('TOTAL: KSh '+subtotal.toLocaleString(),196,y,{align:'right'});
+  const notes=document.getElementById('inv-notes')?.value||'';
+  if(notes){y+=10;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100);doc.text('Notes: '+notes,14,y);}
+  y+=16;doc.setFontSize(8);doc.setTextColor(150);doc.text('Thank you for choosing '+bizName+'!',105,y,{align:'center'});
+  doc.save(bizName.replace(/\s/g,'_')+'_Invoice_'+invNum+'.pdf');
+  toast('📄 Invoice PDF downloaded!');
+  saveReceiptToArchive(custName,subtotal,invNum,invDate);
+}
+
+function printInvoice(){
+  const inner=document.getElementById('inv-preview-inner');
+  if(!inner){toast('Build the invoice first','amber');return;}
+  const win=window.open('','_blank','width=700,height=900');
+  win.document.write('<!DOCTYPE html><html><head><title>Invoice</title><style>body{font-family:Arial,sans-serif;padding:20px;font-size:13px}.inv-preview{max-width:680px;margin:0 auto}.inv-header{display:flex;justify-content:space-between;border-bottom:3px solid #00b374;padding-bottom:14px;margin-bottom:18px}.inv-biz-name{font-size:20px;font-weight:800;color:#00b374}.inv-badge{background:#00b374;color:#fff;font-size:18px;font-weight:800;padding:6px 14px;border-radius:6px}.inv-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.inv-meta-box{background:#f8fafc;border-radius:6px;padding:10px}.inv-meta-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:700;margin-bottom:3px}.inv-table{width:100%;border-collapse:collapse;margin-bottom:16px}.inv-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:#555;font-weight:700}.inv-table td{padding:8px 10px;border-bottom:1px solid #f0f0f0}.inv-total-row{display:flex;justify-content:flex-end;gap:30px;padding:5px 0}.inv-grand{border-top:2px solid #00b374;padding-top:8px;margin-top:4px}.inv-footer{text-align:center;font-size:10px;color:#888;border-top:1px solid #eee;padding-top:10px;margin-top:14px}.inv-status-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700}.inv-status-paid{background:#d1fae5;color:#065f46}.inv-status-unpaid{background:#fee2e2;color:#991b1b}@media print{button{display:none}}</style></head><body>'+inner.outerHTML+'<br><button onclick="window.print()" style="background:#00b374;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer">🖨️ Print Invoice</button></body></html>');
+  win.document.close();win.focus();setTimeout(()=>win.print(),400);
+}
+
+function sendInvoiceWhatsApp(){
+  const num=waSettings.number;if(!num){toast('Set WhatsApp number in Settings first','amber');return;}
+  const custName=document.getElementById('inv-cust-name')?.value||'Customer';
+  const invNum=document.getElementById('inv-number')?.value||'INV-000000';
+  const rs=loadLS('gb_receipt_settings',receiptSettings);const bizName=rs.biz||'GB ICT Solutions';
+  const subtotal=invItems.reduce((s,it)=>s+(it.qty*(it.price||0)),0);
+  const status=document.getElementById('inv-status')?.value||'paid';
+  const statusMap={paid:'✅ PAID',unpaid:'❌ Awaiting payment',pending:'⏳ Pending'};
+  const lines=invItems.filter(it=>it.desc).map(it=>'  • '+it.desc+' x'+it.qty+' = KSh '+(it.qty*(it.price||0)).toLocaleString()).join('\n');
+  const msg='🧾 *INVOICE — '+bizName+'*\n'+'─'.repeat(28)+'\nInvoice #: '+invNum+'\nClient: '+custName+'\nDate: '+new Date().toLocaleDateString('en-KE')+'\n\n*Services:*\n'+lines+'\n\n*TOTAL: KSh '+subtotal.toLocaleString()+'*\nStatus: '+statusMap[status]+'\n'+'─'.repeat(28)+'\nThank you for choosing '+bizName+'!';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+  toast('📲 Opening WhatsApp...','whatsapp');
+}
+
+function saveReceiptToArchive(custName,total,invNum,date){
+  const archive=loadLS('gb_receipt_archive',[]);
+  archive.unshift({id:invNum,customer:custName,total,date,time:nowTime(),items:invItems.filter(it=>it.desc).map(it=>({...it}))});
+  if(archive.length>500)archive.splice(500);
+  saveLS('gb_receipt_archive',archive);
+}
+
+// ============================================================
+// RECEIPT ARCHIVE
+// ============================================================
+function renderReceiptArchive(){
+  const archive=loadLS('gb_receipt_archive',[]);
+  const search=(document.getElementById('arch-search')?.value||'').toLowerCase();
+  const date=document.getElementById('arch-date')?.value||'';
+  let filtered=archive;
+  if(search)filtered=filtered.filter(r=>(r.customer||'').toLowerCase().includes(search)||(r.id||'').toLowerCase().includes(search));
+  if(date)filtered=filtered.filter(r=>r.date===date);
+  // Also pull from sales history
+  const salesReceipts=buildReceiptsFromSales();
+  const allReceipts=[...filtered,...salesReceipts.filter(sr=>!filtered.find(r=>r.id===sr.id))];
+  allReceipts.sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+  const searchFiltered=allReceipts.filter(r=>{
+    if(search&&!(r.customer||'').toLowerCase().includes(search)&&!(r.id||'').toLowerCase().includes(search))return false;
+    if(date&&r.date!==date)return false;
+    return true;
+  });
+  const uniqueCustomers=new Set(searchFiltered.map(r=>r.customer).filter(Boolean));
+  document.getElementById('arch-total-count').textContent=searchFiltered.length;
+  document.getElementById('arch-cust-count').textContent=uniqueCustomers.size;
+  document.getElementById('arch-total-val').textContent=fmtKsh(searchFiltered.reduce((s,r)=>s+(r.total||0),0));
+  const list=document.getElementById('receipt-archive-list');
+  if(!searchFiltered.length){list.innerHTML='<div class="empty"><div class="empty-icon">🗂️</div><p>No receipts found</p></div>';return;}
+  list.innerHTML=searchFiltered.slice(0,60).map(r=>'<div class="receipt-archive-card" onclick="archViewReceipt('+JSON.stringify(JSON.stringify(r))+')"><div class="receipt-archive-icon">🧾</div><div class="receipt-archive-info"><div class="receipt-archive-id">'+r.id+'</div><div class="receipt-archive-meta">'+(r.customer||'No name')+' · '+r.date+' '+( r.time||'')+'</div></div><div class="receipt-archive-amt">'+fmtKsh(r.total||0)+'</div></div>').join('');
+}
+
+function buildReceiptsFromSales(){
+  const byDateCust={};
+  sales.forEach(s=>{
+    const key=(s.customer_name||'Walk-in')+'-'+s.date;
+    if(!byDateCust[key])byDateCust[key]={id:'RCP-'+s.date.replace(/-/g,'')+'-'+(s.customer_name||'walk').substring(0,4).toUpperCase(),customer:s.customer_name||'Walk-in',date:s.date,time:s.time||'',total:0,items:[]};
+    byDateCust[key].total+=s.total||0;
+    byDateCust[key].items.push({desc:(s.icon||'')+' '+s.service_name,qty:s.qty||1,price:s.unit_price||0});
+  });
+  return Object.values(byDateCust);
+}
+
+function archViewReceipt(jsonStr){
+  const r=JSON.parse(jsonStr);
+  currentArchiveReceipt=r;
+  const rs=loadLS('gb_receipt_settings',receiptSettings);
+  const bizName=rs.biz||'GB ICT Solutions';
+  document.getElementById('arch-modal-content').innerHTML='<div class="inv-preview" style="box-shadow:none;padding:0"><div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00b374;padding-bottom:12px;margin-bottom:14px"><div><div style="font-size:16px;font-weight:800;color:#00b374">'+bizName+'</div><div style="font-size:10px;color:#888">'+(rs.location||'Nairobi')+'</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:700">RECEIPT</div><div style="font-size:10px;color:#888">#'+r.id+'</div></div></div>'
+    +'<div style="margin-bottom:12px;font-size:12px"><div><strong>Customer:</strong> '+(r.customer||'Walk-in')+'</div><div><strong>Date:</strong> '+r.date+' '+(r.time||'')+'</div></div>'
+    +'<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px"><thead><tr style="background:#f1f5f9"><th style="padding:7px;text-align:left">Item</th><th style="padding:7px">Qty</th><th style="padding:7px;text-align:right">Total</th></tr></thead><tbody>'
+    +(r.items||[]).map(it=>'<tr><td style="padding:7px;border-bottom:1px solid #f0f0f0">'+it.desc+'</td><td style="padding:7px;text-align:center;border-bottom:1px solid #f0f0f0">'+it.qty+'</td><td style="padding:7px;text-align:right;border-bottom:1px solid #f0f0f0">KSh '+(it.qty*(it.price||0)).toLocaleString()+'</td></tr>').join('')
+    +'</tbody></table><div style="display:flex;justify-content:space-between;border-top:2px solid #00b374;padding-top:10px;font-size:14px;font-weight:800"><span>TOTAL</span><span style="color:#00b374">'+fmtKsh(r.total||0)+'</span></div>'
+    +'<div style="text-align:center;font-size:10px;color:#888;margin-top:12px">Thank you for your business!</div></div>';
+  document.getElementById('arch-modal').style.display='flex';
+}
+
+function archPrintReceipt(){
+  const c=document.getElementById('arch-modal-content');
+  if(!c)return;
+  const win=window.open('','_blank','width=500,height=700');
+  win.document.write('<!DOCTYPE html><html><head><title>Receipt</title><style>body{font-family:"Courier New",monospace;font-size:12px;margin:20px}.inv-preview{max-width:400px}table{width:100%;border-collapse:collapse}td,th{padding:6px;font-size:11px}</style></head><body>'+c.innerHTML+'</body></html>');
+  win.document.close();setTimeout(()=>{win.print();win.close();},300);
+}
+
+function archSendWhatsApp(){
+  if(!currentArchiveReceipt){return;}
+  const r=currentArchiveReceipt;
+  const num=waSettings.number;if(!num){toast('Set WhatsApp number first','amber');return;}
+  const rs=loadLS('gb_receipt_settings',receiptSettings);
+  const lines=(r.items||[]).map(it=>'  • '+it.desc+' x'+it.qty+' = KSh '+(it.qty*(it.price||0)).toLocaleString()).join('\n');
+  const msg='🧾 *RECEIPT — '+(rs.biz||'GB ICT Solutions')+'*\n#'+r.id+'\nCustomer: '+(r.customer||'Walk-in')+'\nDate: '+r.date+'\n\n'+lines+'\n\n*TOTAL: '+fmtKsh(r.total||0)+'*\n\nThank you for your business!';
+  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
+  toast('📲 Opening WhatsApp...','whatsapp');
+  document.getElementById('arch-modal').style.display='none';
+}
+
+// ============================================================
+// SMART INSIGHTS
+// ============================================================
+function generateInsights(){
+  document.getElementById('insights-loading').style.display='flex';
+  document.getElementById('insights-feed').innerHTML='';
+  setTimeout(()=>{
+    document.getElementById('insights-loading').style.display='none';
+    const insights=computeInsights();
+    const feed=document.getElementById('insights-feed');
+    if(!insights.length){feed.innerHTML='<div class="empty"><div class="empty-icon">💡</div><p>Not enough data yet. Record more sales to get insights.</p></div>';return;}
+    feed.innerHTML=insights.map(ins=>'<div class="insight-item '+ins.type+'"><div class="insight-icon">'+ins.icon+'</div><div class="insight-body"><div class="insight-title">'+ins.title+'</div><div class="insight-desc">'+ins.desc+'</div>'+(ins.badge?'<span class="insight-badge" style="background:'+ins.badgeBg+';color:'+ins.badgeColor+'">'+ins.badge+'</span>':'')+'</div></div>').join('');
+    renderHourlyChart();
+    renderDowChart();
+  },600);
+}
+
+function computeInsights(){
+  const insights=[];
+  if(sales.length<5)return insights;
+  const now=new Date();
+  const today=todayStr();
+  const wStart=new Date(now);wStart.setDate(now.getDate()-now.getDay());
+  const prevWStart=new Date(wStart);prevWStart.setDate(wStart.getDate()-7);
+  const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const prevMS=new Date(now.getFullYear(),now.getMonth()-1,1);
+  const prevME=new Date(now.getFullYear(),now.getMonth(),0);
+
+  // 1. Best day of week
+  const wdayRev=[0,0,0,0,0,0,0],wdayCount=[0,0,0,0,0,0,0];
+  const daily={};
+  sales.forEach(s=>{if(!s.date)return;daily[s.date]=(daily[s.date]||0)+(s.total||0);const dow=new Date(s.date).getDay();wdayRev[dow]+=(s.total||0);wdayCount[dow]++;});
+  const wdayAvg=wdayRev.map((r,i)=>wdayCount[i]?Math.round(r/wdayCount[i]):0);
+  const bestDay=wdayAvg.indexOf(Math.max(...wdayAvg));const worstDay=wdayAvg.indexOf(Math.min(...wdayAvg.filter(v=>v>0)));
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  if(wdayCount[bestDay]>=2){insights.push({type:'positive',icon:'📅',title:days[bestDay]+' is your best day',desc:'Average revenue of '+fmtKsh(wdayAvg[bestDay])+' on '+days[bestDay]+'s. Consider running promotions on '+days[worstDay]+'s to boost slow days.',badge:'Avg '+fmtKsh(wdayAvg[bestDay]),badgeBg:'var(--accent-dim)',badgeColor:'var(--accent)'});}
+
+  // 2. Busiest hour
+  const hourRev=Array(24).fill(0),hourCount=Array(24).fill(0);
+  sales.forEach(s=>{if(!s.time)return;const hr=parseInt(s.time.split(':')[0]);if(hr>=0&&hr<24){hourRev[hr]+=(s.total||0);hourCount[hr]++;}});
+  const maxHr=hourRev.indexOf(Math.max(...hourRev));
+  if(hourCount[maxHr]>=3){const hrLabel=maxHr+':00 – '+(maxHr+1)+':00';insights.push({type:'info',icon:'⏰',title:'Busiest hour is '+hrLabel,desc:'You earn the most between '+hrLabel+'. Make sure you are fully staffed and stocked during this window.',badge:'Peak hour',badgeBg:'var(--blue-dim)',badgeColor:'var(--blue)'});}
+
+  // 3. Revenue trend (this week vs last)
+  const thisWeekRev=sales.filter(s=>new Date(s.date)>=wStart).reduce((a,s)=>a+(s.total||0),0);
+  const prevWeekRev=sales.filter(s=>{const d=new Date(s.date);return d>=prevWStart&&d<wStart;}).reduce((a,s)=>a+(s.total||0),0);
+  if(prevWeekRev>0){const chg=Math.round((thisWeekRev-prevWeekRev)/prevWeekRev*100);if(chg>=10)insights.push({type:'positive',icon:'📈',title:'Revenue up '+chg+'% vs last week',desc:'This week: '+fmtKsh(thisWeekRev)+' vs '+fmtKsh(prevWeekRev)+' last week. Great momentum! Keep it up.',badge:'+'+chg+'%',badgeBg:'var(--accent-dim)',badgeColor:'var(--accent)'});else if(chg<=-10)insights.push({type:'negative',icon:'📉',title:'Revenue down '+Math.abs(chg)+'% vs last week',desc:'This week: '+fmtKsh(thisWeekRev)+' vs '+fmtKsh(prevWeekRev)+' last week. Consider running a promotion or checking if any services need attention.',badge:chg+'%',badgeBg:'var(--danger-dim)',badgeColor:'var(--danger)'});}
+
+  // 4. Top service change
+  const thisMSvc={},prevMSvc={};
+  sales.filter(s=>new Date(s.date)>=mStart).forEach(s=>{thisMSvc[s.service_name]=(thisMSvc[s.service_name]||0)+(s.total||0);});
+  sales.filter(s=>{const d=new Date(s.date);return d>=prevMS&&d<=prevME;}).forEach(s=>{prevMSvc[s.service_name]=(prevMSvc[s.service_name]||0)+(s.total||0);});
+  const topThisM=Object.entries(thisMSvc).sort((a,b)=>b[1]-a[1])[0];
+  const topPrevM=Object.entries(prevMSvc).sort((a,b)=>b[1]-a[1])[0];
+  if(topThisM&&topPrevM&&topThisM[0]!==topPrevM[0]){insights.push({type:'info',icon:'⭐',title:topThisM[0]+' is now your top service',desc:'This month '+topThisM[0]+' earned '+fmtKsh(topThisM[1])+', overtaking last month\'s top performer: '+topPrevM[0]+' ('+fmtKsh(topPrevM[1])+').',badge:'New #1',badgeBg:'var(--warn-dim)',badgeColor:'var(--warn)'});}
+
+  // 5. Service drop
+  if(topPrevM&&thisMSvc[topPrevM[0]]!==undefined){const prevTop=topPrevM[1];const curTop=thisMSvc[topPrevM[0]]||0;const daysPassed=now.getDate();const projected=daysPassed>0?(curTop/daysPassed)*30:0;if(projected<prevTop*0.7){insights.push({type:'warning',icon:'⚠️',title:topPrevM[0]+' revenue trending down',desc:'Last month you earned '+fmtKsh(prevTop)+' from '+topPrevM[0]+'. This month is projecting '+fmtKsh(Math.round(projected))+' — a potential drop of '+Math.round((1-projected/prevTop)*100)+'%.',badge:'Watch this',badgeBg:'var(--warn-dim)',badgeColor:'var(--warn)'}); }}
+
+  // 6. Expense ratio
+  const mRev=sales.filter(s=>new Date(s.date)>=mStart).reduce((a,s)=>a+(s.total||0),0);
+  const mExp=expenses.filter(e=>new Date(e.date)>=mStart).reduce((a,e)=>a+(e.amount||0),0);
+  if(mRev>0&&mExp>0){const ratio=Math.round(mExp/mRev*100);if(ratio>60)insights.push({type:'negative',icon:'💸',title:'Expenses are '+ratio+'% of revenue this month',desc:'You are spending KSh '+mExp.toLocaleString()+' on expenses against KSh '+mRev.toLocaleString()+' revenue. Try to keep expenses below 40% of revenue.',badge:ratio+'% expense ratio',badgeBg:'var(--danger-dim)',badgeColor:'var(--danger)'});else if(ratio<25&&mExp>0)insights.push({type:'positive',icon:'💰',title:'Excellent expense control — only '+ratio+'%',desc:'Your expenses are well managed at just '+ratio+'% of revenue this month. Net profit margin is '+(100-ratio)+'%.',badge:'Healthy margins',badgeBg:'var(--accent-dim)',badgeColor:'var(--accent)'}); }
+
+  // 7. Best ever day
+  const bestDay2=Object.entries(daily).sort((a,b)=>b[1]-a[1])[0];
+  if(bestDay2&&bestDay2[0]===today)insights.push({type:'positive',icon:'🏆',title:'Today is on track to be a record day!',desc:'Today\'s revenue of '+fmtKsh(daily[today]||0)+' is among your highest. Best ever was '+fmtKsh(bestDay2[1])+' on '+bestDay2[0]+'.',badge:'Record potential',badgeBg:'var(--purple-dim)',badgeColor:'var(--purple)'}); 
+
+  // 8. Customer loyalty
+  const vipCount=customers.filter(c=>(c.visits||0)>=25).length;
+  const goldCount=customers.filter(c=>(c.visits||0)>=10&&(c.visits||0)<25).length;
+  if(vipCount>0)insights.push({type:'positive',icon:'💜',title:'You have '+vipCount+' VIP customer'+(vipCount>1?'s':''),desc:vipCount+' customer'+(vipCount>1?'s have':'has')+' visited 25+ times. These loyal customers are the backbone of your business — consider giving them special treatment.',badge:vipCount+' VIP',badgeBg:'var(--purple-dim)',badgeColor:'var(--purple)'}); 
+
+  return insights;
+}
+
+function renderHourlyChart(){
+  const hourRev=Array(24).fill(0);
+  sales.forEach(s=>{if(!s.time)return;const hr=parseInt(s.time.split(':')[0]);if(hr>=0&&hr<24)hourRev[hr]+=(s.total||0);});
+  const maxH=Math.max(...hourRev,1);
+  const chart=document.getElementById('hourly-chart');
+  const labels=document.getElementById('hourly-labels');
+  if(!chart)return;
+  chart.innerHTML=hourRev.map((v,i)=>{const h=Math.max((v/maxH)*72,v>0?3:0).toFixed(1);const isTop=v===Math.max(...hourRev)&&v>0;return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:100%;background:'+(isTop?'linear-gradient(180deg,#009970,var(--accent))':'linear-gradient(180deg,var(--border),var(--border2))')+';border-radius:3px 3px 0 0;height:'+h+'px;min-height:'+(v>0?'3':'0')+'px" title="'+i+':00 — '+fmtKsh(v)+'"></div></div>';}).join('');
+  if(labels)labels.innerHTML=hourRev.map((v,i)=>'<div style="flex:1;text-align:center;font-size:.5rem;color:var(--text3)">'+(i%3===0?i+'h':'')+'</div>').join('');
+}
+
+function renderDowChart(){
+  const card=document.getElementById('dow-chart-card');if(!card)return;
+  const wdayRev=Array(7).fill(0),wdayCount=Array(7).fill(0);
+  sales.forEach(s=>{if(!s.date)return;const dow=new Date(s.date).getDay();wdayRev[dow]+=(s.total||0);wdayCount[dow]++;});
+  const wdayAvg=wdayRev.map((r,i)=>wdayCount[i]?Math.round(r/wdayCount[i]):0);
+  const maxA=Math.max(...wdayAvg,1);
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  card.innerHTML='<div style="display:flex;align-items:flex-end;gap:8px;height:100px;padding:8px 0">'+wdayAvg.map((avg,i)=>{const h=Math.max((avg/maxA)*84,avg>0?4:0).toFixed(1);const isBest=avg===Math.max(...wdayAvg)&&avg>0;return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-family:\'JetBrains Mono\',monospace;font-size:.6rem;color:'+(isBest?'var(--warn)':'var(--text3)')+'">'+( avg>=1000?(avg/1000).toFixed(1)+'K':avg||'')+'</div><div style="width:100%;background:'+(isBest?'linear-gradient(180deg,var(--warn),#d97706)':'linear-gradient(180deg,var(--accent),#009970)')+';border-radius:4px 4px 0 0;height:'+h+'px;min-height:'+(avg>0?'4':'0')+'px"></div><div style="font-size:.62rem;color:'+(isBest?'var(--warn)':'var(--text3)')+'">'+days[i]+'</div><div style="font-size:.55rem;color:var(--text3)">'+wdayCount[i]+'d</div></div>';}).join('')+'</div>';
+}
+
+// ============================================================
+// QR CODE PORTAL
+// ============================================================
+function updateQrPortal(){
+  const biz=document.getElementById('qr-biz-name')?.value||'GB ICT Solutions';
+  const wa=document.getElementById('qr-wa-num')?.value||waSettings.number||'';
+  const loc=document.getElementById('qr-location')?.value||'Nairobi, Kenya';
+  const welcome=document.getElementById('qr-welcome')?.value||'Welcome! Scan to see our services and prices.';
+  document.getElementById('qr-biz-display').textContent=biz;
+  document.getElementById('qr-loc-display').textContent=loc;
+  // Build portal URL (data URL approach)
+  const svcList=services.slice(0,12).map(s=>s.icon+' '+s.name+' — KSh '+s.price).join('\n');
+  const portalText=encodeURIComponent(biz+'\n'+loc+'\n\n'+welcome+'\n\nServices:\n'+svcList+(wa?'\n\nContact us on WhatsApp: wa.me/'+wa:''));
+  // Use QR code API
+  const qrUrl='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+portalText;
+  const qrBox=document.getElementById('qr-box');
+  qrBox.innerHTML='<img src="'+qrUrl+'" width="200" height="200" style="border-radius:4px" alt="QR Code">';
+  // Portal preview
+  const preview=document.getElementById('portal-preview');
+  const rs=loadLS('gb_receipt_settings',receiptSettings);
+  preview.innerHTML='<div style="text-align:center;margin-bottom:14px"><div style="font-size:1.1rem;font-weight:800;color:var(--accent)">'+biz+'</div><div style="font-size:.7rem;color:var(--text3)">'+loc+'</div></div>'
+    +(welcome?'<div style="font-size:.78rem;color:var(--text2);margin-bottom:12px;padding:10px;background:var(--surface);border-radius:8px">'+welcome+'</div>':'')
+    +'<div style="font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Our Services</div>'
+    +'<div style="display:flex;flex-direction:column;gap:5px">'+services.slice(0,8).map(s=>'<div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--surface);border-radius:6px;font-size:.8rem"><span>'+s.icon+' '+s.name+'</span><span style="color:var(--accent);font-weight:700">KSh '+s.price+'</span></div>').join('')+'</div>'
+    +(wa?'<a href="https://wa.me/'+wa+'" style="display:block;text-align:center;margin-top:14px;background:#25D366;color:#fff;padding:10px;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none">💬 Chat on WhatsApp</a>':'');
+}
+
+function downloadQrCode(){
+  const biz=document.getElementById('qr-biz-name')?.value||'GB ICT Solutions';
+  const wa=document.getElementById('qr-wa-num')?.value||waSettings.number||'';
+  const loc=document.getElementById('qr-location')?.value||'Nairobi, Kenya';
+  const portalText=encodeURIComponent(biz+'\n'+loc+(wa?'\nWhatsApp: wa.me/'+wa:''));
+  const qrUrl='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+portalText;
+  const a=document.createElement('a');a.href=qrUrl;a.download=biz.replace(/\s/g,'_')+'_QR.png';a.target='_blank';a.click();
+  toast('⬇️ QR Code downloaded!');
+}
+
+// ============================================================
+// AUTO DATA BACKUP
+// ============================================================
+let backupSettings={freq:7,lastBackup:null};
+
+function loadBackupSettings(){
+  const s=loadLS('gb_backup_settings',null);
+  if(s)backupSettings={...backupSettings,...s};
+  const freq=document.getElementById('backup-freq');
+  if(freq)freq.value=backupSettings.freq;
+  updateBackupReminderDisplay();
+  renderBackupHistory();
+  renderBackupDataSummary();
+  checkBackupReminder();
+}
+
+function saveBackupSettings(){
+  backupSettings.freq=parseInt(document.getElementById('backup-freq')?.value)||7;
+  saveLS('gb_backup_settings',backupSettings);
+  updateBackupReminderDisplay();
+  toast('Backup settings saved!');
+}
+
+function updateBackupReminderDisplay(){
+  const el=document.getElementById('backup-next-reminder');if(!el)return;
+  if(!backupSettings.freq){el.textContent='Auto-backup reminders are OFF';return;}
+  const last=backupSettings.lastBackup?new Date(backupSettings.lastBackup):null;
+  const next=last?new Date(last.getTime()+backupSettings.freq*86400000):new Date();
+  el.textContent='Next reminder: '+next.toLocaleDateString('en-KE',{weekday:'long',day:'numeric',month:'long'});
+}
+
+function checkBackupReminder(){
+  if(!backupSettings.freq)return;
+  const last=backupSettings.lastBackup?new Date(backupSettings.lastBackup):null;
+  if(!last||(Date.now()-last.getTime())>backupSettings.freq*86400000){
+    setTimeout(()=>toast('💾 Reminder: Back up your data! Go to Backup tab.','amber'),3000);
+  }
+}
+
+async function doFullBackup(){
+  const range=document.getElementById('backup-range')?.value||'all';
+  const now=new Date();const mStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const yStart=new Date(now.getFullYear(),0,1);
+  let fs=sales,fe=expenses,fi=inventory,fc=customers;
+  if(range==='month'){fs=fs.filter(s=>new Date(s.date)>=mStart);fe=fe.filter(e=>new Date(e.date)>=mStart);}
+  else if(range==='year'){fs=fs.filter(s=>new Date(s.date)>=yStart);fe=fe.filter(e=>new Date(e.date)>=yStart);}
+  const wb=XLSX.utils.book_new();
+  // Sales sheet
+  const sHead=['Date','Time','Service','Qty','Unit Price','Total','Customer','Note'];
+  const sRows=fs.map(s=>[s.date,s.time||'',s.service_name,s.qty||1,s.unit_price||0,s.total||0,s.customer_name||'',s.note||'']);
+  const ws=XLSX.utils.aoa_to_sheet([sHead,...sRows]);ws['!cols']=[{wch:14},{wch:10},{wch:28},{wch:6},{wch:14},{wch:14},{wch:20},{wch:30}];XLSX.utils.book_append_sheet(wb,ws,'Sales');
+  // Expenses sheet
+  const eHead=['Date','Time','Category','Description','Amount'];
+  const eRows=fe.map(e=>[e.date,e.time||'',e.category,e.description||'',e.amount||0]);
+  const we=XLSX.utils.aoa_to_sheet([eHead,...eRows]);XLSX.utils.book_append_sheet(wb,we,'Expenses');
+  // Inventory sheet
+  const iHead=['Name','Category','Qty','Unit','Cost','Value'];
+  const iRows=fi.map(i=>[i.name,i.category||'',i.qty||0,i.unit||'pcs',i.unit_cost||0,(i.qty||0)*(i.unit_cost||0)]);
+  const wi=XLSX.utils.aoa_to_sheet([iHead,...iRows]);XLSX.utils.book_append_sheet(wb,wi,'Inventory');
+  // Customers sheet
+  const cHead=['Name','Phone','Visits','Total Spend','Last Visit','Notes'];
+  const cRows=fc.map(c=>[c.name,c.phone||'',c.visits||0,c.totalSpend||0,c.lastVisit||'',c.notes||'']);
+  const wc=XLSX.utils.aoa_to_sheet([cHead,...cRows]);XLSX.utils.book_append_sheet(wb,wc,'Customers');
+  // Services sheet
+  const svHead=['Name','Icon','Price'];
+  const svRows=services.map(s=>[s.name,s.icon||'',s.price||0]);
+  const wsv=XLSX.utils.aoa_to_sheet([svHead,...svRows]);XLSX.utils.book_append_sheet(wb,wsv,'Services');
+  // Summary sheet
+  const sumRows=[['GB ICT Solutions — Full Data Backup'],['Generated: '+now.toLocaleString('en-KE')],['Range: '+(range==='all'?'All Time':range==='month'?'This Month':'This Year')],[],['SUMMARY'],['Total Sales Records',fs.length],['Total Expenses',fe.length],['Total Revenue','KSh '+sumArr(fs,'total').toLocaleString()],['Total Expenses Amount','KSh '+sumArr(fe,'amount').toLocaleString()],['Net Profit','KSh '+(sumArr(fs,'total')-sumArr(fe,'amount')).toLocaleString()],['Inventory Items',fi.length],['Customers',fc.length]];
+  const wsum=XLSX.utils.aoa_to_sheet(sumRows);wsum['!cols']=[{wch:28},{wch:22}];XLSX.utils.book_append_sheet(wb,wsum,'Summary');
+  const fname='GB_ICT_Backup_'+now.toISOString().split('T')[0]+'.xlsx';
+  XLSX.writeFile(wb,fname);
+  // Log backup
+  const hist=loadLS('gb_backup_history',[]);
+  hist.unshift({date:todayStr(),time:nowTime(),type:'Excel',range,records:fs.length+fe.length,filename:fname});
+  if(hist.length>20)hist.splice(20);
+  saveLS('gb_backup_history',hist);
+  backupSettings.lastBackup=new Date().toISOString();
+  saveLS('gb_backup_settings',backupSettings);
+  renderBackupHistory();updateBackupReminderDisplay();
+  toast('📊 Backup downloaded: '+fname);
+}
+
+function doJsonBackup(){
+  const data={version:'1.0',exported:new Date().toISOString(),sales,expenses,inventory,customers,services,floatTxns,reconHistory,waSettings,receiptSettings};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='GB_ICT_Backup_'+todayStr()+'.json';a.click();
+  URL.revokeObjectURL(url);
+  toast('📦 JSON backup downloaded!');
+}
+
+function renderBackupHistory(){
+  const hist=loadLS('gb_backup_history',[]);
+  const el=document.getElementById('backup-history-list');if(!el)return;
+  el.innerHTML=hist.length?hist.map(h=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:.84rem;font-weight:600;color:var(--accent)">'+h.type+' Backup</div><div style="font-size:.7rem;color:var(--text3)">'+h.date+' '+h.time+' · '+(h.records||0)+' records · '+h.range+'</div></div><span class="badge badge-green">✅ Done</span></div>').join(''):'<div class="empty"><div class="empty-icon">💾</div><p>No backups yet</p></div>';
+}
+
+function renderBackupDataSummary(){
+  const el=document.getElementById('backup-data-summary');if(!el)return;
+  el.innerHTML=[{l:'Sales Records',v:sales.length,c:'var(--accent)'},{l:'Expense Records',v:expenses.length,c:'var(--danger)'},{l:'Inventory Items',v:inventory.length,c:'var(--blue)'},{l:'Customers',v:customers.length,c:'var(--purple)'},{l:'Services',v:services.length,c:'var(--warn)'},{l:'Float Transactions',v:floatTxns.length,c:'var(--green)'}].map(d=>'<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:.82rem;color:var(--text3)">'+d.l+'</span><span style="font-family:\'JetBrains Mono\',monospace;color:'+d.c+';font-weight:700">'+d.v+'</span></div>').join('');
+}
+
+// ============================================================
+// SESSION TIMEOUT
+// ============================================================
+let sessionTimer=null,sessionWarnTimer=null;
+let sessionTimeout=15*60*1000; // 15 min default
+let sessionWarnAt=60*1000; // warn 60s before
+
+function initSessionTimeout(){
+  const saved=loadLS('gb_session_timeout',15);
+  sessionTimeout=saved*60*1000;
+  resetSessionTimer();
+  ['click','keydown','touchstart','mousemove'].forEach(e=>document.addEventListener(e,resetSessionTimer,{passive:true}));
+}
+
+function resetSessionTimer(){
+  clearTimeout(sessionTimer);clearTimeout(sessionWarnTimer);
+  const warn=document.getElementById('sessionWarning');
+  if(warn)warn.classList.remove('show');
+  if(sessionTimeout<=0)return;
+  sessionWarnTimer=setTimeout(()=>{
+    const warn=document.getElementById('sessionWarning');
+    if(warn){warn.classList.add('show');let sec=60;const cd=document.getElementById('sessionCountdown');if(cd)cd.textContent=sec;const iv=setInterval(()=>{sec--;if(cd)cd.textContent=sec;if(sec<=0)clearInterval(iv);},1000);}
+  },sessionTimeout-sessionWarnAt);
+  sessionTimer=setTimeout(()=>{
+    const warn=document.getElementById('sessionWarning');if(warn)warn.classList.remove('show');
+    if(sessionStorage.getItem('gb_ict_unlocked')==='1'){doLogout();toast('🔒 Auto-locked due to inactivity','amber');}
+  },sessionTimeout);
+}
+
+function saveSessionTimeoutSetting(){
+  const val=parseInt(document.getElementById('session-timeout-input')?.value)||15;
+  saveLS('gb_session_timeout',val);sessionTimeout=val*60*1000;
+  resetSessionTimer();toast('Session timeout set to '+val+' minutes');
 }
 
 </script>
