@@ -597,6 +597,17 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
 .session-warning{display:none;position:fixed;bottom:80px;right:20px;z-index:9990;background:var(--warn);color:#000;padding:12px 18px;border-radius:var(--radius);font-size:.85rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.4);animation:pulse 1s infinite;}
 .session-warning.show{display:block;}
 
+
+/* M-Pesa Agent sub-tab active states */
+#tab-mpesa .float-type-tabs{flex-wrap:wrap;height:auto;}
+#tab-mpesa .float-type-tab{flex:none;padding:8px 14px;font-size:.78rem;white-space:nowrap;}
+#tab-mpesa #mpsub-txn.active{background:var(--accent);color:#000;}
+#tab-mpesa #mpsub-records.active{background:var(--blue);color:#fff;}
+#tab-mpesa #mpsub-daybook.active{background:var(--warn);color:#000;}
+#tab-mpesa #mpsub-float.active{background:var(--accent);color:#000;}
+#tab-mpesa #mpsub-comm.active{background:var(--warn);color:#000;}
+#tab-mpesa #mpsub-exp.active{background:var(--danger);color:#fff;}
+#tab-mpesa #mpsub-reports.active{background:var(--blue);color:#fff;}
 </style>
 </head>
 <body>
@@ -712,7 +723,6 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
   <button onclick="switchTab('inventory',this)" id="nav-inventory">Inventory</button>
   <button onclick="switchTab('reconcile',this)">Cash Recon</button>
   <button onclick="switchTab('loyalty',this)">Loyalty</button>
-  <button onclick="switchTab('float',this)">Float</button>
   <button onclick="switchTab('receipt',this)">Receipt</button>
   <button onclick="switchTab('whatsapp',this)">WhatsApp</button>
   <button onclick="switchTab('settings',this)">Services</button>
@@ -957,81 +967,6 @@ body.light-theme .login-box{background:#fff;border-color:#d1dce8;box-shadow:0 20
     </div>
     <button class="btn btn-primary" onclick="saveCustomer()">Save Customer</button>
   </div>
-</div>
-
-<div class="tab" id="tab-float">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">
-    <div class="stitle" style="margin-bottom:0">📲 M-Pesa Float Tracker</div>
-    <div class="btn-row">
-      <button class="btn btn-secondary btn-sm" onclick="printAgentStatement()" style="border-color:rgba(56,189,248,.3);color:var(--blue)">🖨️ Agent Statement</button>
-      <button class="btn btn-secondary btn-sm" onclick="exportFloatExcel()" style="border-color:rgba(34,197,94,.3);color:var(--green)">📊 Export</button>
-    </div>
-  </div>
-  <div class="float-stats">
-    <div class="float-card fc-mpesa"><div class="float-label">📱 M-Pesa Float</div><div class="float-val fv-mpesa" id="flt-float">KSh 0</div><div class="float-sub" id="flt-float-sub">Available float balance</div></div>
-    <div class="float-card fc-cash"><div class="float-label">💵 Cash in Drawer</div><div class="float-val fv-cash" id="flt-cash">KSh 0</div><div class="float-sub">After M-Pesa conversions</div></div>
-    <div class="float-card fc-dep"><div class="float-label">⬆️ Total Deposits</div><div class="float-val fv-dep" id="flt-dep">KSh 0</div><div class="float-sub" id="flt-dep-count">0 deposits</div></div>
-    <div class="float-card fc-with"><div class="float-label">⬇️ Total Withdrawals</div><div class="float-val fv-with" id="flt-with">KSh 0</div><div class="float-sub" id="flt-with-count">0 withdrawals</div></div>
-    <div class="float-card fc-comm"><div class="float-label">🏆 Commission (Month)</div><div class="float-val fv-comm" id="flt-comm">KSh 0</div><div class="float-sub" id="flt-comm-count">0 transactions</div></div>
-    <div class="float-card fc-exp-mp"><div class="float-label">💸 M-Pesa Expenses</div><div class="float-val" style="color:var(--danger)" id="flt-mpexp">KSh 0</div><div class="float-sub" id="flt-mpexp-count">airtime, bundles…</div></div>
-    <div class="float-card fc-net"><div class="float-label">📈 Net Profit (Month)</div><div class="float-val" id="flt-net">KSh 0</div><div class="float-sub">Commission minus Expenses</div></div>
-    <div class="float-card fc-total"><div class="float-label">💰 Total Asset Value</div><div class="float-val fv-total" id="flt-total">KSh 0</div><div class="float-sub">Float + Cash</div></div>
-  </div>
-  <div class="card" style="margin-bottom:20px;border-color:rgba(0,229,160,.15)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div class="stitle" style="margin-bottom:0">📊 Daily P&amp;L Summary</div>
-      <div class="fg" style="max-width:170px"><input type="date" id="float-pnl-date" onchange="renderFloatPnL()"></div>
-    </div>
-    <div id="float-pnl-content"><div class="empty"><div class="empty-icon">📊</div><p>Select a date above to see daily breakdown</p></div></div>
-  </div>
-  <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">📅 7-Day Activity</div>
-    <div class="float-mini-chart" id="float-mini-chart"></div>
-    <div class="chart-legend" style="margin-top:8px"><div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Deposits</div><div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>Withdrawals</div><div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Commission</div></div>
-  </div>
-  <div class="form-card">
-    <div class="stitle">➕ Record Transaction</div>
-    <div class="float-type-tabs">
-      <button class="float-type-tab dep active" id="ftab-dep" onclick="setFloatType('dep')">⬆️ Deposit</button>
-      <button class="float-type-tab with" id="ftab-with" onclick="setFloatType('with')">⬇️ Withdrawal</button>
-      <button class="float-type-tab comm" id="ftab-comm" onclick="setFloatType('comm')">💰 Commission</button>
-      <button class="float-type-tab mpexp" id="ftab-mpexp" onclick="setFloatType('mpexp')">💸 M-Pesa Expense</button>
-    </div>
-    <div id="float-txn-fields">
-      <div class="form-row">
-        <div class="fg"><label>Customer Phone</label><input type="tel" id="float-phone" placeholder="07XXXXXXXX"></div>
-        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-amount" placeholder="0" min="0" oninput="autoCalcCommission()"></div>
-        <div class="fg" id="float-comm-field"><label>Commission Earned (KSh)</label><input type="number" id="float-commission-earned" placeholder="Auto-calculated" min="0"></div>
-      </div>
-      <div class="form-row">
-        <div class="fg"><label>Description</label><input type="text" id="float-desc" placeholder="e.g. Withdrawal – customer paid cash"></div>
-        <div class="fg"><label>Date</label><input type="date" id="float-date"></div>
-      </div>
-    </div>
-    <div id="float-mpexp-fields" style="display:none">
-      <div style="background:var(--danger-dim);border:1px solid rgba(244,63,94,.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:var(--text3);line-height:1.7"><div style="color:var(--danger);font-weight:700;margin-bottom:4px">💸 M-Pesa Expense</div>Record costs paid through or deducted from your M-Pesa float: airtime, bundles, reversal losses, Safaricom fees, agent charges.</div>
-      <div class="form-row">
-        <div class="fg"><label>Expense Category</label><select id="float-exp-cat"><option value="Airtime Top-up">📱 Airtime Top-up</option><option value="Data Bundle">🌐 Data Bundle</option><option value="Float Top-up Fee">💳 Float Top-up Fee</option><option value="Till Charges">🏦 Till / Paybill Charges</option><option value="Agent Fee">💼 Agent Service Fee</option><option value="Safaricom Charge">📡 Safaricom Charge</option><option value="Mpesa Reversal">↩️ M-Pesa Reversal Loss</option><option value="Other M-Pesa Expense">📦 Other M-Pesa Expense</option></select></div>
-        <div class="fg"><label>Amount (KSh)</label><input type="number" id="float-exp-amount" placeholder="0" min="0"></div>
-        <div class="fg"><label>Date</label><input type="date" id="float-exp-date"></div>
-      </div>
-      <div class="fg" style="margin-bottom:14px"><label>Description / Note</label><input type="text" id="float-exp-desc" placeholder="e.g. Airtime KSh 500 for business line"></div>
-    </div>
-    <button class="btn btn-primary" id="float-record-btn" onclick="recordFloatTxn()">✅ Record Deposit</button>
-  </div>
-  <div class="card" style="margin-bottom:20px">
-    <div class="stitle" style="margin-bottom:12px">💡 Safaricom Commission Rate Guide</div>
-    <div id="float-comm-guide" style="font-size:.8rem;color:var(--text2);line-height:2.4;display:flex;flex-wrap:wrap;gap:0 24px"></div>
-    <div style="margin-top:10px;font-size:.72rem;color:var(--text3)">Rates are approximate. Actual commission may vary by Safaricom agent tier and promotions.</div>
-  </div>
-  <div class="stitle">📋 Transaction Log</div>
-  <div class="filter-row">
-    <select id="float-filter-type"><option value="">All Types</option><option value="dep">⬆️ Deposits</option><option value="with">⬇️ Withdrawals</option><option value="comm">💰 Commission</option><option value="mpexp">💸 M-Pesa Expenses</option></select>
-    <input type="date" id="float-filter-date">
-    <button class="btn btn-secondary" onclick="renderFloatLog()">🔍 Filter</button>
-    <button class="btn btn-secondary" onclick="clearFloatFilter()">✕ Clear</button>
-  </div>
-  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Time</th><th>Type</th><th>Phone / Category</th><th>Description</th><th>Amount</th><th>Commission</th><th>Running Float</th><th></th></tr></thead><tbody id="float-log-tbody"></tbody></table></div>
 </div>
 
 <div class="tab" id="tab-receipt">
@@ -2468,10 +2403,10 @@ function mpUpdateBalBar(){
 function mpSubTab(name,btn){
   mpCurrentSubTab=name;
   ['txn','records','daybook','float','comm','exp','reports'].forEach(t=>{
-    const c=document.getElementById('mpsub-'+t+'-content');if(c)c.style.display='none';
+    const c=document.getElementById('mpsub-'+t+'-content');if(c){c.style.display='none';}
     const b=document.getElementById('mpsub-'+t);if(b){b.classList.remove('active','dep','with','comm','mpexp');b.style.background='';}
   });
-  const content=document.getElementById('mpsub-'+name+'-content');if(content)content.style.display='block';
+  const content=document.getElementById('mpsub-'+name+'-content');if(content){content.style.display='block';}
   if(btn){btn.classList.add('active');if(name==='txn')btn.classList.add('dep');else if(name==='float')btn.classList.add('comm');else if(name==='exp')btn.classList.add('mpexp');}
   const renders={txn:()=>{mpUpdateBalBar();mpRenderTransact();},records:mpLoadRecords,daybook:mpRenderDayBook,float:mpRenderFloat,comm:mpRenderCommission,exp:mpRenderExpenses,reports:mpRenderReports};
   renders[name]?.();
@@ -2725,6 +2660,8 @@ async function initMpesaTab(){
   await mpLoadDays();
   mpUpdateBalBar();
   mpSelectType('deposit');
+  const firstBtn=document.getElementById('mpsub-txn');
+  mpSubTab('txn',firstBtn);
 }
 
 // ============================================================
